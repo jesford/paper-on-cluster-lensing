@@ -1,8 +1,11 @@
 \documentclass{emulateapj}
 
 \usepackage{color}
-\usepackage{url}
 \usepackage{graphicx}
+\usepackage[backref,breaklinks,colorlinks,citecolor=blue]{hyperref}
+\usepackage[all]{hypcap}
+\renewcommand*{\backref}[1]{[#1]}
+%\usepackage{url}
 %\graphicspath{{figures/}}
 
 \usepackage{listings}
@@ -33,7 +36,7 @@ Jake VanderPlas\altaffilmark{1}
 
 \begin{abstract}
 We describe a new open source package for calculating properties of galaxy clusters, including NFW halo profiles with and without the effects of cluster miscentering. This pure-\lstinline{Python} package, \lstinline{cluster-lensing}, provides well-documented and easy-to-use classes and functions for calculating cluster scaling relations, including mass-richness and mass-concentration relations from the literature, as well as the surface mass density $\Sigma(R)$ and differential surface mass density $\Delta\Sigma(R)$ profiles, probed by weak lensing magnification and shear, respectively. Galaxy cluster miscentering is especially a concern for stacked weak lensing shear studies of galaxy clusters, where offsets between the assumed and the true underlying matter distribution
-This software has been developed and released in a public GitHub repository, and is licensed under the permissive free MIT license. The \lstinline{cluster-lensing} package can be downloaded either from GitHub, at \url{https://github.com/jesford/cluster-lensing}, or through the Python Package Index, \url{https://pypi.python.org/pypi/cluster-lensing}. Full documentation is available at \url{http://jesford.github.io/cluster-lensing/}.
+This software has been developed and released in a public GitHub repository, and is licensed under the permissive free MIT license. The \lstinline{cluster-lensing} package can be downloaded through the Python Package Index, \url{https://pypi.python.org/pypi/cluster-lensing}, or directly from GitHub, at \url{https://github.com/jesford/cluster-lensing}. Full documentation is available at \url{http://jesford.github.io/cluster-lensing/}.
 \end{abstract}
 
 \keywords{gravitational lensing: weak, galaxies: clusters: general, dark matter}
@@ -47,7 +50,7 @@ This software has been developed and released in a public GitHub repository, and
 
 \begin{itemize} \itemsep -2pt
 \item Background about clusters and weak lensing.
-\item Existing code? 
+\item NFW halos \citep{nfw97, Wright00}
 \item composite-NFW fits for weak lensing \citep{Ford12, Ford14, Ford15}
 \item What is new = miscentering \citep{Johnston07, George12, Ford14, Ford15}
 \end{itemize}
@@ -57,6 +60,7 @@ This software has been developed and released in a public GitHub repository, and
 
 \begin{itemize} \itemsep -2pt
 \item Purpose and general use.
+\item Relation to existing code
 \item \lstinline{SurfaceMassDensity()} class, generic to all NFW halos
 \item \lstinline{ClusterEnsemble()} class
 \item mass-richness functions

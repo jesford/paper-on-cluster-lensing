@@ -3,6 +3,8 @@
 *.gz
 *.bbl
 *.blg
+*.brf
+*.out
 *.snippets
 clusterlensingNotes.bib
 clusterlensing.pdf

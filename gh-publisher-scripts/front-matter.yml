@@ -7,7 +7,7 @@
 # Remove the # from the front of each line, and then edit appropriately.
 #
 
-#title:
+title: cluster-lensing: a Python Package for Galaxy Clusters and Miscentering
 #abstract:
 
 # This controls which file is shown on the right-hand side of the published
@@ -19,8 +19,9 @@
 # These fields can contain HTML tags.  You probably want to put <br />
 # in the address somewhere, indicating a line break.
 
-#authors:
-#- name: Joseph H. Bloggs
-#  address: International Institute for Interminable Examples, P.O. Box 1,<br />Beverly Hills, CA 90210, USA.
-#- name: Clara McNarma
+authors:
+- name: Jes Ford
+#- name: Jake VanderPlas
+  address: eScience Institute, University of Washington.
+#- name: Jake VanderPlas
 #  address: School of Dance and Drama,<br />College of the Northern Light,<br />Dogger, Fisher, German Bight.

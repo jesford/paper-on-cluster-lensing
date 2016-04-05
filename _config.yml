@@ -1,0 +1,29 @@
+#
+# This file controls the details on the published HTML page.
+#
+# All the values here are optional, but it will obviously look a lot
+# better if you fill them in.
+#
+# Remove the # from the front of each line, and then edit appropriately.
+#
+
+title: cluster-lensing: a Python Package for Galaxy Clusters and Miscentering
+abstract: A software paper in progress describing the cluster-lensing Python package.
+
+# This controls which file is shown on the right-hand side of the published
+# HTML page.  By default it will take the first PDF or HTML file that it
+# finds.  If that doesn't work for you, you can specify the correct file here.
+#iframe_src: book.pdf
+
+# You can specify multiple authors, just follow the pattern below.
+# These fields can contain HTML tags.  You probably want to put <br />
+# in the address somewhere, indicating a line break.
+
+authors:
+- name: Jes Ford
+  address: eScience Institute, University of Washington
+#- name: Jake VanderPlas
+#  address: eScience Institute, University of Washington
+github_username: jesford
+github_repo: paper-on-cluster-lensing
+iframe_src: index.html

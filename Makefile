@@ -7,6 +7,7 @@ clusterlensing.pdf: clusterlensing.tex
 	bibtex clusterlensing
 	pdflatex clusterlensing
 	pdflatex clusterlensing
+	pdflatex clusterlensing
 
 clean:
 		rm -f *.log

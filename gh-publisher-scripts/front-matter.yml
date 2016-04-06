@@ -22,5 +22,5 @@ abstract: "A software paper in progress describing the cluster-lensing Python pa
 authors:
 - name: Jes Ford
   address: eScience Institute, University of Washington
-#- name: Jake VanderPlas
-#  address: eScience Institute, University of Washington
+- name: Jake VanderPlas
+  address: eScience Institute, University of Washington

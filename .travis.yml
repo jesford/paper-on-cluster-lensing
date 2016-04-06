@@ -11,4 +11,3 @@ before_install:
      texlive-latex-extra
      texlive-latex-recommended
      texlive-xetex
-     texlive-publishers

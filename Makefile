@@ -1,4 +1,6 @@
-paper:
+pdf: clusterlensing.pdf
+	
+clusterlensing.pdf: clusterlensing.tex
 	pdflatex clusterlensing
 	bibtex clusterlensing
 	pdflatex clusterlensing
@@ -11,6 +13,7 @@ clean:
 		rm -f *.bbl
 		rm -f *.blg
 		rm -f *.brf
+		rm -f *.dvi
 		rm -f *.out
 		rm -f *.snippets
 		rm -f clusterlensingNotes.bib

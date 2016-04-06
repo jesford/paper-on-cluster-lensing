@@ -1,3 +1,5 @@
+all: pdf clean
+
 pdf: clusterlensing.pdf
 	
 clusterlensing.pdf: clusterlensing.tex

@@ -39,7 +39,7 @@ We describe a new open source package for calculating properties of galaxy clust
 This software has been developed and released in a public GitHub repository, and is licensed under the permissive free MIT license. The \lstinline{cluster-lensing} package can be downloaded through the Python Package Index, \url{https://pypi.python.org/pypi/cluster-lensing}, or directly from GitHub, at \url{https://github.com/jesford/cluster-lensing}. Full documentation is available at \url{http://jesford.github.io/cluster-lensing/}.
 \end{abstract}
 
-\keywords{gravitational lensing: weak, galaxies: clusters: general, dark matter, methods: data analysis, methods: numerical}
+\keywords{methods: data analysis -- methods: numerical -- galaxies: clusters: general -- gravitational lensing: weak -- dark matter}
 
 \setcounter{section}{0}
 \setcounter{subsection}{0}
@@ -50,7 +50,11 @@ This software has been developed and released in a public GitHub repository, and
 
 Clusters of galaxies are the largest gravitationally collapsed structures to have formed in the history of the universe.  As such, they are interesting both from a cosmological as well as an astrophysics perspective. In the former case, the galaxy cluster number density as a function of mass, known as the cluster mass function, is a probe of cosmological parameters including the fractional matter density $\Omega_{\rm M}$ and the normalization of the matter power spectrum $\sigma_8$. Astrophysically, the deep potential wells of galaxy clusters are environments useful for testing theories of general relativity, galaxy evolution, and gas and plasma physics, among other things \citep{Voit05}. 
 
-The common thread among these diverse investigations is the requisite knowledge of the mass of the galaxy cluster, which is largely composed of its invisible dark matter halo. Although many techniques exist for estimated the total mass of these systems, weak lensing has emerged as somewhat of a gold standard, since it is sensitive to the mass itself, and not to the dynamical state or other biased tracers of the underlying mass. Since weak lensing masses are often considered the "true" masses, against which other estimates are compared \citep[e.g.]{Leauthaud10, vonderLinden14, Hoekstra15}, it is paramount that cluster masses from weak lensing modeling are as unbiased as possible.
+The common thread among these diverse investigations is the requisite knowledge of the mass of the galaxy cluster, which is largely composed of its invisible dark matter halo. Although many techniques exist for estimated the total mass of these systems, weak lensing has emerged as somewhat of a gold standard, since it is sensitive to the mass itself, and not to the dynamical state or other biased tracers of the underlying mass. Scaling relations between weak lensing derived masses, and other observables, including richness, X-ray luminosity and temperature, for examples, are typically calibrated from large surveys and extrapolated to clusters for which gravitational lensing measurements are impossible or unreliable. Since weak lensing masses are often considered the ``true'' masses, against which other estimates are compared \citep[e.g.][]{Leauthaud10, vonderLinden14, Hoekstra15}, it is paramount that cluster masses from weak lensing modeling are as unbiased as possible.
+
+For stacked weak lensing measurements of galaxy clusters, an important source of bias in fitting a mass model is the inclusion of the effect of miscentering offsets. Miscentering occurs when the center of the mass distribution, the dark matter halo, does not perfectly coincide with the assumed center around which tangential shear (or magnification) profiles are being measured. Candidate centers for galaxy clusters are necessarily chosen from observational proxies, and often include a single galaxy, such as the brightest or most massive cluster galaxy, or the centroid of some extended quantity like the peak of X-ray emission or average of galaxy positions \citep{George12}. The particular choice of center may be offset from the true center due to interesting physical processes such as recent mergers and cluster evolution, or simply due to misidentification of the proxy of interest \citep{Johnston07}. 
+
+The miscentering effect on the stacked weak lensing profile can be included in a proper modeling of the measurement, as done in \citet{Johnston07, George12, Ford14, Ford15}. The inclusion of this effect commonly assumes a form for the distribution of offsets, such as a Rayleigh distribution (or, equivalently, a 2D Gaussian in the plane of the sky), which is convolved with the centered profile. Software for performing the integrations for the miscentered weak lensing profiles was developed in order to produce results in \citet{Ford14, Ford15}, and has recently been publicly released to the astronomical community.\footnote{\url{http://jesford.github.io/cluster-lensing/}}
 
 \begin{itemize} \itemsep -2pt
 \item Background about clusters and weak lensing.
@@ -95,7 +99,7 @@ Summary goes here.
 %\vspace{10.pt}
 
 \section*{Acknowledgements}
-The authors are grateful for funding from the Washington Research Foundation Fund for Innovation in Data-Intensive Discovery and the Moore/Sloan Data Science Environments Project at the University of Washington. This research made use of Astropy, a community-developed core Python package for Astronomy (Astropy Collaboration, 2013), \url{http://www.astropy.org}.
+The authors are grateful for funding from the Washington Research Foundation Fund for Innovation in Data-Intensive Discovery and the Moore/Sloan Data Science Environments Project at the University of Washington. This project makes use of Astropy, a community-developed core Python package for Astronomy (Astropy Collaboration, 2013), \url{http://www.astropy.org}.
 
 
 \bibliographystyle{apj}

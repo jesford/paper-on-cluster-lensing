@@ -1,8 +1,6 @@
-all: pdf clean
-
-pdf: clusterlensing.pdf
+default: paper
 	
-clusterlensing.pdf: clusterlensing.tex
+paper:
 	pdflatex clusterlensing
 	bibtex clusterlensing
 	pdflatex clusterlensing

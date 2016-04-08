@@ -65,9 +65,9 @@ For stacked weak lensing measurements of galaxy clusters, an important source of
 
 The miscentering effect on the stacked weak lensing profile can be included in a proper modeling of the measurement, as done in \citet{Johnston07, George12, Ford14, Ford15}. The inclusion of this effect commonly assumes a form for the distribution of offsets, such as a Rayleigh distribution (or, equivalently, a 2D Gaussian in the plane of the sky), which is convolved with the centered profile. Software for performing the integrations for the miscentered weak lensing profiles was developed in order to produce results in \citet{Ford14, Ford15}, and has recently been publicly released to the astronomical community.\footnote{\url{https://github.com/jesford/cluster-lensing}}
 
-When many different gravitational lenses are stacked, as is usually necessary to increase signal-to-noise for weak lensing measurements, care must be taken in the interpretation of the average signal. The issue here is that the (differential) surface mass density is not a linear function of the mass, so the average of many stacked profiles does not directly yield the average mass of the lens sample. Care must be taken to consider the underlying distribution of cluster masses as well as the redshifts of lenses and sources, all of which affect the amplitude of the measured lensing profile. One approach to this is to use a so-called composite-halo approach \citep[e.g.][\attn{add other references!}]{Ford12, Ford14, Ford15}, where profiles are calculated for all individual lens objects and then averaged together. The \code{ClusterEnsemble()} class discussed in Section \ref{clusters} is designed with this approach in mind.
+When many different gravitational lenses are stacked, as is usually necessary to increase signal-to-noise for weak lensing measurements, care must be taken in the interpretation of the average signal. The issue here is that the (differential) surface mass density is not a linear function of the mass, so the average of many stacked profiles does not directly yield the average mass of the lens sample. Care must be taken to consider the underlying distribution of cluster masses as well as the redshifts of lenses and sources, all of which affect the amplitude of the measured lensing profile. One approach to this is to use a so-called composite-halo approach \citep[e.g.][\attn{add other references!}]{Ford12, Ford14, Ford15}, where profiles are calculated for all individual lens objects and then averaged together to create a model that can be fit to the measurement. The \code{ClusterEnsemble()} class discussed in Section \ref{clusters} is designed with this approach in mind.
 
-\begin{itemize} %\itemsep -2pt
+\begin{itemize}
 \item Background about clusters and weak lensing.
 \item NFW halos \citep{nfw97, Wright00}
 \item composite-NFW fits for weak lensing \citep{Ford12, Ford14, Ford15}
@@ -80,7 +80,7 @@ When many different gravitational lenses are stacked, as is usually necessary to
 
 In this section we describe each of the individual modules and a few of the functions available in the \code{cluster-lensing} package. Much of this content comes directly from pages within the online documentation.\footnote{\url{http://jesford.github.io/cluster-lensing/}} Throughout the modules, dimensionful quantities are labelled as such by means of the \code{astropy.units} package \citep{astropy13}.
 
-\begin{itemize} %\itemsep -2pt
+\begin{itemize} 
 \item Purpose and general use.
 \item Relation to existing code
 \item \code{SurfaceMassDensity()} class, generic to all NFW halos
@@ -101,7 +101,7 @@ The \code{nfw.py} module contains a single class called \code{SurfaceMassDensity
 Here $R$ is the projected radial distance (in the plane of the sky). Defining the cluster scale radius $r_{\rm s}$, the characteristic halo overdensity $\delta_{\rm c}$, and the critical energy density of the universe at the lens redshift $\rho_{\rm crit} = \rho_{\rm crit}(z)$, we can adopt the dimensional radius $x \equiv R/r_{\rm s}$, and obtain \attn{(should check whether I implemented the arctanh or the ln version of the formulas)}:
 
 \begin{equation}
-\Sigma(x) = \\
+\Sigma(x) = 
     \begin{cases}
         \frac{2 r_{\rm s} \delta_{\rm c} \rho_{\rm crit}}{(x^2 - 1)} \left[ 1 - \frac{2}{\sqrt{1-x^2}} {\rm arctanh} \sqrt{\frac{1-x}{1+x}} \ \right], \hfill \text{for } x < 1; \\
         \frac{2 r_{\rm s} \delta_{\rm c} \rho_{\rm crit}}{3}, \hfill \text{for } x = 1; \\
@@ -127,10 +127,17 @@ This yields the final required set of equations for the 2-dimensional NFW profil
    \end{equation}
 
 \begin{equation}
-\Delta\Sigma(x) = ...
+%\begin{split}
+\Delta\Sigma(x) =
+    \begin{cases}
+    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} \bigg[ \frac{8\ {\rm arctanh}\sqrt{(1 - x)/(1 + x)}}{x^2 \sqrt{1 - x^2}} + \frac{4}{x^2}\ln(\frac{x}{2}) \\ - \frac{2}{(x^2 - 1)} + \frac{4\ {\rm arctanh}\sqrt{(1 - x)/(1 + x)}}{(x^2 - 1) \sqrt{1 - x^2}} \bigg], \hfill \text{for } x < 1; \\
+    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} [ \frac{10}{3} + 4 \ln(\frac{1}{2}) ], \hfill \text{for } x = 1; \\
+    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} \bigg[ \frac{8\ {\rm arctanh}\sqrt{(x - 1)/(1 + x)}}{x^2 \sqrt{x^2 - 1}} + \frac{4}{x^2}\ln(\frac{x}{2}) \\ - \frac{2}{(x^2 - 1)} + \frac{4\ {\rm arctanh}\sqrt{(x - 1)/(1 + x)}}{(x^2 - 1)^{3/2}} \bigg], \hfill \text{for } x > 1.
+    \end{cases}
+%\end{split}
 \end{equation}
 
-In the default implementation, it is assumed that the peak of the halo density distribution perfectly coincides with the identified halo center, i.e. the centered halo case. However, the user has the option to specify an input parameter \code{offsets} which 
+In the default implementation, it is assumed that the peak of the halo density distribution perfectly coincides with the identified halo center, i.e. the centered halo case. However, the user has the option to specify an input parameter \code{offsets} which sets the width of a distribution of centroid offsets. Specifically, \code{offsets} is equivalent to $\sigma_{\rm off}$ in the following Rayleigh distribution...
 
 \subsection{\normalfont{\code{cofm.py}}}
 The various relations \citep{Duffy08, Prada12, Dutton14}.
@@ -142,7 +149,7 @@ The class that ties it all together.
 \section{Examples}
 \label{ex}
 
-\begin{itemize} \itemsep -2pt
+\begin{itemize}
 \item No miscentering
 \item With miscentering
 \item others...

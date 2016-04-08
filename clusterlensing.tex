@@ -4,6 +4,15 @@
 \usepackage{graphicx}
 \usepackage[backref,breaklinks,colorlinks,citecolor=blue]{hyperref}
 \usepackage[all]{hypcap}
+\usepackage{amsmath}
+
+\usepackage{enumitem}
+\setitemize{itemsep=0pt}
+%\setlist{nolistsep} %really really no itemsep
+
+\newcommand{\code}{\lstinline}
+\newcommand{\attn}[2][red]{\textcolor{#1}{\textit{#2}}}
+
 \renewcommand*{\backref}[1]{[#1]}
 %\usepackage{url}
 %\graphicspath{{figures/}}
@@ -25,7 +34,7 @@
 
 \begin{document}
 
-\title{\MakeLowercase{\lstinline{cluster-lensing}}: a \lstinline{P}\MakeLowercase{\lstinline{ython}} Package for Galaxy Clusters and Miscentering}
+\title{\MakeLowercase{\code{cluster-lensing}}: a \code{P}\MakeLowercase{\code{ython}} Package for Galaxy Clusters and Miscentering}
 \author{
 Jes Ford\altaffilmark{1},  
 Jake VanderPlas\altaffilmark{1}
@@ -35,8 +44,8 @@ Jake VanderPlas\altaffilmark{1}
 
 
 \begin{abstract}
-We describe a new open source package for calculating properties of galaxy clusters, including NFW halo profiles with and without the effects of cluster miscentering. This pure-\lstinline{Python} package, \lstinline{cluster-lensing}, provides well-documented and easy-to-use classes and functions for calculating cluster scaling relations, including mass-richness and mass-concentration relations from the literature, as well as the surface mass density $\Sigma(R)$ and differential surface mass density $\Delta\Sigma(R)$ profiles, probed by weak lensing magnification and shear, respectively. Galaxy cluster miscentering is especially a concern for stacked weak lensing shear studies of galaxy clusters, where offsets between the assumed and the true underlying matter distribution
-This software has been developed and released in a public GitHub repository, and is licensed under the permissive free MIT license. The \lstinline{cluster-lensing} package can be downloaded through the Python Package Index, \url{https://pypi.python.org/pypi/cluster-lensing}, or directly from GitHub, at \url{https://github.com/jesford/cluster-lensing}. Full documentation is available at \url{http://jesford.github.io/cluster-lensing/}.
+We describe a new open source package for calculating properties of galaxy clusters, including NFW halo profiles with and without the effects of cluster miscentering. This pure-\code{Python} package, \code{cluster-lensing}, provides well-documented and easy-to-use classes and functions for calculating cluster scaling relations, including mass-richness and mass-concentration relations from the literature, as well as the surface mass density $\Sigma(R)$ and differential surface mass density $\Delta\Sigma(R)$ profiles, probed by weak lensing magnification and shear, respectively. Galaxy cluster miscentering is especially a concern for stacked weak lensing shear studies of galaxy clusters, where offsets between the assumed and the true underlying matter distribution
+This software has been developed and released in a public GitHub repository, and is licensed under the permissive free MIT license. The \code{cluster-lensing} package can be downloaded through the Python Package Index, \url{https://pypi.python.org/pypi/cluster-lensing}, or directly from GitHub, at \url{https://github.com/jesford/cluster-lensing}. Full documentation is available at \url{http://jesford.github.io/cluster-lensing/}.
 \end{abstract}
 
 \keywords{methods: data analysis -- methods: numerical -- galaxies: clusters: general -- gravitational lensing: weak -- dark matter}
@@ -48,15 +57,17 @@ This software has been developed and released in a public GitHub repository, and
 \section{Introduction}
 \label{intro}
 
-Clusters of galaxies are the largest gravitationally collapsed structures to have formed in the history of the universe.  As such, they are interesting both from a cosmological as well as an astrophysics perspective. In the former case, the galaxy cluster number density as a function of mass, known as the cluster mass function, is a probe of cosmological parameters including the fractional matter density $\Omega_{\rm M}$ and the normalization of the matter power spectrum $\sigma_8$. Astrophysically, the deep potential wells of galaxy clusters are environments useful for testing theories of general relativity, galaxy evolution, and gas and plasma physics, among other things \citep{Voit05}. 
+Clusters of galaxies are the largest gravitationally collapsed structures to have formed in the history of the universe.  As such, they are interesting both from a cosmological as well as an astrophysics perspective. In the former case, the galaxy cluster number density as a function of mass (the cluster mass function) is a probe of cosmological parameters including the fractional matter density $\Omega_{\rm M}$ and the normalization of the matter power spectrum $\sigma_8$. Astrophysically, the deep potential wells of galaxy clusters are environments useful for testing theories of general relativity, galaxy evolution, and gas and plasma physics, among other things \citep{Voit05}. 
 
 The common thread among these diverse investigations is the requisite knowledge of the mass of the galaxy cluster, which is largely composed of its invisible dark matter halo. Although many techniques exist for estimated the total mass of these systems, weak lensing has emerged as somewhat of a gold standard, since it is sensitive to the mass itself, and not to the dynamical state or other biased tracers of the underlying mass. Scaling relations between weak lensing derived masses, and other observables, including richness, X-ray luminosity and temperature, for examples, are typically calibrated from large surveys and extrapolated to clusters for which gravitational lensing measurements are impossible or unreliable. Since weak lensing masses are often considered the ``true'' masses, against which other estimates are compared \citep[e.g.][]{Leauthaud10, vonderLinden14, Hoekstra15}, it is paramount that cluster masses from weak lensing modeling are as unbiased as possible.
 
 For stacked weak lensing measurements of galaxy clusters, an important source of bias in fitting a mass model is the inclusion of the effect of miscentering offsets. Miscentering occurs when the center of the mass distribution, the dark matter halo, does not perfectly coincide with the assumed center around which tangential shear (or magnification) profiles are being measured. Candidate centers for galaxy clusters are necessarily chosen from observational proxies, and often include a single galaxy, such as the brightest or most massive cluster galaxy, or the centroid of some extended quantity like the peak of X-ray emission or average of galaxy positions \citep{George12}. The particular choice of center may be offset from the true center due to interesting physical processes such as recent mergers and cluster evolution, or simply due to misidentification of the proxy of interest \citep{Johnston07}. 
 
-The miscentering effect on the stacked weak lensing profile can be included in a proper modeling of the measurement, as done in \citet{Johnston07, George12, Ford14, Ford15}. The inclusion of this effect commonly assumes a form for the distribution of offsets, such as a Rayleigh distribution (or, equivalently, a 2D Gaussian in the plane of the sky), which is convolved with the centered profile. Software for performing the integrations for the miscentered weak lensing profiles was developed in order to produce results in \citet{Ford14, Ford15}, and has recently been publicly released to the astronomical community.\footnote{\url{http://jesford.github.io/cluster-lensing/}}
+The miscentering effect on the stacked weak lensing profile can be included in a proper modeling of the measurement, as done in \citet{Johnston07, George12, Ford14, Ford15}. The inclusion of this effect commonly assumes a form for the distribution of offsets, such as a Rayleigh distribution (or, equivalently, a 2D Gaussian in the plane of the sky), which is convolved with the centered profile. Software for performing the integrations for the miscentered weak lensing profiles was developed in order to produce results in \citet{Ford14, Ford15}, and has recently been publicly released to the astronomical community.\footnote{\url{https://github.com/jesford/cluster-lensing}}
 
-\begin{itemize} \itemsep -2pt
+When many different gravitational lenses are stacked, as is usually necessary to increase signal-to-noise for weak lensing measurements, care must be taken in the interpretation of the average signal. The issue here is that the (differential) surface mass density is not a linear function of the mass, so the average of many stacked profiles does not directly yield the average mass of the lens sample. Care must be taken to consider the underlying distribution of cluster masses as well as the redshifts of lenses and sources, all of which affect the amplitude of the measured lensing profile. One approach to this is to use a so-called composite-halo approach \citep[e.g.][\attn{add other references!}]{Ford12, Ford14, Ford15}, where profiles are calculated for all individual lens objects and then averaged together. The \code{ClusterEnsemble()} class discussed in Section \ref{clusters} is designed with this approach in mind.
+
+\begin{itemize} %\itemsep -2pt
 \item Background about clusters and weak lensing.
 \item NFW halos \citep{nfw97, Wright00}
 \item composite-NFW fits for weak lensing \citep{Ford12, Ford14, Ford15}
@@ -67,15 +78,66 @@ The miscentering effect on the stacked weak lensing profile can be included in a
 \section{Description of the Code}
 \label{code}
 
-\begin{itemize} \itemsep -2pt
+In this section we describe each of the individual modules and a few of the functions available in the \code{cluster-lensing} package. Much of this content comes directly from pages within the online documentation.\footnote{\url{http://jesford.github.io/cluster-lensing/}} Throughout the modules, dimensionful quantities are labelled as such by means of the \code{astropy.units} package \citep{astropy13}.
+
+\begin{itemize} %\itemsep -2pt
 \item Purpose and general use.
 \item Relation to existing code
-\item \lstinline{SurfaceMassDensity()} class, generic to all NFW halos
-\item \lstinline{ClusterEnsemble()} class
+\item \code{SurfaceMassDensity()} class, generic to all NFW halos
+\item \code{ClusterEnsemble()} class
 \item mass-richness functions
 \item mass-concentration functions
-\item We use units from the \lstinline{astropy.units} package \citep{astropy13}.
+\item We use units from the \code{astropy.units} package \citep{astropy13}.
 \end{itemize}
+
+
+\subsection{\normalfont{\code{nfw.py}}}
+
+The \code{nfw.py} module contains a single class called \code{SurfaceMassDensity()}, which computes the surface mass density $\Sigma(R)$ and the differential surface mass density $\Delta\Sigma(R)$ using the class methods \code{sigma_nfw()} and \code{deltasigma_nfw()}, respectively. These profiles are calculated according to the analytical formulas first derived by \citet{Wright00}, assuming the spherical NFW model, and can be applied to any dark matter halo: \emph{they are not specific to galaxy clusters}. The surface mass density is the integral along the line-of-sight of the 3-dimensional density distribution:
+
+\begin{equation}
+\Sigma(R) = 2 \int_0^{\infty} \rho(R,y) {\rm d}y.
+\end{equation}
+Here $R$ is the projected radial distance (in the plane of the sky). Defining the cluster scale radius $r_{\rm s}$, the characteristic halo overdensity $\delta_{\rm c}$, and the critical energy density of the universe at the lens redshift $\rho_{\rm crit} = \rho_{\rm crit}(z)$, we can adopt the dimensional radius $x \equiv R/r_{\rm s}$, and obtain \attn{(should check whether I implemented the arctanh or the ln version of the formulas)}:
+
+\begin{equation}
+\Sigma(x) = \\
+    \begin{cases}
+        \frac{2 r_{\rm s} \delta_{\rm c} \rho_{\rm crit}}{(x^2 - 1)} \left[ 1 - \frac{2}{\sqrt{1-x^2}} {\rm arctanh} \sqrt{\frac{1-x}{1+x}} \ \right], \hfill \text{for } x < 1; \\
+        \frac{2 r_{\rm s} \delta_{\rm c} \rho_{\rm crit}}{3}, \hfill \text{for } x = 1; \\
+        \frac{2 r_{\rm s} \delta_{\rm c} \rho_{\rm crit}}{(x^2 - 1)} \left[ 1 - \frac{2}{\sqrt{x^2 - 1}} {\rm arctan} \sqrt{\frac{x-1}{1+x}} \ \right], \hfill \text{for } x < 1.
+    \end{cases}
+\end{equation}
+
+The differential surface mass density probed by shear is:
+
+\begin{equation}
+\overline{\Sigma}(<x) = \frac{2}{x^2} \int_0^{x} \Sigma(x') x' {\rm d}x'.
+\end{equation}
+This yields the final required set of equations for the 2-dimensional NFW profiles for weak gravitational lensing \citep{Wright00}:
+\begin{equation}
+%\begin{split}
+\overline{\Sigma}(<x) =
+    \begin{cases}
+        \frac{4 r_{\rm s} \delta_{\rm c} \rho_{\rm crit}}{x^2} \left[ \frac{2}{\sqrt{1-x^2}} {\rm arctanh} \sqrt{\frac{1-x}{1+x}} + {\rm ln}(1/2) \right], \\ \hfill \text{for } x < 1; \\
+        4 r_{\rm s} \delta_{\rm c} \rho_{\rm crit} \left[ 1 + {\rm ln}(1/2) \right], \hfill \text{for } x = 1; \\
+        \frac{4 r_{\rm s} \delta_{\rm c} \rho_{\rm crit}}{x^2} \left[ \frac{2}{\sqrt{x^2 - 1}} {\rm arctan} \sqrt{\frac{x-1}{1+x}} + {\rm ln}(1/2) \right], \\ \hfill \text{for } x < 1.
+    \end{cases}
+    %\end{split}
+   \end{equation}
+
+\begin{equation}
+\Delta\Sigma(x) = ...
+\end{equation}
+
+In the default implementation, it is assumed that the peak of the halo density distribution perfectly coincides with the identified halo center, i.e. the centered halo case. However, the user has the option to specify an input parameter \code{offsets} which 
+
+\subsection{\normalfont{\code{cofm.py}}}
+The various relations \citep{Duffy08, Prada12, Dutton14}.
+
+\subsection{\normalfont{\code{clusters.py}}}
+\label{clusters}
+The class that ties it all together.
 
 \section{Examples}
 \label{ex}

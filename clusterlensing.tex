@@ -93,14 +93,19 @@ In this section we describe each of the individual modules and a few of the func
 
 \subsection{\normalfont{\code{nfw.py}}}
 
-The \code{nfw.py} module contains a single class called \code{SurfaceMassDensity()}, which computes the surface mass density $\Sigma(R)$ and the differential surface mass density $\Delta\Sigma(R)$ using the class methods \code{sigma_nfw()} and \code{deltasigma_nfw()}, respectively. These profiles are calculated according to the analytical formulas first derived by \citet{Wright00}, assuming the spherical NFW model, and can be applied to any dark matter halo: \emph{they are not specific to galaxy clusters}. The surface mass density is the integral along the line-of-sight of the 3-dimensional density distribution:
+The \code{nfw.py} module contains a single class called \code{SurfaceMassDensity()}, which computes the surface mass density $\Sigma(R)$ and the differential surface mass density $\Delta\Sigma(R)$ using the class methods \code{sigma_nfw()} and \code{deltasigma_nfw()}, respectively. These profiles are calculated according to the analytical formulas first derived by \citet{Wright00}, assuming the spherical NFW model, and can be applied to any dark matter halo: \emph{this module is not specific to galaxy clusters}. 
 
+The 3-dimensional density profile of an NFW halo is given by 
+\begin{equation}
+\rho(r) = \frac{\delta_{\rm c} \rho_{\rm crit}}{(r/r_{\rm s})(1+r/r_{\rm s})^2},
+\end{equation}
+where $r_{\rm s}$ is the cluster scale radius, $\delta_{\rm c}$ is the characteristic halo overdensity, and $\rho_{\rm crit} = \rho_{\rm crit}(z)$ is the critical energy density of the universe at the lens redshift. The surface mass density is the integral along the line-of-sight of this 3-dimensional density:
 \begin{equation}
 \Sigma(R) = 2 \int_0^{\infty} \rho(R,y) {\rm d}y.
 \end{equation}
-Here $R$ is the projected radial distance (in the plane of the sky). Defining the cluster scale radius $r_{\rm s}$, the characteristic halo overdensity $\delta_{\rm c}$, and the critical energy density of the universe at the lens redshift $\rho_{\rm crit} = \rho_{\rm crit}(z)$, we can adopt the dimensional radius $x \equiv R/r_{\rm s}$, and obtain \attn{(need to edit these equations to the form that I actually implemented, which rewrites arctanh in terms of ln)}:
+Here $R$ is the projected radial distance (in the plane of the sky).  We can adopt the dimensional radius $x \equiv R/r_{\rm s}$, and show that \attn{(need to edit these equations to the form that I actually implemented, which rewrites arctanh in terms of ln)}:
 
-\begin{equation}
+\begin{equation}\label{sigma}
 \Sigma(x) = 
     \begin{cases}
         \frac{2 r_{\rm s} \delta_{\rm c} \rho_{\rm crit}}{(x^2 - 1)} \left[ 1 - \frac{2}{\sqrt{1-x^2}} {\rm arctanh} \sqrt{\frac{1-x}{1+x}} \ \right], \hfill \text{for } x < 1; \\
@@ -111,13 +116,13 @@ Here $R$ is the projected radial distance (in the plane of the sky). Defining th
 
 The differential surface mass density probed by shear is
 
-\begin{equation}
+\begin{equation}\label{dsigma}
 \Delta\Sigma(x) \equiv  \overline{\Sigma}(<x) - \Sigma(x),
 \end{equation}
 
 where
 
-\begin{equation}
+\begin{equation}\label{sigbar}
 %\begin{split}
 \overline{\Sigma}(<x) = \frac{2}{x^2} \int_0^{x} \Sigma(x') x' {\rm d}x' 
 \end{equation}
@@ -132,8 +137,7 @@ where
   %\end{split}
 \end{equation}
 
-
-
+% I never used the below equation, only the one above.
 %\begin{equation}
 %\Delta\Sigma(x) =
 %    \begin{cases}
@@ -143,7 +147,20 @@ where
 %    \end{cases}
 %\end{equation}
 
-In the default implementation, it is assumed that the peak of the halo density distribution perfectly coincides with the identified halo center, i.e. the centered halo case. However, the user has the option to specify an input parameter \code{offsets} which sets the width of a distribution of centroid offsets. Specifically, \code{offsets} is equivalent to $\sigma_{\rm off}$ in the following Rayleigh distribution...
+Running \code{sigma_nfw()} or \code{deltasigma_nfw()} with default settings will calculate halo profiles according to the equations outlined above. These are the standard centered NFW profiles, under the assumption that the peak of the halo density distribution perfectly coincides with the identified halo center. This may not be a robust assumption, however, and the user can instead run these calculations for miscentered halos by specifying the optional input parameter \code{offsets}. This parameter sets the width of a distribution of centroid offsets, assuming a 2-dimensional Gaussian distribution on the sky. This offset distribution is equivalent to, and implemented in code as, a uniform distribution in angle and a Rayleigh probability distribution in $R$:
+\begin{equation}\label{PofR}
+P(R_{\mathrm{off}})=\frac{R_{\mathrm{off}}}{\sigma_{\mathrm{off}}^2}\ \mathrm{exp}\bigg[-\frac{1}{2}\bigg(\frac{R_{\mathrm{off}}}{\sigma_{\mathrm{off}}}\bigg)^2\ \bigg].
+\end{equation}
+The parameter \code{offsets} is equivalent to $\sigma_{\rm off}$ in this equation.
+
+The miscentered surface mass density profiles are given by the centered profiles (Equations \ref{sigma} and \ref{dsigma}), convolved with the offset distribution (Equation \ref{PofR}). Specifically, we calculate the offset surface mass density $\Sigma^{\rm off}$ as follows:
+\begin{equation}
+\Sigma^{\rm off}(R) = \int_{0}^{\infty} \Sigma(R | R_{\rm off})\ P(R_{\rm off})\ {\rm d}R_{\rm off}
+\end{equation}
+\begin{equation}
+\Sigma(R|R_{\mathrm{off}})=\frac{1}{2\pi}\int_{0}^{2\pi}\Sigma(r) \mathrm{d}\theta
+\end{equation}
+Here $r = \sqrt{R^2+R_{\mathrm{off}}^2-2RR_{\mathrm{off}}\cos(\theta)}$ and $\theta$ is the azimuthal angle \citep{Yang06}. The $\Delta\Sigma^{\rm off}$ profile is calculated from $\Sigma^{\rm off}$, in analogy with Equations \ref{dsigma} and \ref{sigbar}.
 
 \subsection{\normalfont{\code{cofm.py}}}
 The various relations \citep{Duffy08, Prada12, Dutton14}.

@@ -98,7 +98,7 @@ The \code{nfw.py} module contains a single class called \code{SurfaceMassDensity
 \begin{equation}
 \Sigma(R) = 2 \int_0^{\infty} \rho(R,y) {\rm d}y.
 \end{equation}
-Here $R$ is the projected radial distance (in the plane of the sky). Defining the cluster scale radius $r_{\rm s}$, the characteristic halo overdensity $\delta_{\rm c}$, and the critical energy density of the universe at the lens redshift $\rho_{\rm crit} = \rho_{\rm crit}(z)$, we can adopt the dimensional radius $x \equiv R/r_{\rm s}$, and obtain \attn{(should check whether I implemented the arctanh or the ln version of the formulas)}:
+Here $R$ is the projected radial distance (in the plane of the sky). Defining the cluster scale radius $r_{\rm s}$, the characteristic halo overdensity $\delta_{\rm c}$, and the critical energy density of the universe at the lens redshift $\rho_{\rm crit} = \rho_{\rm crit}(z)$, we can adopt the dimensional radius $x \equiv R/r_{\rm s}$, and obtain \attn{(need to edit these equations to the form that I actually implemented, which rewrites arctanh in terms of ln)}:
 
 \begin{equation}
 \Sigma(x) = 
@@ -109,33 +109,39 @@ Here $R$ is the projected radial distance (in the plane of the sky). Defining th
     \end{cases}
 \end{equation}
 
-The differential surface mass density probed by shear is:
+The differential surface mass density probed by shear is
 
 \begin{equation}
-\overline{\Sigma}(<x) = \frac{2}{x^2} \int_0^{x} \Sigma(x') x' {\rm d}x'.
+\Delta\Sigma(x) \equiv  \overline{\Sigma}(<x) - \Sigma(x),
 \end{equation}
-This yields the final required set of equations for the 2-dimensional NFW profiles for weak gravitational lensing \citep{Wright00}:
+
+where
+
 \begin{equation}
 %\begin{split}
-\overline{\Sigma}(<x) =
+\overline{\Sigma}(<x) = \frac{2}{x^2} \int_0^{x} \Sigma(x') x' {\rm d}x' 
+\end{equation}
+\begin{equation}
+  %\overline{\Sigma}(<x) =
+  =
     \begin{cases}
         \frac{4 r_{\rm s} \delta_{\rm c} \rho_{\rm crit}}{x^2} \left[ \frac{2}{\sqrt{1-x^2}} {\rm arctanh} \sqrt{\frac{1-x}{1+x}} + {\rm ln}(1/2) \right], \\ \hfill \text{for } x < 1; \\
         4 r_{\rm s} \delta_{\rm c} \rho_{\rm crit} \left[ 1 + {\rm ln}(1/2) \right], \hfill \text{for } x = 1; \\
         \frac{4 r_{\rm s} \delta_{\rm c} \rho_{\rm crit}}{x^2} \left[ \frac{2}{\sqrt{x^2 - 1}} {\rm arctan} \sqrt{\frac{x-1}{1+x}} + {\rm ln}(1/2) \right], \\ \hfill \text{for } x < 1.
     \end{cases}
-    %\end{split}
-   \end{equation}
-
-\begin{equation}
-%\begin{split}
-\Delta\Sigma(x) =
-    \begin{cases}
-    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} \bigg[ \frac{8\ {\rm arctanh}\sqrt{(1 - x)/(1 + x)}}{x^2 \sqrt{1 - x^2}} + \frac{4}{x^2}\ln(\frac{x}{2}) \\ - \frac{2}{(x^2 - 1)} + \frac{4\ {\rm arctanh}\sqrt{(1 - x)/(1 + x)}}{(x^2 - 1) \sqrt{1 - x^2}} \bigg], \hfill \text{for } x < 1; \\
-    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} [ \frac{10}{3} + 4 \ln(\frac{1}{2}) ], \hfill \text{for } x = 1; \\
-    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} \bigg[ \frac{8\ {\rm arctanh}\sqrt{(x - 1)/(1 + x)}}{x^2 \sqrt{x^2 - 1}} + \frac{4}{x^2}\ln(\frac{x}{2}) \\ - \frac{2}{(x^2 - 1)} + \frac{4\ {\rm arctanh}\sqrt{(x - 1)/(1 + x)}}{(x^2 - 1)^{3/2}} \bigg], \hfill \text{for } x > 1.
-    \end{cases}
-%\end{split}
+  %\end{split}
 \end{equation}
+
+
+
+%\begin{equation}
+%\Delta\Sigma(x) =
+%    \begin{cases}
+%    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} \bigg[ \frac{8\ {\rm arctanh}\sqrt{(1 - x)/(1 + x)}}{x^2 \sqrt{1 - x^2}} + \frac{4}{x^2}\ln(\frac{x}{2}) \\ - \frac{2}{(x^2 - 1)} + \frac{4\ {\rm arctanh}\sqrt{(1 - x)/(1 + x)}}{(x^2 - 1) \sqrt{1 - x^2}} \bigg], \hfill \text{for } x < 1; \\
+%    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} [ \frac{10}{3} + 4 \ln(\frac{1}{2}) ], \hfill \text{for } x = 1; \\
+%    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} \bigg[ \frac{8\ {\rm arctanh}\sqrt{(x - 1)/(1 + x)}}{x^2 \sqrt{x^2 - 1}} + \frac{4}{x^2}\ln(\frac{x}{2}) \\ - \frac{2}{(x^2 - 1)} + \frac{4\ {\rm arctanh}\sqrt{(x - 1)/(1 + x)}}{(x^2 - 1)^{3/2}} \bigg], \hfill \text{for } x > 1.
+%    \end{cases}
+%\end{equation}
 
 In the default implementation, it is assumed that the peak of the halo density distribution perfectly coincides with the identified halo center, i.e. the centered halo case. However, the user has the option to specify an input parameter \code{offsets} which sets the width of a distribution of centroid offsets. Specifically, \code{offsets} is equivalent to $\sigma_{\rm off}$ in the following Rayleigh distribution...
 

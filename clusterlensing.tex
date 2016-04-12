@@ -151,7 +151,7 @@ P(R_{\mathrm{off}})=\frac{R_{\mathrm{off}}}{\sigma_{\mathrm{off}}^2}\ \mathrm{ex
 \end{equation}
 The parameter \code{offsets} is equivalent to $\sigma_{\rm off}$ in this equation.
 
-The miscentered surface mass density profiles are given by the centered profiles (Equations \ref{sigma} and \ref{dsigma}), convolved with the offset distribution (Equation \ref{PofR}). Specifically, we calculate the offset surface mass density $\Sigma^{\rm off}$ as follows:
+The miscentered surface mass density profiles are given by the centered profiles (Equations \ref{sigma} and \ref{dsigma}), convolved with the offset distribution (Equation \ref{PofR}). We follow the formalism \attn{first?} written down by \citet{Johnston07}, and followed in later works by \citet{George12, Ford14, Ford15}. Specifically, we calculate the offset surface mass density $\Sigma^{\rm off}$ as follows:
 \begin{equation}
 \Sigma^{\rm off}(R) = \int_{0}^{\infty} \Sigma(R | R_{\rm off})\ P(R_{\rm off})\ {\rm d}R_{\rm off}
 \end{equation}

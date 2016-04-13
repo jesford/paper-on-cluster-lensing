@@ -168,13 +168,47 @@ Here $r = \sqrt{R^2+R_{\mathrm{off}}^2-2RR_{\mathrm{off}}\cos(\theta)}$ and $\th
 
 \subsection{\normalfont{\code{cofm.py}}}
 
-The various relations \citep{Duffy08, Prada12, Dutton14}.
+The \code{cofm.py} module currently contains three functions, each of which calculates halo concentration from mass, redshift, and cosmology, according to a prescription given in the literature. These functions are \code{c_DuttonMaccio()} \citep[for calculations following][]{Dutton14}, \code{c_Duffy()} \citep[following][]{Duffy08}, and \code{c_Prada()} \citep[for][]{Prada12}. Halo mass-concentration relations are an area of active research, and there have been discrepancies between results from different observations and simulations, and disagreement surrounding the best choice of model \attn{(add references)}. We do not aim to join this discussion here, but focus on outlining the functionality provided by the \code{cluster-lensing} package, for calculating these different concentration values.
+
+All three functions require two input parameters (scalars or array-like inputs), which are the halo redshift(s) \code{z} and the halo mass(es) \code{m}. Specifically, the latter is according to the $M_{200}$ mass definition, in units of solar masses (optionally with corresponding \code{astropy.units}). $M_{200}$ is the mass interior to a sphere of radius $r_{200}$, within which the average density is $200\rho_{\rm crit}(z)$. 
+
+The default cosmology used is from the measurements by the \citet{PlanckXVI}, which is imported from the module \code{astropy.cosmology.Planck13}. However, the user can specify alternative cosmological parameters. For calculating concentration according to either the \citet{Duffy08} or the \citet{Dutton14} prescription, the only cosmological parameter required is the Hubble parameter, which can be passed into \code{c_Duffy()} or \code{c_DuttonMaccio()} as the keyword argument \code{h}. For the \citet{Prada12} concentration, the user would want to specify \code{Om_M} and \code{Om_L} (the fractional energy densities of matter and the cosmological constant) in addition to \code{h}, in the call to \code{c_Prada()}.
+
+The \code{c_DuttonMaccio()} calculation of concentration is done according to the power-law
+\begin{equation}
+\log_{10} c_{200} = a + b \log_{10}(M_{200} / [10^{12} h^{-1} M_{\odot}]), 
+\end{equation}
+where
+\begin{equation}
+a = 0.52 + 0.385 \cdot {\rm exp}[-0.617\ z^{1.21}],
+\end{equation}
+\begin{equation}
+b = -0.101 + 0.206 z.
+\end{equation}
+The above three equations map to Equations 7, 11, and 10, respectively in \citet{Dutton14}. The values in these expressions were determined from simulations of halos between $0 < z < 5$, spanning over 5 orders of magnitude in mass, and shown to match observational measurements of low-redshift galaxies and clusters \citep{Dutton14}.
+
+The concentration calculation in \code{c_Duffy()} is
+\begin{equation}\label{c_Duffy}
+c_{200} = A \cdot (M_{200} / M_{\rm pivot})^B \cdot (1 + z)^C,
+\end{equation}
+where
+\begin{equation}
+\{A, B, C\} = \{5.71, -0.084, -0.47\},
+\end{equation}
+\begin{equation}
+M_{\rm pivot} = 2 \times 10^{12}\ h^{-1} M_{\odot}.
+\end{equation}
+Equation \ref{c_Duffy} in this work maps to Equation 4 in \citet{Duffy08}. The values for $A$, $B$, and $C$ can be found in Table 1 of that work, where they are specific to the ``full'' (relaxed and unrelaxed) sample of simulated NFW halos, spanning the redshift range $0 < z < 2$. $M_{\rm pivot}$ can be found in the caption of Table 1 as well. One caveat with this relation is that the cosmology used in creating the \citet{Duffy08} simulations was that of the now outdated WMAP5 experiment \citep{WMAP5}.
+
+The \code{c_Prada()} concentration calculation is much more complex:
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{\normalfont{\code{clusters.py}}}
 \label{clusters}
-The class that ties it all together.
+The class that ties it all together. And scaling relations.
 
 \section{Examples}
 \label{ex}

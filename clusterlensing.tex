@@ -59,7 +59,7 @@ This software has been developed and released in a public GitHub repository, and
 \section{Introduction}
 \label{intro}
 
-Clusters of galaxies are the largest gravitationally collapsed structures to have formed in the history of the universe.  As such, they are interesting both from a cosmological as well as an astrophysics perspective. In the former case, the galaxy cluster number density as a function of mass (the cluster mass function) is a probe of cosmological parameters including the fractional matter density $\Omega_{\rm M}$ and the normalization of the matter power spectrum $\sigma_8$. Astrophysically, the deep potential wells of galaxy clusters are environments useful for testing theories of general relativity, galaxy evolution, and gas and plasma physics, among other things \citep{Voit05}. 
+Clusters of galaxies are the largest gravitationally collapsed structures to have formed in the history of the universe.  As such, they are interesting both from a cosmological as well as an astrophysics perspective. In the former case, the galaxy cluster number density as a function of mass (the cluster mass function) is a probe of cosmological parameters including the fractional matter density $\Omega_{\rm m}$ and the normalization of the matter power spectrum $\sigma_8$. Astrophysically, the deep potential wells of galaxy clusters are environments useful for testing theories of general relativity, galaxy evolution, and gas and plasma physics, among other things \citep{Voit05}. 
 
 The common thread among these diverse investigations is the requisite knowledge of the mass of the galaxy cluster, which is largely composed of its invisible dark matter halo. Although many techniques exist for estimated the total mass of these systems, weak lensing has emerged as somewhat of a gold standard, since it is sensitive to the mass itself, and not to the dynamical state or other biased tracers of the underlying mass. Scaling relations between weak lensing derived masses, and other observables, including richness, X-ray luminosity and temperature, for examples, are typically calibrated from large surveys and extrapolated to clusters for which gravitational lensing measurements are impossible or unreliable. Since weak lensing masses are often considered the ``true'' masses, against which other estimates are compared \citep[e.g.][]{Leauthaud10, vonderLinden14, Hoekstra15}, it is paramount that cluster masses from weak lensing modeling are as unbiased as possible.
 
@@ -200,9 +200,40 @@ M_{\rm pivot} = 2 \times 10^{12}\ h^{-1} M_{\odot}.
 \end{equation}
 Equation \ref{c_Duffy} in this work maps to Equation 4 in \citet{Duffy08}. The values for $A$, $B$, and $C$ can be found in Table 1 of that work, where they are specific to the ``full'' (relaxed and unrelaxed) sample of simulated NFW halos, spanning the redshift range $0 < z < 2$. $M_{\rm pivot}$ can be found in the caption of Table 1 as well. One caveat with this relation is that the cosmology used in creating the \citet{Duffy08} simulations was that of the now outdated WMAP5 experiment \citep{WMAP5}.
 
-The \code{c_Prada()} concentration calculation is much more complex:
-
-
+The \code{c_Prada()} concentration calculation is much more complex, and written in terms of $\sigma(M_{200}, x_{\rm p})$, the rms fluctuation of the density field. The \citet{Prada12} halo concentration is given by\footnote{we use the subscript ``p'' to distinguish some variables in their paper from the current work}
+\begin{equation}\label{c_Prada}
+\begin{split}
+c_{200} = 2.881 B_0 (x_{\rm p}) \bigg[ \left( \frac{B_1(x_{\rm p}) \sigma(M_{200},x_{\rm p})}{1.257} \right)^{1.022} + 1 \bigg] \\
+\times\ {\rm exp}\left( \frac{0.06}{[B_1(x_{\rm p}) \sigma(M_{200},x_{\rm p}) ]^2} \right).
+\end{split}
+\end{equation}
+The cosmology and redshift dependence is encoded by the variable $x_{\rm p}$, which is  
+\begin{equation}
+x_{\rm p} = \left( \frac{\Omega_{\Lambda, 0}}{\Omega_{{\rm m}, 0}} \right)^{1/3} (1 + z)^{-1}.
+\end{equation}
+The functions within Equation \ref{c_Prada} are as follows:
+\begin{equation}
+\sigma(M_{200},x_{\rm p}) = D(x_{\rm p}) \frac{16.9 y_{\rm p}^{0.41}}{1 + 1.102 y_{\rm p}^{0.2} + 6.22 y_{\rm p}^{0.333}}
+\end{equation}
+\begin{equation}
+y_{\rm p} \equiv \frac{10^{12} h^{-1} M_{\odot}}{M_{200}}
+\end{equation}
+\begin{equation}
+D(x_{\rm p}) = \frac{5}{2} \left( \frac{\Omega_{{\rm m}, 0}}{\Omega_{\Lambda, 0}} \right)^{1/3} \frac{\sqrt{1 + x_{\rm p}^3}}{x_{\rm p}^{3/2}} \int_0^{x_{\rm p}} \frac{x^{3/2} {\rm d}x}{(1 + x^3)^{3/2}}
+\end{equation}
+\begin{equation}
+B_0(x_{\rm p}) = \frac{c_{\rm min}(x_{\rm p})}{c_{\rm min}(1.393)}
+\end{equation}
+\begin{equation}
+B_1(x_{\rm p}) = \frac{\sigma^{-1}_{\rm min}(x_{\rm p})}{\sigma^{-1}_{\rm min}(1.393)}
+\end{equation}
+\begin{equation}
+c_{\rm min}(x_{\rm p}) = 3.681 + 1.352 \bigg[ \frac{1}{\pi} \arctan[6.948 (x_{\rm p} - 0.424)] + \frac{1}{2} \bigg]
+\end{equation}
+\begin{equation}
+\sigma^{-1}_{\rm min}(x_{\rm p}) = 1.047 + 0.599 \bigg[ \frac{1}{\pi} \arctan[7.386 (x_{\rm p} - 0.526)] + \frac{1}{2} \bigg]
+\end{equation}
+The numerical values in these equations are obtained from the simulations described in \citet{Prada12}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

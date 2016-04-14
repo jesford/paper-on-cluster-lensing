@@ -96,6 +96,7 @@ In this section we describe each of the individual modules and a few of the func
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{\normalfont{\code{nfw.py}}}
+\label{nfw}
 
 The \code{nfw.py} module contains a single class called \code{SurfaceMassDensity()}, which computes the surface mass density $\Sigma(R)$ and the differential surface mass density $\Delta\Sigma(R)$ using the class methods \code{sigma_nfw()} and \code{deltasigma_nfw()}, respectively. These profiles are calculated according to the analytical formulas first derived by \citet{Wright00}, assuming the spherical NFW model, and can be applied to any dark matter halo: \emph{this module is not specific to galaxy clusters}. 
 
@@ -167,6 +168,7 @@ Here $r = \sqrt{R^2+R_{\mathrm{off}}^2-2RR_{\mathrm{off}}\cos(\theta)}$ and $\th
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{\normalfont{\code{cofm.py}}}
+\label{cofm}
 
 The \code{cofm.py} module currently contains three functions, each of which calculates halo concentration from mass, redshift, and cosmology, according to a prescription given in the literature. These functions are \code{c_DuttonMaccio()} \citep[for calculations following][]{Dutton14}, \code{c_Duffy()} \citep[following][]{Duffy08}, and \code{c_Prada()} \citep[for][]{Prada12}. Halo mass-concentration relations are an area of active research, and there have been discrepancies between results from different observations and simulations, and disagreement surrounding the best choice of model \attn{(add references)}. We do not aim to join this discussion here, but focus on outlining the functionality provided by the \code{cluster-lensing} package, for calculating these different concentration values.
 
@@ -185,7 +187,7 @@ a = 0.52 + 0.385 \cdot {\rm exp}[-0.617\ z^{1.21}],
 \begin{equation}
 b = -0.101 + 0.206 z.
 \end{equation}
-The above three equations map to Equations 7, 11, and 10, respectively in \citet{Dutton14}. The values in these expressions were determined from simulations of halos between $0 < z < 5$, spanning over 5 orders of magnitude in mass, and shown to match observational measurements of low-redshift galaxies and clusters \citep{Dutton14}.
+The above three equations map to Equations 7, 11, and 10, respectively in \citet{Dutton14}. The values in these expressions were determined from simulations of halos between $0 < z < 5$, spanning over 5 orders of magnitude in mass, and shown to match observational measurements of low-redshift galaxies and clusters \citep{Dutton14}. This concentration-mass relation is the default one used by the \code{clusters.py} module
 
 The concentration calculation in \code{c_Duffy()} is
 \begin{equation}\label{c_Duffy}
@@ -239,7 +241,23 @@ In order of appearance above, beginning with our Equation \ref{c_Prada}, these e
 
 \subsection{\normalfont{\code{clusters.py}}}
 \label{clusters}
-The class that ties it all together. And scaling relations.
+The \code{clusters.py} module is designed to provide a catalog-level tool for calculating, tracking, and updating galaxy cluster properties and profiles, through structuring data from multiple clusters as an updatable Pandas Dataframe, and providing an intelligent interface to the other modules discussed in Sections \ref{nfw} and \ref{cofm}. This module contains a single class \code{ClusterEnsemble()}, as well as three functions, \code{mass_to_richness()}, \code{richness_to_mass()}, and \code{calc_delta_c()}.
+
+The function \code{calc_delta_c()} takes a single input parameter, the cluster concentration \code{c200} (\emph{e.g.} as calculated by one of the functions in \code{cofm.py}), and returns the characteristic halo overdensity:
+\begin{equation}
+\delta_{\rm c} = \left( \frac{200}{3} \right) \frac{c_{200}^3}{\ln(1 + c_{200}) - c_{200}/(1 + c_{200})}.
+\end{equation}
+Both input and output are dimensionless here.
+
+The pair of functions \code{mass_to_richness()} and \code{richness_to_mass()}, as their names imply, perform conversions between cluster mass and richness. The only required input parameter to \code{mass_to_richness()} is the \code{mass}, and likewise the only required input to \code{richness_to_mass()} is \code{richness}. The calculations assume a power-law form for the relationship between these variables:
+\begin{equation}
+M_{200} = M_0 \left( \frac{N_{200}}{20} \right) ^ \beta.
+\end{equation}
+Here $M_0$ is the normalization, which defaults to $2.7 \times 10^{13}$, but can be changed in the call to either function by setting the \code{norm} keyword argument. The power-law slope $\beta = 1.4$ by default, but can be set by specifying the optional \code{slope} input parameter. When these functions are invoked by the \code{ClusterEnsemble()} class, they are applied to the particular mass definition $M_{200}$, and assume units of $M_{\odot}$. However the functions themselves do not assume a mass definition or unit, and can be generalized to any parameter (or type of richness) that has a power-law relationship with mass.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Examples}
 \label{ex}

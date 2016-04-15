@@ -32,15 +32,19 @@
         stringstyle=\color[rgb]{0.627,0.126,0.941},
     }
 
+
 \begin{document}
 
 \title{\MakeLowercase{\code{cluster-lensing}}: a \code{P}\MakeLowercase{\code{ython}} Package for Galaxy Clusters and Miscentering}
+
 \author{
-Jes Ford\altaffilmark{1},  
+Jes Ford\altaffilmark{1},
 Jake VanderPlas\altaffilmark{1}
 }
+\altaffiltext{1}{eScience Institute, University of Washington \\  \hspace*{0.5cm}contact: \email{jesford@uw.edu}}
 
-\altaffiltext{1}{eScience Institute, University of Washington}
+\shorttitle{\code{cluster-lensing}}
+\shortauthors{J.Ford \& J. VanderPlas}
 
 
 \begin{abstract}
@@ -255,7 +259,7 @@ M_{200} = M_0 \left( \frac{N_{200}}{20} \right) ^ \beta.
 \end{equation}
 Here $M_0$ is the normalization, which defaults to $2.7 \times 10^{13}$, but can be changed in the call to either function by setting the \code{norm} keyword argument. The power-law slope $\beta = 1.4$ by default, but can be set by specifying the optional \code{slope} input parameter. When these functions are invoked by the \code{ClusterEnsemble()} class, they are applied to the particular mass definition $M_{200}$, and assume units of $M_{\odot}$. However the functions themselves do not assume a mass definition or unit, and can be generalized to any parameter (or type of richness) that has a power-law relationship with mass.
 
-
+The \code{ClusterEnsemble()} class...
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

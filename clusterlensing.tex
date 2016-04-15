@@ -1,6 +1,7 @@
 \documentclass{emulateapj}
 
 \usepackage{color}
+%\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{graphicx}
 \usepackage[backref,breaklinks,colorlinks,citecolor=blue]{hyperref}
 \usepackage[all]{hypcap}
@@ -10,32 +11,40 @@
 \setitemize{itemsep=0pt}
 %\setlist{nolistsep} %really really no itemsep
 
-\newcommand{\code}{\lstinline}
-\newcommand{\attn}[2][red]{\textcolor{#1}{\textit{#2}}}
-
-\renewcommand*{\backref}[1]{[#1]}
 %\usepackage{url}
 %\graphicspath{{figures/}}
 
 \usepackage{listings}
 \definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
 \lstset{language=Python,
-        %basicstyle=\footnotesize\ttfamily,
+        basicstyle=\footnotesize\ttfamily, %smaller font for blocks of code
+        %numbers=left,
+        xleftmargin=2em,
         showspaces=false,
         showstringspaces=false,
         tabsize=2,
         breaklines=false,
         breakatwhitespace=true,
         identifierstyle=\ttfamily,
-        keywordstyle=\bfseries\color[rgb]{0.133,0.545,0.133},
-        commentstyle=\color[rgb]{0.133,0.545,0.133},
+        keywordstyle=\bfseries\color[rgb]{0.133,0.545,0.133}, %forestgreen
+        commentstyle=\bfseries\itshape\color[rgb]{0.372, 0.619, 0.627}, %cadetblue
         stringstyle=\color[rgb]{0.627,0.126,0.941},
+        %keywordstyle=\bfseries\color[rgb]{0.133,0.545,0.133},
+        %commentstyle=\color[rgb]{0.133,0.545,0.133},
+        %stringstyle=\color[rgb]{0.627,0.126,0.941},
     }
 
+\lstdefinestyle{codeintext}{language=Python, basicstyle=\ttfamily} %normal size font for in text
+\newcommand{\code}{\lstinline[style=codeintext]}
+\lstdefinestyle{codeinheader}{language=Python, basicstyle=\large\ttfamily} %bigger size font for in headers
+\newcommand{\hcode}{\lstinline[style=codeinheader]}
+
+\newcommand{\attn}[2][red]{\textcolor{#1}{\textit{#2}}}
+\renewcommand*{\backref}[1]{[#1]}
 
 \begin{document}
 
-\title{\MakeLowercase{\code{cluster-lensing}}: a \code{P}\MakeLowercase{\code{ython}} Package for Galaxy Clusters and Miscentering}
+\title{\MakeLowercase{\hcode{cluster-lensing}}: a \hcode{P}\MakeLowercase{\hcode{ython}} Package for Galaxy Clusters and Miscentering}
 
 \author{
 Jes Ford\altaffilmark{1},
@@ -99,7 +108,7 @@ In this section we describe each of the individual modules and a few of the func
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{\normalfont{\code{nfw.py}}}
+\subsection{\normalfont{\hcode{nfw.py}}}
 \label{nfw}
 
 The \code{nfw.py} module contains a single class called \code{SurfaceMassDensity()}, which computes the surface mass density $\Sigma(R)$ and the differential surface mass density $\Delta\Sigma(R)$ using the class methods \code{sigma_nfw()} and \code{deltasigma_nfw()}, respectively. These profiles are calculated according to the analytical formulas first derived by \citet{Wright00}, assuming the spherical NFW model, and can be applied to any dark matter halo: \emph{this module is not specific to galaxy clusters}. 
@@ -171,7 +180,7 @@ Here $r = \sqrt{R^2+R_{\mathrm{off}}^2-2RR_{\mathrm{off}}\cos(\theta)}$ and $\th
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{\normalfont{\code{cofm.py}}}
+\subsection{\normalfont{\hcode{cofm.py}}}
 \label{cofm}
 
 The \code{cofm.py} module currently contains three functions, each of which calculates halo concentration from mass, redshift, and cosmology, according to a prescription given in the literature. These functions are \code{c_DuttonMaccio()} \citep[for calculations following][]{Dutton14}, \code{c_Duffy()} \citep[following][]{Duffy08}, and \code{c_Prada()} \citep[for][]{Prada12}. Halo mass-concentration relations are an area of active research, and there have been discrepancies between results from different observations and simulations, and disagreement surrounding the best choice of model \attn{(add references)}. We do not aim to join this discussion here, but focus on outlining the functionality provided by the \code{cluster-lensing} package, for calculating these different concentration values.
@@ -193,6 +202,18 @@ b = -0.101 + 0.206 z.
 \end{equation}
 The above three equations map to Equations 7, 11, and 10, respectively in \citet{Dutton14}. The values in these expressions were determined from simulations of halos between $0 < z < 5$, spanning over 5 orders of magnitude in mass, and shown to match observational measurements of low-redshift galaxies and clusters \citep{Dutton14}. This concentration-mass relation is the default one used by the \code{clusters.py} module
 
+%---------- code ----------
+\begin{lstlisting}
+from clusterlensing import cofm
+# single 10^14 Msun halo at z=1
+cofm.c_DuttonMaccio(0.1, 1e14)
+array([ 5.13397936])
+# example with multiple halos
+cofm.c_DuttonMaccio([0.1, 0.5], [1e14, 1e15])
+array([ 5.13397936,  3.67907305])
+\end{lstlisting}
+%----------------------------
+
 The concentration calculation in \code{c_Duffy()} is
 \begin{equation}\label{c_Duffy}
 c_{200} = A \cdot (M_{200} / M_{\rm pivot})^B \cdot (1 + z)^C,
@@ -205,6 +226,19 @@ where
 M_{\rm pivot} = 2 \times 10^{12}\ h^{-1} M_{\odot}.
 \end{equation}
 Equation \ref{c_Duffy} in this work maps to Equation 4 in \citet{Duffy08}. The values for $A$, $B$, and $C$ can be found in Table 1 of that work, where they are specific to the ``full'' (relaxed and unrelaxed) sample of simulated NFW halos, spanning the redshift range $0 < z < 2$. $M_{\rm pivot}$ can be found in the caption of Table 1 as well. One caveat with this relation is that the cosmology used in creating the \citet{Duffy08} simulations was that of the now outdated WMAP5 experiment \citep{WMAP5}.
+
+%---------- code ----------
+\begin{lstlisting}
+from clusterlensing import cofm
+# default cosmology, h=0.6777
+cofm.c_Duffy([0.1, 0.5], [1e14, 1e15])
+array([ 4.06126115,  2.89302767])
+# with h=1
+cofm.c_Duffy([0.1, 0.5], [1e14, 1e15], h=1)
+array([ 3.93068341,  2.80001099])
+\end{lstlisting}
+%----------------------------
+
 
 The \code{c_Prada()} concentration calculation is much more complex, and written in terms of $\sigma(M_{200}, x_{\rm p})$, the rms fluctuation of the density field. The \citet{Prada12} halo concentration is given by\footnote{we use the subscript ``p'' to distinguish some variables in their paper from the current work}
 \begin{equation}\label{c_Prada}
@@ -241,9 +275,17 @@ c_{\rm min}(x_{\rm p}) = 3.681 + 1.352 \bigg[ \frac{1}{\pi} \arctan[6.948 (x_{\r
 \end{equation}
 In order of appearance above, beginning with our Equation \ref{c_Prada}, these equations correspond to Equations 14-17, 13, 23a, 23b, 12, 18a, 18b, 19, 20 in \citet{Prada12}. The numerical values in these equations are obtained from the simulations described in that work.
 
+%---------- code ----------
+\begin{lstlisting}
+from clusterlensing import cofm
+cofm.c_Prada([0.1, 0.5], [1e14, 1e15])
+array([ 5.06733941,  5.99897362])
+\end{lstlisting}
+%----------------------------
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{\normalfont{\code{clusters.py}}}
+\subsection{\normalfont{\hcode{clusters.py}}}
 \label{clusters}
 The \code{clusters.py} module is designed to provide a catalog-level tool for calculating, tracking, and updating galaxy cluster properties and profiles, through structuring data from multiple clusters as an updatable Pandas Dataframe, and providing an intelligent interface to the other modules discussed in Sections \ref{nfw} and \ref{cofm}. This module contains a single class \code{ClusterEnsemble()}, as well as three functions, \code{mass_to_richness()}, \code{richness_to_mass()}, and \code{calc_delta_c()}.
 

@@ -1,11 +1,12 @@
 \documentclass{emulateapj}
 
-\usepackage{color}
-%\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+%\usepackage{color}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{graphicx}
 \usepackage[backref,breaklinks,colorlinks,citecolor=blue]{hyperref}
 \usepackage[all]{hypcap}
 \usepackage{amsmath}
+\usepackage{verbatim}
 
 \usepackage{enumitem}
 \setitemize{itemsep=0pt}
@@ -15,11 +16,10 @@
 %\graphicspath{{figures/}}
 
 \usepackage{listings}
-\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
 \lstset{language=Python,
         basicstyle=\footnotesize\ttfamily, %smaller font for blocks of code
         %numbers=left,
-        xleftmargin=2em,
+        %xleftmargin=2em,
         showspaces=false,
         showstringspaces=false,
         tabsize=2,
@@ -52,7 +52,7 @@ Jake VanderPlas\altaffilmark{1}
 }
 \altaffiltext{1}{eScience Institute, University of Washington \\  \hspace*{0.5cm}contact: \email{jesford@uw.edu}}
 
-\shorttitle{\code{cluster-lensing}}
+\shorttitle{\hcode{cluster-lensing}}
 \shortauthors{J.Ford \& J. VanderPlas}
 
 
@@ -117,7 +117,7 @@ The 3-dimensional density profile of an NFW halo is given by
 \begin{equation}
 \rho(r) = \frac{\delta_{\rm c} \rho_{\rm crit}}{(r/r_{\rm s})(1+r/r_{\rm s})^2},
 \end{equation}
-where $r_{\rm s}$ is the cluster scale radius, $\delta_{\rm c}$ is the characteristic halo overdensity, and $\rho_{\rm crit} = \rho_{\rm crit}(z)$ is the critical energy density of the universe at the lens redshift. These three parameters\footnote{or, in the case of calculating multiple NFW halos at once, three array-like objects representing each of these parameters} must be specified when instantiating the class \code{SurfaceMassDensity()}, via the arguments \code{rs}, \code{delta_c}, and \code{rho_crit}, respectively. The user will probably also want to choose the radial bins for the calculation, which are specified via the keyword argument \code{rbins}. The surface mass density is the integral along the line-of-sight of the 3-dimensional density:
+where $r_{\rm s}$ is the cluster scale radius, $\delta_{\rm c}$ is the characteristic halo overdensity, and $\rho_{\rm crit} = \rho_{\rm crit}(z)$ is the critical energy density of the universe at the lens redshift. These three parameters\footnote{or, in the case of calculating multiple NFW halos at once, three array-like objects representing each of these parameters} must be specified when instantiating the class \code{SurfaceMassDensity()}, via the arguments \code{rs}, \code{delta_c}, and \code{rho_crit}, respectively. The units on \code{rs} are assumed to be Mpc, \code{delta_c} is dimensionless, and \code{rho_crit} is in $M_{\odot}/{\rm Mpc}/{\rm pc}^2$, although the actual inclusion of the \code{astropy.units} on these variables is optional. The user will probably also want to choose the radial bins for the calculation, which are specified via the keyword argument \code{rbins}, in Mpc. The surface mass density is the integral along the line-of-sight of the 3-dimensional density:
 \begin{equation}
 \Sigma(R) = 2 \int_0^{\infty} \rho(R,y) {\rm d}y.
 \end{equation}
@@ -163,11 +163,63 @@ where
 %    \end{cases}
 %\end{equation}
 
-Running \code{sigma_nfw()} or \code{deltasigma_nfw()}, with only a specification of halo properties \code{rs}, \code{delta_c}, \code{rho_crit}, and radial bins \code{rbins}, will lead to the calculation of halo profiles according to Equations \ref{sigma} and \ref{dsigma} outlined above. These are the standard centered NFW profiles, under the assumption that the peak of the halo density distribution perfectly coincides with the identified halo center. This may not be a good assumption, however, and the user can instead run these calculations for miscentered halos by specifying the optional input parameter \code{offsets}. This parameter sets the width of a distribution of centroid offsets, assuming a 2-dimensional Gaussian distribution on the sky. This offset distribution is equivalent to, and implemented in code as, a uniform distribution in angle and a Rayleigh probability distribution in $R$:
+Running \code{sigma_nfw()} or \code{deltasigma_nfw()}, with only a specification of halo properties \code{rs}, \code{delta_c}, \code{rho_crit}, and radial bins \code{rbins}, will lead to the calculation of halo profiles according to Equations \ref{sigma} and \ref{dsigma} outlined above. 
+
+%---------- code ----------
+\begin{lstlisting}
+from clusterlensing import SurfaceMassDensity
+rbins = [0.1, 0.5, 1.0, 2.0, 4.0] # Mpc
+smd = SurfaceMassDensity(rs=[0.1], 
+                         rho_crit=[0.2], 
+                         delta_c=[9700.], 
+                         rbins=rbins)
+sigma = smd.sigma_nfw()
+# surface mass density with default units
+sigma[0]
+<Quantity [ 129.33333333, 11.64751032, 3.33992059, 
+0.89839601, 0.23327149] solMass / pc2>
+# surface mass density with no units
+sigma[0].value
+array([ 129.33333333, 11.64751032, 3.33992059, 
+0.89839601, 0.23327149])
+\end{lstlisting}
+%----------------------------
+
+These are the standard centered NFW profiles, under the assumption that the peak of the halo density distribution perfectly coincides with the identified halo center. This may not be a good assumption, however, and the user can instead run these calculations for miscentered halos by specifying the optional input parameter \code{offsets}. This parameter sets the width of a distribution of centroid offsets, assuming a 2-dimensional Gaussian distribution on the sky. This offset distribution is equivalent to, and implemented in code as, a uniform distribution in angle and a Rayleigh probability distribution in $R$:
 \begin{equation}\label{PofR}
 P(R_{\mathrm{off}})=\frac{R_{\mathrm{off}}}{\sigma_{\mathrm{off}}^2}\ \mathrm{exp}\bigg[-\frac{1}{2}\bigg(\frac{R_{\mathrm{off}}}{\sigma_{\mathrm{off}}}\bigg)^2\ \bigg].
 \end{equation}
 The parameter \code{offsets} is equivalent to $\sigma_{\rm off}$ in this equation.
+
+%---------- code ----------
+\begin{lstlisting}
+from clusterlensing import SurfaceMassDensity
+rbins = [0.1, 0.5, 1.0, 2.0, 4.0]
+# single miscentered halo profile
+smd = SurfaceMassDensity(rs=[0.1], 
+                         rho_crit=[0.2], 
+                         delta_c=[9700.], 
+                         rbins=rbins,
+                         offsets=[0.3])
+sigma = smd.sigma_nfw()
+sigma[0]
+<Quantity [ 38.60655298, 17.57285034, 4.11253461, 
+0.93809627, 0.23574031] solMass / pc2>
+# example calculating multiple profiles
+smd = SurfaceMassDensity(rs=[0.1,0.2,0.2], 
+                         rho_crit=[0.2,0.2,0.2], 
+                         delta_c=[9700,9700,9000], 
+                         rbins=rbins, 
+                         offsets=[0.3,0.3,0.3])
+sigma = smd.sigma_nfw()
+sigma 
+<Quantity [[  38.60655298,  17.57285034,   4.11253461,   0.93809627,   0.23574031],
+           [ 181.91820855,  92.86651598,  27.34020647,   6.94677803,  1.81488253],
+           [ 168.79009041,  86.16480864,  25.36720188,   6.44546415,  1.68391163]] solMass / pc2>
+\end{lstlisting}
+%<Quantity [[ 38.60655298, 17.57285034, 4.11253461,   
+%0.93809627, 0.23574031], [ 181.91820855, 92.86651598, 27.34020647, 6.94677803, 1.81488253], [ 168.79009041, 86.16480864, 25.36720188, 6.44546415, 1.68391163]] solMass / pc2>
+%----------------------------
 
 The miscentered surface mass density profiles are given by the centered profiles (Equations \ref{sigma} and \ref{dsigma}), convolved with the offset distribution (Equation \ref{PofR}). We follow the offset halo formalism first written down by \citet{Yang06}, and applied to cluster miscentering by, {\textit e.g.} \citet{Johnston07, George12, Ford14, Ford15, Simet16}. Specifically, we calculate the offset surface mass density $\Sigma^{\rm off}$ as follows:
 \begin{equation}
@@ -178,6 +230,33 @@ The miscentered surface mass density profiles are given by the centered profiles
 \end{equation}
 Here $r = \sqrt{R^2+R_{\mathrm{off}}^2-2RR_{\mathrm{off}}\cos(\theta)}$ and $\theta$ is the azimuthal angle \citep{Yang06}. The $\Delta\Sigma^{\rm off}$ profile is calculated from $\Sigma^{\rm off}$, in analogy with Equations \ref{dsigma} and \ref{sigbar}.
 
+%---------- code ----------
+\begin{lstlisting}
+from clusterlensing import SurfaceMassDensity
+rbins = [0.1, 0.5, 1.0, 2.0, 4.0]
+# perfectly centered DeltaSigma profile
+smd = SurfaceMassDensity(rs=[0.1], 
+                         rho_crit=[0.2], 
+                         delta_c=[9700.], 
+                         rbins=rbins)
+deltasigma = smd.deltasigma_nfw()
+deltasigma[0]
+<Quantity [ 108.78445455, 25.47093418, 10.29627483, 
+3.71631903, 1.23840727] solMass / pc2>
+# miscentered DeltaSigma profile
+rbins = [0.1, 0.5, 1.0, 2.0, 4.0]
+smd = SurfaceMassDensity(rs=[0.1], 
+                         rho_crit=[0.2], 
+                         delta_c=[9700.], 
+                         rbins=rbins,
+                         offsets=[0.3])
+deltasigma = smd.deltasigma_nfw()
+deltasigma[0]
+<Quantity [ 0.71370144, 9.35821817, 8.90118561, 
+3.6475417, 1.23610325] solMass / pc2>
+\end{lstlisting}
+%----------------------------
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{\normalfont{\hcode{cofm.py}}}
@@ -185,7 +264,7 @@ Here $r = \sqrt{R^2+R_{\mathrm{off}}^2-2RR_{\mathrm{off}}\cos(\theta)}$ and $\th
 
 The \code{cofm.py} module currently contains three functions, each of which calculates halo concentration from mass, redshift, and cosmology, according to a prescription given in the literature. These functions are \code{c_DuttonMaccio()} \citep[for calculations following][]{Dutton14}, \code{c_Duffy()} \citep[following][]{Duffy08}, and \code{c_Prada()} \citep[for][]{Prada12}. Halo mass-concentration relations are an area of active research, and there have been discrepancies between results from different observations and simulations, and disagreement surrounding the best choice of model \attn{(add references)}. We do not aim to join this discussion here, but focus on outlining the functionality provided by the \code{cluster-lensing} package, for calculating these different concentration values.
 
-All three functions require two input parameters (scalars or array-like inputs), which are the halo redshift(s) \code{z} and the halo mass(es) \code{m}. Specifically, the latter is according to the $M_{200}$ mass definition, in units of solar masses (optionally with corresponding \code{astropy.units}). $M_{200}$ is the mass interior to a sphere of radius $r_{200}$, within which the average density is $200\rho_{\rm crit}(z)$. 
+%All three functions require two input parameters (scalars or array-like inputs), which are the halo redshift(s) \code{z} and the halo mass(es) \code{m}. Specifically, the latter is according to the $M_{200}$ mass definition, in units of solar masses (optionally with corresponding \code{astropy.units}). $M_{200}$ is the mass interior to a sphere of radius $r_{200}$, within which the average density is $200\rho_{\rm crit}(z)$. 
 
 The default cosmology used is from the measurements by the \citet{PlanckXVI}, which is imported from the module \code{astropy.cosmology.Planck13}. However, the user can specify alternative cosmological parameters. For calculating concentration according to either the \citet{Duffy08} or the \citet{Dutton14} prescription, the only cosmological parameter required is the Hubble parameter, which can be passed into \code{c_Duffy()} or \code{c_DuttonMaccio()} as the keyword argument \code{h}. For the \citet{Prada12} concentration, the user would want to specify \code{Om_M} and \code{Om_L} (the fractional energy densities of matter and the cosmological constant) in addition to \code{h}, in the call to \code{c_Prada()}.
 
@@ -205,7 +284,7 @@ The above three equations map to Equations 7, 11, and 10, respectively in \citet
 %---------- code ----------
 \begin{lstlisting}
 from clusterlensing import cofm
-# single 10^14 Msun halo at z=1
+# single 10**14 Msun halo at z=1
 cofm.c_DuttonMaccio(0.1, 1e14)
 array([ 5.13397936])
 # example with multiple halos
@@ -232,10 +311,10 @@ Equation \ref{c_Duffy} in this work maps to Equation 4 in \citet{Duffy08}. The v
 from clusterlensing import cofm
 # default cosmology, h=0.6777
 cofm.c_Duffy([0.1, 0.5], [1e14, 1e15])
-array([ 4.06126115,  2.89302767])
+array([ 4.06126115, 2.89302767])
 # with h=1
 cofm.c_Duffy([0.1, 0.5], [1e14, 1e15], h=1)
-array([ 3.93068341,  2.80001099])
+array([ 3.93068341, 2.80001099])
 \end{lstlisting}
 %----------------------------
 

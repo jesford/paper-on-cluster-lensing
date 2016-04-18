@@ -262,7 +262,7 @@ deltasigma[0]
 \subsection{\normalfont{\hcode{cofm.py}}}
 \label{cofm}
 
-The \code{cofm.py} module currently contains three functions, each of which calculates halo concentration from mass, redshift, and cosmology, according to a prescription given in the literature. These functions are \code{c_DuttonMaccio()} \citep[for calculations following][]{Dutton14}, \code{c_Duffy()} \citep[following][]{Duffy08}, and \code{c_Prada()} \citep[for][]{Prada12}. Halo mass-concentration relations are an area of active research, and there have been discrepancies between results from different observations and simulations, and disagreement surrounding the best choice of model \attn{(add references)}. We do not aim to join this discussion here, but focus on outlining the functionality provided by the \code{cluster-lensing} package, for calculating these different concentration values.
+The \code{cofm.py} module currently contains three functions, each of which calculates halo concentration from mass, redshift, and cosmology, according to a prescription given in the literature. These functions are \code{c_DuttonMaccio()} \citep[for calculations following][]{Dutton14}, \code{c_Duffy()} \citep[following][]{Duffy08}, and \code{c_Prada()} \citep[for][]{Prada12}. Halo mass-concentration relations are an area of active research, and there have been discrepancies between results from different observations and simulations, and disagreement surrounding the best choice of model \citep[see {\emph e.g.}][]{Dutton14, Klypin16}. We do not aim to join this discussion here, but focus on outlining the functionality provided by the \code{cluster-lensing} package, for calculating these different concentration values.
 
 %All three functions require two input parameters (scalars or array-like inputs), which are the halo redshift(s) \code{z} and the halo mass(es) \code{m}. Specifically, the latter is according to the $M_{200}$ mass definition, in units of solar masses (optionally with corresponding \code{astropy.units}). $M_{200}$ is the mass interior to a sphere of radius $r_{200}$, within which the average density is $200\rho_{\rm crit}(z)$. 
 
@@ -319,7 +319,7 @@ array([ 3.93068341, 2.80001099])
 %----------------------------
 
 
-The \code{c_Prada()} concentration calculation is much more complex, and written in terms of $\sigma(M_{200}, x_{\rm p})$, the rms fluctuation of the density field. The \citet{Prada12} halo concentration is given by\footnote{we use the subscript ``p'' to distinguish some variables in their paper from the current work}
+The \code{c_Prada()} concentration calculation is much more complex, and written in terms of $\sigma(M_{200}, x_{\rm p})$, the rms fluctuation of the density field. The \citet{Prada12} halo concentration is given by\footnote{we use the subscript ``p'' to distinguish some variables in the equations from \citet{Prada12} from those in the current work}
 \begin{equation}\label{c_Prada}
 \begin{split}
 c_{200} = 2.881 B_0 (x_{\rm p}) \bigg[ \left( \frac{B_1(x_{\rm p}) \sigma(M_{200},x_{\rm p})}{1.257} \right)^{1.022} + 1 \bigg] \\
@@ -352,16 +352,18 @@ c_{\rm min}(x_{\rm p}) = 3.681 + 1.352 \bigg[ \frac{1}{\pi} \arctan[6.948 (x_{\r
 \begin{equation}
 \sigma^{-1}_{\rm min}(x_{\rm p}) = 1.047 + 0.599 \bigg[ \frac{1}{\pi} \arctan[7.386 (x_{\rm p} - 0.526)] + \frac{1}{2} \bigg]
 \end{equation}
-In order of appearance above, beginning with our Equation \ref{c_Prada}, these equations correspond to Equations 14-17, 13, 23a, 23b, 12, 18a, 18b, 19, 20 in \citet{Prada12}. The numerical values in these equations are obtained from the simulations described in that work.
-
+In order of appearance above, beginning with our Equation \ref{c_Prada}, these equations correspond to Equations 14-17, 13, 23a, 23b, 12, 18a, 18b, 19, 20 in \citet{Prada12}. The numerical values in these equations were obtained empirically from the simulations described in that work.
 %---------- code ----------
 \begin{lstlisting}
 from clusterlensing import cofm
 cofm.c_Prada([0.1, 0.5], [1e14, 1e15])
 array([ 5.06733941,  5.99897362])
-
+cofm.c_Prada([0.1, 0.1, 0.1], [1e13, 1e14, 1e15])
+array([ 5.71130928, 5.06733941, 5.30163572])
 \end{lstlisting}
 %----------------------------
+The last code example demonstrates the controversial feature of the \citet{Prada12} mass-concentration relation -- an upturn in concentration values for the highest mass halos -- in opposition to the canonical view that higher mass halos have lower concentrations \citep{nfw96, nfw97, Jing00, Bullock01}.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

@@ -36,8 +36,8 @@
 
 \lstdefinestyle{codeintext}{language=Python, basicstyle=\ttfamily} %normal size font for in text
 \newcommand{\code}{\lstinline[style=codeintext]}
-\lstdefinestyle{codeinheader}{language=Python, basicstyle=\large\ttfamily} %bigger size font for in headers
-\newcommand{\hcode}{\lstinline[style=codeinheader]}
+
+\newcommand{\hcode}{\large\normalfont\texttt} %code in titles, section headers, etc
 
 \newcommand{\attn}[2][red]{\textcolor{#1}{\textit{#2}}}
 \renewcommand*{\backref}[1]{[#1]}
@@ -259,7 +259,7 @@ deltasigma[0]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{\normalfont{\hcode{cofm.py}}}
+\subsection{\hcode{cofm.py}}
 \label{cofm}
 
 The \code{cofm.py} module currently contains three functions, each of which calculates halo concentration from mass, redshift, and cosmology, according to a prescription given in the literature. These functions are \code{c_DuttonMaccio()} \citep[for calculations following][]{Dutton14}, \code{c_Duffy()} \citep[following][]{Duffy08}, and \code{c_Prada()} \citep[for][]{Prada12}. Halo mass-concentration relations are an area of active research, and there have been discrepancies between results from different observations and simulations, and disagreement surrounding the best choice of model \citep[see {\emph e.g.}][]{Dutton14, Klypin16}. We do not aim to join this discussion here, but focus on outlining the functionality provided by the \code{cluster-lensing} package, for calculating these different concentration values.
@@ -442,27 +442,24 @@ c.dataframe
 %----------------------------
 Instead of using the \code{dataframe} attribute, which retrieves the Pandas DataFrame object itself, it might be useful to use the \code{show()} method, which prints additional information to the screen, including assumptions of the mass-richness relation:
 %---------- code ----------
-\begin{comment}   %%% MAKE THIS WORK
 \begin{lstlisting}
 c.show()
 
 Cluster Ensemble:
+
      z  n200          m200      r200      c200      delta_c        rs
+
 0  0.1    20  2.700000e+13  0.599910  4.520029  6920.955951  0.132723
 1  0.2    30  4.763120e+13  0.702040  4.136873  5678.897592  0.169703
 2  0.3    40  7.125343e+13  0.775889  3.851601  4849.836498  0.201446
 
-Mass-Richness Power Law: 
+Mass-Richness Power Law:
 M200 = norm * (N200 / 20) ^ slope
    norm: 27000000000000.0 solMass
    slope: 1.4
-\end{lstlisting}
 
-
-\begin{lstlisting}
-
-# alter the mass-richness relation parameters
-# and show the resulting ClusterEnsemble data
+# alter mass-richness parameters
+# and show the updated table
 c.massrich_norm = 3e13
 c.massrich_slope = 1.5
 c.show()
@@ -473,13 +470,13 @@ Cluster Ensemble:
 1  0.2    30  5.511352e+13  0.737028  4.086481  5526.615129  0.180358
 2  0.3    40  8.485281e+13  0.822406  3.795500  4696.109606  0.216679
 
-Mass-Richness Power Law: 
+Mass-Richness Power Law:
 M200 = norm * (N200 / 20) ^ slope
    norm: 30000000000000.0 solMass
    slope: 1.5
-   
+
 \end{lstlisting}
-\end{comment}
+
 %----------------------------
 This example also demonstrates how the slope or normalization of the mass-richness relation can be altered, and the changes propagate from richness through to mass and other variables.
 

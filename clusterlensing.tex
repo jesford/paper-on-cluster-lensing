@@ -375,26 +375,154 @@ The function \code{calc_delta_c()} takes a single input parameter, the cluster c
 \begin{equation}
 \delta_{\rm c} = \left( \frac{200}{3} \right) \frac{c_{200}^3}{\ln(1 + c_{200}) - c_{200}/(1 + c_{200})}.
 \end{equation}
-Both input and output are dimensionless here.
+Both input and output are dimensionless here. For example, to convert a concentration value of $c_{200} = 5$ to $\delta_{\rm c}$, you could do:
+%---------- code ----------
+\begin{lstlisting}
+from clusterlensing.clusters import calc_delta_c
+calc_delta_c(5)
+8694.8101906193315
+\end{lstlisting}
+%----------------------------
 
 The pair of functions \code{mass_to_richness()} and \code{richness_to_mass()}, as their names imply, perform conversions between cluster mass and richness. The only required input parameter to \code{mass_to_richness()} is the \code{mass}, and likewise the only required input to \code{richness_to_mass()} is \code{richness}. The calculations assume a power-law form for the relationship between these variables:
-\begin{equation}
+\begin{equation}\label{massrich}
 M_{200} = M_0 \left( \frac{N_{200}}{20} \right) ^ \beta.
 \end{equation}
 Here $M_0$ is the normalization, which defaults to $2.7 \times 10^{13}$, but can be changed in the call to either function by setting the \code{norm} keyword argument. The power-law slope $\beta = 1.4$ by default, but can be set by specifying the optional \code{slope} input parameter. When these functions are invoked by the \code{ClusterEnsemble()} class, they are applied to the particular mass definition $M_{200}$, and assume units of $M_{\odot}$. However the functions themselves do not assume a mass definition or unit, and can be generalized to any parameter (or type of richness) that has a power-law relationship with mass.
+%---------- code ----------
+\begin{lstlisting}
+from clusterlensing.clusters import \
+mass_to_richness, richness_to_mass
+richness_to_mass(50)
+97382243648736.9
+mass_to_richness(97382243648736.9)
+50.0
+# specify other power-law parameters
+richness_to_mass(20, slope=1.5, norm=1e14)
+100000000000000.0
+\end{lstlisting}
+%----------------------------
 
-The \code{ClusterEnsemble()} class...
+The \code{ClusterEnsemble()} class creates, modifies and tracks a Pandas DataFrame containing the properties and attributes of many galaxy clusters at once. When given a new or updated cluster property, it calculates and updates all dependent cluster properties, treating each cluster (row) in the DataFrame as an individual object. This makes it easy to calculate the $\Sigma(R)$ and $\Delta\Sigma(R)$ weak lensing profiles for many different mass clusters at different redshifts, for example. In contrast to using the \code{SurfaceMassDensity()} class discussed in Section \ref{nfw}, the user only needs to specify the cluster redshifts and either of the mass or richness. If richness is supplied, then mass is calculated from it, assuming the form of Equation \ref{massrich} (which is customizable); if mass is specified instead, than the inverse relation is used to calculate richness. In either case the changes are propagated to any dependent variables:
+%---------- code ----------
+\begin{lstlisting}
+from clusterlensing import ClusterEnsemble
+z = [0.1,0.2,0.3]
+c = ClusterEnsemble(z)
+n200 = [20, 20, 20]
+c.n200 = n200
+# display cluster dataframe
+c.dataframe
+     z  n200          m200      r200      c200       delta_c        rs
+0  0.1    20  2.700000e+13  0.612222  5.839934  12421.201995  0.104834
+1  0.2    20  2.700000e+13  0.591082  5.644512  11480.644557  0.104718
+2  0.3    20  2.700000e+13  0.569474  5.442457  10555.781440  0.104636
+# specify mass directly
+c.m200 = [1e13, 1e14, 1e15]
+c.dataframe
+     z        n200          m200      r200      c200       delta_c        rs
+0  0.1    9.838141  1.000000e+13  0.439664  6.439529  15599.114356  0.068276
+1  0.2   50.956400  1.000000e+14  0.914520  4.979102   8612.362538  0.183672
+2  0.3  263.927382  1.000000e+15  1.898248  3.886853   4947.982895  0.488377
+\end{lstlisting}
+%----------------------------
+
+The above examples also demonstrate that cluster masses are converted to concentrations and to characteristic halo overdensities. This assumes the default mass-concentration relation of the \code{c_DuttonMaccio()} form, or the user can instead specify another of the relations by setting the keyword \code{cm="Prada"} or \code{cm="Duffy"}, when the \code{ClusterEnsemble()} object is instantiated. Cosmology can also be specified upon instantiation, by setting the \code{cosmology} keyword to any of \code{"WMAP9"}, \code{"WMAP7"}, or \code{"WMAP5"}:
+%---------- code ----------
+\begin{lstlisting}
+c = ClusterEnsemble(z, cm="Duffy", 
+                    cosmology="WMAP5")
+c.n200 = [20, 30, 40]
+c.dataframe
+     z  n200          m200      r200      c200      delta_c        rs
+0  0.1    20  2.700000e+13  0.599910  4.520029  6920.955951  0.132723
+1  0.2    30  4.763120e+13  0.702040  4.136873  5678.897592  0.169703
+2  0.3    40  7.125343e+13  0.775889  3.851601  4849.836498  0.201446
+\end{lstlisting}
+%----------------------------
+Instead of using the \code{dataframe} attribute, which retrieves the Pandas DataFrame object itself, it might be useful to use the \code{show()} method, which prints additional information to the screen, including assumptions of the mass-richness relation:
+%---------- code ----------
+\begin{comment}   %%% MAKE THIS WORK
+\begin{lstlisting}
+c.show()
+
+Cluster Ensemble:
+     z  n200          m200      r200      c200      delta_c        rs
+0  0.1    20  2.700000e+13  0.599910  4.520029  6920.955951  0.132723
+1  0.2    30  4.763120e+13  0.702040  4.136873  5678.897592  0.169703
+2  0.3    40  7.125343e+13  0.775889  3.851601  4849.836498  0.201446
+
+Mass-Richness Power Law: 
+M200 = norm * (N200 / 20) ^ slope
+   norm: 27000000000000.0 solMass
+   slope: 1.4
+\end{lstlisting}
+
+
+\begin{lstlisting}
+
+# alter the mass-richness relation parameters
+# and show the resulting ClusterEnsemble data
+c.massrich_norm = 3e13
+c.massrich_slope = 1.5
+c.show()
+
+Cluster Ensemble:
+     z  n200          m200      r200      c200      delta_c        rs
+0  0.1    20  3.000000e+13  0.621353  4.480202  6784.805438  0.138689
+1  0.2    30  5.511352e+13  0.737028  4.086481  5526.615129  0.180358
+2  0.3    40  8.485281e+13  0.822406  3.795500  4696.109606  0.216679
+
+Mass-Richness Power Law: 
+M200 = norm * (N200 / 20) ^ slope
+   norm: 30000000000000.0 solMass
+   slope: 1.5
+   
+\end{lstlisting}
+\end{comment}
+%----------------------------
+This example also demonstrates how the slope or normalization of the mass-richness relation can be altered, and the changes propagate from richness through to mass and other variables.
+
+Then all the ingredients are in place to calculate halo profiles by invoking the \code{calc_nfw()} method, which interfaces to the \code{sigma_nfw()} and \code{deltasigma_nfw()} methods of the \code{SurfaceMassDensity()} class, and passes it the required inputs $\{ r_{\rm s}, \rho_{\rm crit}, \delta_{\rm c} \}$ for all the clusters behind the scenes. $\rho_{\rm crit}$ is calculated at every cluster redshift using the (default \code{astropy.cosmology.Planck13} or user-specified) cosmological model.
+%---------- code ----------
+\begin{lstlisting}
+import numpy as np
+# create some logarithmic bins:
+rmin, rmax = 0.1, 5. # Mpc
+rbins = np.logspace(np.log10(rmin), 
+                    np.log10(rmax), 
+                    num = 8)
+# calculate the profiles:
+c.calc_nfw(rbins=rbins)
+# profiles now exist as attributes:
+c.sigma_nfw
+<Quantity [[ 128.97156123, 62.58323349, 
+27.01073105, 10.60607722, 3.88999449, 
+1.36360964, 0.46464366, 0.15563814], 
+[ 132.13989867, 64.10484454, 27.66159293, 
+10.85990257, 3.98265113, 1.39599118, 
+0.47565695, 0.15932308], [ 135.62272115, 
+65.782882, 28.38138702, 11.14121765, 
+4.08549675, 1.43196834, 0.48790043, 
+0.16342108]] solMass / pc2>
+c.deltasigma_nfw
+<Quantity [[ 105.3190568 , 72.43842908, 
+43.74538085, 23.44005481, 11.37085955, 
+5.10385452, 2.16011364, 0.87479771], 
+[ 107.98098357, 74.25022426, 44.82825347, 
+24.01505305, 11.64776118, 5.22744541, 
+2.21219956, 0.89582394], [ 110.88173507, 
+76.23087398, 46.01581348, 24.64741078, 
+11.95297965, 5.36391529, 2.26978998, 
+0.91909571]] solMass / pc2>
+\end{lstlisting}
+%----------------------------
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Examples}
 \label{ex}
-
-\begin{itemize}
-\item No miscentering
-\item With miscentering
-\item others...
-\end{itemize}
+Some more detailed examples.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

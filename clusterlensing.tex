@@ -181,18 +181,31 @@ where
 %    \end{cases}
 %\end{equation}
 
-We can rewrite the differential surface mass density in the form in which it is computed in \code{nfw.py} \attn{(need to fix this g equation)}:
+We can rewrite the differential surface mass density in the form in which it is computed in \code{nfw.py}:
 \begin{equation}
-\Delta\Sigma(x) = r_{\rm s} \delta_{\rm c} \rho_{\rm crit} g(x),
+     \Delta\Sigma(x) = r_{\rm s} \delta_{\rm c} \rho_{\rm crit} g(x),
 \end{equation}
+where  $g(x) = $
 \begin{equation}
-g(x) =
     \begin{cases}
-    \bigg[ \frac{8\ {\rm arctanh}\sqrt{(1 - x)/(1 + x)}}{x^2 \sqrt{1 - x^2}} + \frac{4}{x^2}\ln(\frac{x}{2}) \\ - \frac{2}{(x^2 - 1)} + \frac{4\ {\rm arctanh}\sqrt{(1 - x)/(1 + x)}}{(x^2 - 1) \sqrt{1 - x^2}} \bigg], & \text{for } x < 1; \\
-    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} [ \frac{10}{3} + 4 \ln(\frac{1}{2}) ], & \text{for } x = 1; \\
-    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} \bigg[ \frac{8\ {\rm arctanh}\sqrt{(x - 1)/(1 + x)}}{x^2 \sqrt{x^2 - 1}} + \frac{4}{x^2}\ln(\frac{x}{2}) \\ - \frac{2}{(x^2 - 1)} + \frac{4\ {\rm arctanh}\sqrt{(x - 1)/(1 + x)}}{(x^2 - 1)^{3/2}} \bigg], & \text{for } x > 1.
+
+    %\left[ \frac{4}{x^2} + \frac{2}{(x^2 - 1)} \right] \ln \left( \frac{1 + \sqrt{(1-x) / (1+x)} }{1 - \sqrt{(1-x) / (1+x)} } \right) / \sqrt{1 - x^2} \\ + \frac{4}{x^2} \ln \frac{x}{2} - \frac{2}{(x^2 - 1)}, & \text{for } x < 1; \\
+    \left[ \frac{4 / x^2 + 2/ (x^2 - 1)}{\sqrt{1 - x^2}} \right] \ln \left( \frac{1 + \sqrt{(1-x) / (1+x)} }{1 - \sqrt{(1-x) / (1+x)} } \right) \\ + \frac{4}{x^2} \ln \frac{x}{2} - \frac{2}{(x^2 - 1)}, & \text{for } x < 1; \\
+    
+    (10/3) + 4 \ln(1/2), & \text{for } x = 1; \\
+    
+    \left[ \frac{8}{x^2 \sqrt{x^2 - 1}} + \frac{4}{(x^2 - 1)^{3/2}} \right] \arctan\sqrt{\frac{x-1}{1+x}} \\ + \frac{4}{x^2} \ln \frac{x}{2} - \frac{2}{(x^2 - 1)}, & \text{for } x > 1.
+
     \end{cases}
 \end{equation}
+
+%\begin{equation}
+%    \begin{cases}
+%    \bigg[ \frac{8\ {\rm arctanh}\sqrt{(1 - x)/(1 + x)}}{x^2 \sqrt{1 - x^2}} + \frac{4}{x^2}\ln(\frac{x}{2}) \\ - \frac{2}{(x^2 - 1)} + \frac{4\ {\rm arctanh}\sqrt{(1 - x)/(1 + x)}}{(x^2 - 1) \sqrt{1 - x^2}} \bigg], & \text{for } x < 1; \\
+%    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} [ \frac{10}{3} + 4 \ln(\frac{1}{2}) ], & \text{for } x = 1; \\
+%    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} \bigg[ \frac{8\ {\rm arctanh}\sqrt{(x - 1)/(1 + x)}}{x^2 \sqrt{x^2 - 1}} + \frac{4}{x^2}\ln(\frac{x}{2}) \\ - \frac{2}{(x^2 - 1)} + \frac{4\ {\rm arctanh}\sqrt{(x - 1)/(1 + x)}}{(x^2 - 1)^{3/2}} \bigg], & \text{for } x > 1.
+%    \end{cases}
+%\end{equation}
 
 Running \code{sigma_nfw()} or \code{deltasigma_nfw()}, with only a specification of halo properties \code{rs}, \code{delta_c}, \code{rho_crit}, and radial bins \code{rbins}, will lead to the calculation of halo profiles according to Equations \ref{sigma} and \ref{dsigma} outlined above. 
 

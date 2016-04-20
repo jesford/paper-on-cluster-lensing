@@ -126,16 +126,8 @@ Here $R$ is the projected radial distance (in the plane of the sky).
 We can adopt the dimensional radius $x \equiv R/r_{\rm s}$ and, following from \citet{Wright00}, show that:
 \begin{equation}\label{sigma}
 \Sigma(x) = 2 r_{\rm s} \delta_{\rm c} \rho_{\rm crit} f(x),
-%\Sigma(x) = 2 r_{\rm s} \delta_{\rm c} \rho_{\rm crit} \left( \frac{1 - \mathcal{F}(x)}{x^2 - 1} \right),
 \end{equation}
 where $f(x) = $
-%\begin{equation}
-%\mathcal{F}(x) = 
-%    \begin{cases}
-%        \ln{ \left[ \frac{1}{x} + \sqrt{\frac{1}{x^2} - 1} \right]} / \sqrt{1 - x^2}, & \text{for } x < 1; \\        
-%        \arccos{(1/x)} / \sqrt{x^2 - 1}, & \text{for } x > 1.
-%    \end{cases}
-%\end{equation}
 \begin{equation}
     \begin{cases}
         \frac{1}{x^2 - 1} \left( 1 - \ln{ \left[ \frac{1}{x} + \sqrt{\frac{1}{x^2} - 1} \right]} / \sqrt{1 - x^2} \right), & \text{for } x < 1; \\
@@ -144,42 +136,14 @@ where $f(x) = $
     \end{cases}
 \end{equation}
 
-%\begin{equation}\label{sigma}
-%\Sigma(x) = 
-%    \begin{cases}
-%        \frac{2 r_{\rm s} \delta_{\rm c} \rho_{\rm crit}}{(x^2 - 1)} \left[ 1 - \frac{2}{\sqrt{1-x^2}} {\rm arctanh} \sqrt{\frac{1-x}{1+x}} \ \right], \hfill \text{for } x < 1; \\
-%        \frac{2 r_{\rm s} \delta_{\rm c} \rho_{\rm crit}}{3}, \hfill \text{for } x = 1; \\
-%        \frac{2 r_{\rm s} \delta_{\rm c} \rho_{\rm crit}}{(x^2 - 1)} \left[ 1 - \frac{2}{\sqrt{x^2 - 1}} {\rm arctan} \sqrt{\frac{x-1}{1+x}} \ \right], \hfill \text{for } x < 1.
-%    \end{cases}
-%\end{equation}
-
 The differential surface mass density probed by shear is calculated from the definition
 \begin{equation}\label{dsigma}
 \Delta\Sigma(x) \equiv  \overline{\Sigma}(<x) - \Sigma(x),
 \end{equation}
 where
 \begin{equation}\label{sigbar}
-%\begin{split}
 \overline{\Sigma}(<x) = \frac{2}{x^2} \int_0^{x} \Sigma(x') x' {\rm d}x'.
 \end{equation}
-%\begin{equation}
-%  =
-%    \begin{cases}
-%        \frac{4 r_{\rm s} \delta_{\rm c} \rho_{\rm crit}}{x^2} \left[ \frac{2}{\sqrt{1-x^2}} {\rm arctanh} \sqrt{\frac{1-x}{1+x}} + {\rm ln}(x/2) \right], & \text{for } x < 1; \\
-%        4 r_{\rm s} \delta_{\rm c} \rho_{\rm crit} \left[ 1 + {\rm ln}(1/2) \right], & \text{for } x = 1; \\
-%        \frac{4 r_{\rm s} \delta_{\rm c} \rho_{\rm crit}}{x^2} \left[ \frac{2}{\sqrt{x^2 - 1}} {\rm arctan} \sqrt{\frac{x-1}{1+x}} + {\rm ln}(x/2) \right], & \text{for } x > 1.
-%    \end{cases}
-%\end{equation}
-
-%\attn{Note: I never coded the below equation, only the one above. Is that true???}
-%\begin{equation}
-%\Delta\Sigma(x) =
-%    \begin{cases}
-%    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} \bigg[ \frac{8\ {\rm arctanh}\sqrt{(1 - x)/(1 + x)}}{x^2 \sqrt{1 - x^2}} + \frac{4}{x^2}\ln(\frac{x}{2}) \\ - \frac{2}{(x^2 - 1)} + \frac{4\ %{\rm arctanh}\sqrt{(1 - x)/(1 + x)}}{(x^2 - 1) \sqrt{1 - x^2}} \bigg], \hfill \text{for } x < 1; \\
-%    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} [ \frac{10}{3} + 4 \ln(\frac{1}{2}) ], \hfill \text{for } x = 1; \\
-%    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} \bigg[ \frac{8\ {\rm arctanh}\sqrt{(x - 1)/(1 + x)}}{x^2 \sqrt{x^2 - 1}} + \frac{4}{x^2}\ln(\frac{x}{2}) \\ - \frac{2}{(x^2 - 1)} + \frac{4\ %{\rm arctanh}\sqrt{(x - 1)/(1 + x)}}{(x^2 - 1)^{3/2}} \bigg], \hfill \text{for } x > 1.
-%    \end{cases}
-%\end{equation}
 
 We can rewrite the differential surface mass density in the form in which it is computed in \code{nfw.py}:
 \begin{equation}
@@ -189,7 +153,6 @@ where  $g(x) = $
 \begin{equation}
     \begin{cases}
 
-    %\left[ \frac{4}{x^2} + \frac{2}{(x^2 - 1)} \right] \ln \left( \frac{1 + \sqrt{(1-x) / (1+x)} }{1 - \sqrt{(1-x) / (1+x)} } \right) / \sqrt{1 - x^2} \\ + \frac{4}{x^2} \ln \frac{x}{2} - \frac{2}{(x^2 - 1)}, & \text{for } x < 1; \\
     \left[ \frac{4 / x^2 + 2/ (x^2 - 1)}{\sqrt{1 - x^2}} \right] \ln \left( \frac{1 + \sqrt{(1-x) / (1+x)} }{1 - \sqrt{(1-x) / (1+x)} } \right) \\ + \frac{4}{x^2} \ln \frac{x}{2} - \frac{2}{(x^2 - 1)}, & \text{for } x < 1; \\
     
     (10/3) + 4 \ln(1/2), & \text{for } x = 1; \\
@@ -198,14 +161,6 @@ where  $g(x) = $
 
     \end{cases}
 \end{equation}
-
-%\begin{equation}
-%    \begin{cases}
-%    \bigg[ \frac{8\ {\rm arctanh}\sqrt{(1 - x)/(1 + x)}}{x^2 \sqrt{1 - x^2}} + \frac{4}{x^2}\ln(\frac{x}{2}) \\ - \frac{2}{(x^2 - 1)} + \frac{4\ {\rm arctanh}\sqrt{(1 - x)/(1 + x)}}{(x^2 - 1) \sqrt{1 - x^2}} \bigg], & \text{for } x < 1; \\
-%    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} [ \frac{10}{3} + 4 \ln(\frac{1}{2}) ], & \text{for } x = 1; \\
-%    r_{\rm s} \delta_{\rm c} \rho_{\rm crit} \bigg[ \frac{8\ {\rm arctanh}\sqrt{(x - 1)/(1 + x)}}{x^2 \sqrt{x^2 - 1}} + \frac{4}{x^2}\ln(\frac{x}{2}) \\ - \frac{2}{(x^2 - 1)} + \frac{4\ {\rm arctanh}\sqrt{(x - 1)/(1 + x)}}{(x^2 - 1)^{3/2}} \bigg], & \text{for } x > 1.
-%    \end{cases}
-%\end{equation}
 
 Running \code{sigma_nfw()} or \code{deltasigma_nfw()}, with only a specification of halo properties \code{rs}, \code{delta_c}, \code{rho_crit}, and radial bins \code{rbins}, will lead to the calculation of halo profiles according to Equations \ref{sigma} and \ref{dsigma} outlined above. 
 
@@ -261,8 +216,6 @@ sigma
            [ 181.91820855,  92.86651598,  27.34020647,   6.94677803,  1.81488253],
            [ 168.79009041,  86.16480864,  25.36720188,   6.44546415,  1.68391163]] solMass / pc2>
 \end{lstlisting}
-%<Quantity [[ 38.60655298, 17.57285034, 4.11253461,   
-%0.93809627, 0.23574031], [ 181.91820855, 92.86651598, 27.34020647, 6.94677803, 1.81488253], [ 168.79009041, 86.16480864, 25.36720188, 6.44546415, 1.68391163]] solMass / pc2>
 %----------------------------
 
 The miscentered surface mass density profiles are given by the centered profiles (Equations \ref{sigma} and \ref{dsigma}), convolved with the offset distribution (Equation \ref{PofR}). We follow the offset halo formalism first written down by \citet{Yang06}, and applied to cluster miscentering by, {\textit e.g.} \citet{Johnston07, George12, Ford14, Ford15, Simet16}. Specifically, we calculate the offset surface mass density $\Sigma^{\rm off}$ as follows:
@@ -308,7 +261,7 @@ deltasigma[0]
 
 The \code{cofm.py} module currently contains three functions, each of which calculates halo concentration from mass, redshift, and cosmology, according to a prescription given in the literature. These functions are \code{c_DuttonMaccio()} \citep[for calculations following][]{Dutton14}, \code{c_Duffy()} \citep[following][]{Duffy08}, and \code{c_Prada()} \citep[for][]{Prada12}. Halo mass-concentration relations are an area of active research, and there have been discrepancies between results from different observations and simulations, and disagreement surrounding the best choice of model \citep[see {\emph e.g.}][]{Dutton14, Klypin16}. We do not aim to join this discussion here, but focus on outlining the functionality provided by the \code{cluster-lensing} package, for calculating these different concentration values.
 
-%All three functions require two input parameters (scalars or array-like inputs), which are the halo redshift(s) \code{z} and the halo mass(es) \code{m}. Specifically, the latter is according to the $M_{200}$ mass definition, in units of solar masses (optionally with corresponding \code{astropy.units}). $M_{200}$ is the mass interior to a sphere of radius $r_{200}$, within which the average density is $200\rho_{\rm crit}(z)$. 
+All three functions require two input parameters (scalars or array-like inputs), which are the halo redshift(s) \code{z} and the halo mass(es) \code{m}. Specifically, the latter is according to the $M_{200}$ mass definition, in units of solar masses (optionally with corresponding \code{astropy.units}). $M_{200}$ is the mass interior to a sphere of radius $r_{200}$, within which the average density is $200\rho_{\rm crit}(z)$. 
 
 The default cosmology used is from the measurements by the \citet{PlanckXVI}, which is imported from the module \code{astropy.cosmology.Planck13}. However, the user can specify alternative cosmological parameters. For calculating concentration according to either the \citet{Duffy08} or the \citet{Dutton14} prescription, the only cosmological parameter required is the Hubble parameter, which can be passed into \code{c_Duffy()} or \code{c_DuttonMaccio()} as the keyword argument \code{h}. For the \citet{Prada12} concentration, the user would want to specify \code{Om_M} and \code{Om_L} (the fractional energy densities of matter and the cosmological constant) in addition to \code{h}, in the call to \code{c_Prada()}.
 

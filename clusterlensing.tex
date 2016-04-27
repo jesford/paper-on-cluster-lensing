@@ -455,8 +455,8 @@ M200 = norm * (N200 / 20) ^ slope
    norm: 2.7e+13 solMass
    slope: 1.4
 
-# alter mass-richness parameters
-# and show the updated table
+# update the mass-richness parameters
+# and show the resulting table
 c.massrich_norm = 3e13
 c.massrich_slope = 1.5
 c.show()
@@ -477,7 +477,7 @@ M200 = norm * (N200 / 20) ^ slope
 %----------------------------
 This example also demonstrates how the slope or normalization of the mass-richness relation can be altered, and the changes propagate from richness through to mass and other variables.
 
-Then all the ingredients are in place to calculate halo profiles by invoking the \code{calc_nfw()} method, which interfaces to the \code{sigma_nfw()} and \code{deltasigma_nfw()} methods of the \code{SurfaceMassDensity()} class, and passes it the required inputs $\{ r_{\rm s}, \rho_{\rm crit}, \delta_{\rm c} \}$ for all the clusters behind the scenes. $\rho_{\rm crit}$ is calculated at every cluster redshift using the (default \code{astropy.cosmology.Planck13} or user-specified) cosmological model.
+Then all the ingredients are in place to calculate halo profiles by invoking the \code{calc_nfw()} method, which interfaces to the \code{sigma_nfw()} and \code{deltasigma_nfw()} methods of the \code{SurfaceMassDensity()} class, and passes it the required inputs $\{ r_{\rm s}, \rho_{\rm crit}, \delta_{\rm c} \}$ for all the clusters behind the scenes. $\rho_{\rm crit}$ is calculated at every cluster redshift using the (default \code{astropy.cosmology.Planck13} or user-specified) cosmological model. The user must specify the desired radial bins \code{rbins} in Mpc.
 %---------- code ----------
 \begin{lstlisting}
 import numpy as np
@@ -511,6 +511,26 @@ c.deltasigma_nfw
 0.91909571]] solMass / pc2>
 \end{lstlisting}
 %----------------------------
+
+Similar to the direct use of \code{SurfaceMassDensity()}, discussed in Section \ref{nfw}, the miscentered profiles can be calculated from the \code{calc_nfw()} method, by supplying the optional \code{offsets} keyword with an array-like object of length equal to the number of clusters, where each element is the width of the offset distribution in Mpc ($\sigma_{\rm off}$ in Equation \ref{PofR}).
+%---------- code ----------
+\begin{lstlisting}
+c.calc_nfw(rbins=rbins, offsets=[0.3,0.3,0.3])
+#the offset sigma profile is now:
+c.sigma_nfw
+<Quantity [[ 42.50844685, 39.74291121, 
+32.29894213, 18.50988719, 6.16284894, 
+1.89335218, 0.62609991, 0.20840423], 
+[ 68.10228964, 63.87901872, 52.56539317, 
+31.20890672, 11.17821854, 3.5884285, 
+1.20745376, 0.40574057], [ 95.16077234, 
+89.48298631, 74.29328561, 45.24074628, 
+17.06333763, 5.66481165, 1.93408383, 
+0.65518747]] solMass / pc2>
+\end{lstlisting}
+%----------------------------
+
+Although \code{SurfaceMassDensity()} from the \code{nfw.py} module, and \code{ClusterEnsemble().calc_nfw()} from the \code{clusters.py} module, are both capable of computing the same $\Sigma(R)$ and $\Delta\Sigma(R)$ profiles, each require different forms of input which would make sense for different use cases. For the studies in \citet{Ford15}, \citet{Ford14}, and \citet{Ford12}, the authors wanted do the profile computations for many clusters at once, while varying the mass and the miscentering offset distribution during the process of fitting the model to the data. What was known were the redshifts and mass proxies (cluster richness in \citealt{Ford15} and \citealt{Ford14}, and a previous mass estimate in \citealt{Ford12}), and mass-concentration relations from the literature, so the \code{ClusterEnsemble()} framework made sense. However, if someone wanted to simply calculate the NFW profiles according to the \citet{Wright00} formulation, then they might prefer to use \code{SurfaceMassDensity()} as a tool to get profiles directly from the NFW and cosmological parameters $r_{\rm s}$, $\delta_{\rm c}$, and $\rho_{\rm crit}(z)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

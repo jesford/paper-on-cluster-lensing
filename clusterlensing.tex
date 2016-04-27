@@ -528,6 +528,13 @@ c.sigma_nfw
 
 Although \code{SurfaceMassDensity()} from the \code{nfw.py} module, and \code{ClusterEnsemble().calc_nfw()} from the \code{clusters.py} module, are both capable of computing the same $\Sigma(R)$ and $\Delta\Sigma(R)$ profiles, each require different forms of input which would make sense for different use cases. For the studies in \citet{Ford15}, \citet{Ford14}, and \citet{Ford12}, the authors wanted do the profile computations for many clusters at once, while varying the mass and the miscentering offset distribution during the process of fitting the model to the data. What was known were the redshifts and mass proxies (cluster richness in \citealt{Ford15} and \citealt{Ford14}, and a previous mass estimate in \citealt{Ford12}), and mass-concentration relations from the literature, so the \code{ClusterEnsemble()} framework made sense. However, if someone wanted to simply calculate the NFW profiles according to the \citet{Wright00} formulation, then they might prefer to use \code{SurfaceMassDensity()} as a tool to get profiles directly from the NFW and cosmological parameters $r_{\rm s}$, $\delta_{\rm c}$, and $\rho_{\rm crit}(z)$.
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Relation to Existing Code}
+
+Mention related public code that I could find.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Examples}

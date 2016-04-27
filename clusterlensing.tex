@@ -84,23 +84,12 @@ When many different gravitational lenses are stacked, as is often necessary to i
 
 A popular model for the dark matter distribution in a gravitationally collapsed halo, such as a galaxy cluster, is the Navarro, Frenk, and White (NFW) model. This density profile (given in Equation \ref{nfw3d} below) was determined from numerical simulations, including the dissipationless collapse of density fluctuations under gravity \citep{nfw97}. The simpler Singular Isothermal Sphere density model, which only has one free parameter in contrast to the two for NFW, does not tend to fit the inner profiles of halos well and is also unphysical in that the total mass diverges \citep{Schneider06_WeakGravLens}. Other models such as the generalized-NFW and the Einasto profile tend to better describe the full radial distribution of dark matter in halos, at the expense of adding a third parameter to characterize the inner slope of the density profiles \citep[see {\emph e.g.} discussion in][]{Dutton14}. In the software package presented in this work we only include the standard 2-parameter NFW model, but future work should make alternative models available as well.
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Description of the Code}
 \label{code}
 
 In this section we describe each of the individual modules and a few of the functions available in the \code{cluster-lensing} package. Much of this content comes directly from pages within the online documentation.\footnote{\url{http://jesford.github.io/cluster-lensing/}} Throughout the modules, dimensionful quantities are labelled as such by means of the \code{astropy.units} package \citep{astropy13}.
-
-\begin{itemize} 
-\item Purpose and general use.
-\item Relation to existing code
-\item \code{SurfaceMassDensity()} class, generic to all NFW halos
-\item \code{ClusterEnsemble()} class
-\item mass-richness functions
-\item mass-concentration functions
-\item We use units from the \code{astropy.units} package \citep{astropy13}.
-\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -311,7 +300,6 @@ array([ 3.93068341, 2.80001099])
 \end{lstlisting}
 %----------------------------
 
-
 The \code{c_Prada()} concentration calculation is much more complex, and written in terms of $\sigma(M_{200}, x_{\rm p})$, the rms fluctuation of the density field. The \citet{Prada12} halo concentration is given by\footnote{we use the subscript ``p'' to distinguish some variables in the equations from \citet{Prada12} from those in the current work}
 \begin{equation}\label{c_Prada}
 \begin{split}
@@ -356,7 +344,6 @@ array([ 5.71130928, 5.06733941, 5.30163572])
 \end{lstlisting}
 %----------------------------
 The last code example demonstrates the controversial feature of the \citet{Prada12} mass-concentration relation -- an upturn in concentration values for the highest mass halos -- in opposition to the canonical view that higher mass halos have lower concentrations \citep{nfw96, nfw97, Jing00, Bullock01}.
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -528,10 +515,9 @@ c.sigma_nfw
 
 Although \code{SurfaceMassDensity()} from the \code{nfw.py} module, and \code{ClusterEnsemble().calc_nfw()} from the \code{clusters.py} module, are both capable of computing the same $\Sigma(R)$ and $\Delta\Sigma(R)$ profiles, each require different forms of input which would make sense for different use cases. For the studies in \citet{Ford15}, \citet{Ford14}, and \citet{Ford12}, the authors wanted do the profile computations for many clusters at once, while varying the mass and the miscentering offset distribution during the process of fitting the model to the data. What was known were the redshifts and mass proxies (cluster richness in \citealt{Ford15} and \citealt{Ford14}, and a previous mass estimate in \citealt{Ford12}), and mass-concentration relations from the literature, so the \code{ClusterEnsemble()} framework made sense. However, if someone wanted to simply calculate the NFW profiles according to the \citet{Wright00} formulation, then they might prefer to use \code{SurfaceMassDensity()} as a tool to get profiles directly from the NFW and cosmological parameters $r_{\rm s}$, $\delta_{\rm c}$, and $\rho_{\rm crit}(z)$.
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Relation to Existing Code}
+\section{Relation to Existing Code}
 
 Mention related public code that I could find.
 
@@ -561,7 +547,6 @@ Summary goes here.
 
 \section*{Acknowledgements}
 The authors are grateful for funding from the Washington Research Foundation Fund for Innovation in Data-Intensive Discovery and the Moore/Sloan Data Science Environments Project at the University of Washington. This project makes use of Astropy, a community-developed core Python package for Astronomy (Astropy Collaboration, 2013), \url{http://www.astropy.org}.
-
 
 \bibliographystyle{apj}
 \bibliography{References}

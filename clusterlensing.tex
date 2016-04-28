@@ -407,7 +407,7 @@ c.dataframe
 \end{lstlisting}
 %----------------------------
 
-The above examples also demonstrate that cluster masses are converted to concentrations and to characteristic halo overdensities. This assumes the default mass-concentration relation of the \code{c_DuttonMaccio()} form, or the user can instead specify another of the relations by setting the keyword \code{cm="Prada"} or \code{cm="Duffy"}, when the \code{ClusterEnsemble()} object is instantiated. Cosmology can also be specified upon instantiation, by setting the \code{cosmology} keyword to any of \code{"WMAP9"}, \code{"WMAP7"}, or \code{"WMAP5"}:
+The above examples also demonstrate that cluster masses are converted to concentrations and to characteristic halo overdensities. This assumes the default mass-concentration relation of the \code{c_DuttonMaccio()} form, or the user can instead specify another of the relations by setting the keyword \code{cm="Prada"} or \code{cm="Duffy"}, when the \code{ClusterEnsemble()} object is instantiated. Cosmology can also be specified upon instantiation, by setting the \code{cosmology} keyword \attn{(update this to new cosmology usage when next code release is made)} to any of \code{"WMAP9"}, \code{"WMAP7"}, or \code{"WMAP5"}:
 %---------- code ----------
 \begin{lstlisting}
 c = ClusterEnsemble(z, cm="Duffy", 
@@ -517,16 +517,21 @@ Although \code{SurfaceMassDensity()} from the \code{nfw.py} module, and \code{Cl
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Relation to Existing Code}
-
-Mention related public code that I could find, Colossus \url{http://www.benediktdiemer.com/code/} \citet{Diemer15}, and J\"{o}rg Dietrich's NFW routines on GitHub \url{https://github.com/joergdietrich/NFW}.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \section{Examples}
 \label{ex}
 Some more detailed examples.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Relation to Existing Code}
+
+The \code{cluster-lensing} project offers some unique capabilities over other publicly-available software, most notably the cluster miscentering calculations. Here we attempt to compare the software presented in this work with other open source tools that we are aware of, and show how \code{cluster-lensing} fits into the larger ecosystem of astronomical software. 
+
+\code{Colossus} is a Python package aimed at cosmology, halo, and large-scale structure calculations \citep{ColossusCode}. It was used in work by \citet{Diemer15} and is made available at \url{http://www.benediktdiemer.com/code/} under the MIT license. Much of the functionality of \code{cluster-lensing} appears to overlap with \code{Colossus}, including mass-concentration relations (although \code{Colossus} has the advantage of containing many more relations from the literature) and NFW surface mass density profiles. However, \code{cluster-lensing} also performs the optional step of producing the miscentered halo profiles, which are smoothed by convolution of standard profiles with a centroid offset distribution.
+
+While \citet{ColossusCode} has chosen to implement basic cosmological calculations from scratch, \code{cluster-lensing} instead relies on external modules supplied by \code{astropy}.  The only dependencies claimed by \code{Colossus} are \code{numpy} \citep{NumPy} and \code{scipy} \citep{SciPy}, whereas \code{cluster-lensing} additionally requires \code{astropy} \citep{astropy13} and \code{pandas} \citep{Pandas}. Fewer dependencies might be seen as a positive feature of \code{Colossus}; on the other hand, \code{astropy} could be viewed as possibly a more robust source for standard astronomical and cosmological calculations, since it is maintained by a large community of developers.
+
+J\"{o}rg Dietrich's NFW routines on GitHub \url{https://github.com/joergdietrich/NFW}...
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

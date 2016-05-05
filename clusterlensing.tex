@@ -527,11 +527,11 @@ Some more detailed examples.
 
 The \code{cluster-lensing} project offers some unique capabilities over other publicly-available software, most notably the cluster miscentering calculations. Here we attempt to compare the software presented in this work with other open source tools that we are aware of, and show how \code{cluster-lensing} fits into the larger ecosystem of astronomical software. 
 
-\code{Colossus} is a Python package aimed at cosmology, halo, and large-scale structure calculations \citep{ColossusCode}. It was used in work by \citet{Diemer15} and is made available at \url{http://www.benediktdiemer.com/code/} under the MIT license. Much of the functionality of \code{cluster-lensing} appears to overlap with \code{Colossus}, including mass-concentration relations (although \code{Colossus} has the advantage of containing many more relations from the literature) and NFW surface mass density profiles. However, \code{cluster-lensing} also performs the optional step of producing the miscentered halo profiles, which are smoothed by convolution of standard profiles with a centroid offset distribution.
+\code{Colossus} is a Python package aimed at cosmology, halo, and large-scale structure calculations \citep{ColossusCode}. It was used in work by \citet{Diemer15} and is made available at \url{http://www.benediktdiemer.com/code/} under the MIT license. Much of the functionality of \code{cluster-lensing} appears to overlap with \code{Colossus}, including mass-concentration relations (although \code{Colossus} has the advantage of containing many more relations from the literature) and NFW surface mass density profiles. However, \code{cluster-lensing} also provides the miscentered halo calculations, which are are lacking from \code{Colossus}.
 
 While \citet{ColossusCode} has chosen to implement basic cosmological calculations from scratch, \code{cluster-lensing} instead relies on external modules supplied by \code{astropy}.  The only dependencies claimed by \code{Colossus} are \code{numpy} \citep{NumPy} and \code{scipy} \citep{SciPy}, whereas \code{cluster-lensing} additionally requires \code{astropy} \citep{astropy13} and \code{pandas} \citep{Pandas}. Fewer dependencies might be seen as a positive feature of \code{Colossus}; on the other hand, \code{astropy} could be viewed as possibly a more robust source for standard astronomical and cosmological calculations, since it is maintained by a large community of developers.
 
-J\"{o}rg Dietrich's NFW routines on GitHub \url{https://github.com/joergdietrich/NFW}...
+Another related set of code is provided by J\"{o}rg Dietrich's NFW routines \attn{insert bibtex for Jorg's code}, available on GitHub at \url{https://github.com/joergdietrich/NFW}. These \code{Python} routines calculate NFW profiles for $\Sigma(R)$ and $\Delta\Sigma(R)$, and \attn{invoke mass-concentration relations including \citet{Duffy08} and another one (an incomplete overlap with \code{cluster-lensing}). What else exactly does this code do?}. Similarly, \code{cluster-lensing} goes beyond the functionality of \attn{insert bibtex for Jorg's code} by supplying means for calculating cluster miscentering.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -545,7 +545,6 @@ Plans for the future.
 \section{Summary}
 \label{summary}
 
-Summary goes here.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

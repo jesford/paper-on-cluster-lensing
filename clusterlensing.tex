@@ -455,9 +455,8 @@ M200 = norm * (N200 / 20) ^ slope
    slope: 1.5
 
 \end{lstlisting}
-
 %----------------------------
-This example also demonstrates how the slope or normalization of the mass-richness relation can be altered, and the changes propagate from richness through to mass and other variables.
+The last example also demonstrates how the slope or normalization of the mass-richness relation can be altered, and the changes propagate from richness through to mass and other variables.
 
 Then all the ingredients are in place to calculate halo profiles by invoking the \code{calc_nfw()} method, which interfaces to the \code{sigma_nfw()} and \code{deltasigma_nfw()} methods of the \code{SurfaceMassDensity()} class, and passes it the required inputs $\{ r_{\rm s}, \rho_{\rm crit}, \delta_{\rm c} \}$ for all the clusters behind the scenes. $\rho_{\rm crit}$ is calculated at every cluster redshift using the (default \code{astropy.cosmology.Planck13} or user-specified) cosmological model. The user must specify the desired radial bins \code{rbins} in Mpc.
 %---------- code ----------

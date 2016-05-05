@@ -529,7 +529,7 @@ The \code{cluster-lensing} project offers some unique capabilities over other pu
 
 While \citet{ColossusCode} has chosen to implement basic cosmological calculations from scratch, \code{cluster-lensing} instead relies on external modules supplied by \code{astropy}.  The only dependencies claimed by \code{Colossus} are \code{numpy} \citep{NumPy} and \code{scipy} \citep{SciPy}, whereas \code{cluster-lensing} additionally requires \code{astropy} \citep{astropy13} and \code{pandas} \citep{Pandas}. Fewer dependencies might be seen as a positive feature of \code{Colossus}; on the other hand, \code{astropy} could be viewed as possibly a more robust source for standard astronomical and cosmological calculations, since it is maintained by a large community of developers.
 
-Another related set of code is provided by J\"{o}rg Dietrich's NFW routines \attn{insert bibtex for Jorg's code}, available on GitHub at \url{https://github.com/joergdietrich/NFW}. These \code{Python} routines calculate NFW profiles for $\Sigma(R)$ and $\Delta\Sigma(R)$, and \attn{invoke mass-concentration relations including \citet{Duffy08} and another one (an incomplete overlap with \code{cluster-lensing}). What else exactly does this code do?}. Similarly, \code{cluster-lensing} goes beyond the functionality of \attn{insert bibtex for Jorg's code} by supplying means for calculating cluster miscentering.
+Another related set of code is provided by J\"{o}rg Dietrich's NFW routines \citep{DietrichNFW}, available on GitHub at \url{https://github.com/joergdietrich/NFW}. These \code{Python} routines calculate NFW profiles for $\Sigma(R)$ and $\Delta\Sigma(R)$, and \attn{invoke mass-concentration relations including \citet{Duffy08} and another one (an incomplete overlap with \code{cluster-lensing}). What else exactly does this code do?}. Similarly, \code{cluster-lensing} goes beyond the functionality of \citet{DietrichNFW} by supplying means for calculating cluster miscentering.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -547,7 +547,7 @@ In this work we presented \code{cluster-lensing}, a pure-\code{Python} package f
 
 Compared to existing code, \code{cluster-lensing} stands out by seemingly being the only publicly-available software for calculating miscentered halo profiles. Miscentering is a problem of great relevance for stacked weak lensing studies of galaxy clusters, where halo centers are imperfectly estimated from observational data or simply not well defined (as is the case for individual non-spherical halos -- for example in merging systems). The resulting offsets between the assumed and real centers change the shape of the measured shear or magnification profile and need to be accounted for in the modeling. 
 
-\code{cluster-lensing} is released under the MIT license, and can be downloaded from the Python Package Index, by running \code{$ pip install cluster-lensing} on the command line. It being developed in a public repository on GitHub, \url{http://github.com/jesford/cluster-lensing/}. Much of the content of this paper is also available in the online documentation, available at \url{http://jesford.github.io/cluster-lensing/}. We welcome feedback, suggestions, feature requests through GitHub issues \attn{insert link to issues} or by emailing \email{jesford@uw.edu}. Contributions to the code can be made by submitting a \attn{pull-request} against the repository. If \code{cluster-lensing} is used in a research project, the authors would appreciate citations to the code \attn{Zenodo citation} and this paper.
+\code{cluster-lensing} is released under the MIT license, and can be downloaded from the Python Package Index, by running \code{$ pip install cluster-lensing} on the command line. It being developed in a public repository on GitHub, \url{http://github.com/jesford/cluster-lensing/}. Much of the content of this paper is also available in the online documentation, available at \url{http://jesford.github.io/cluster-lensing/}. We welcome feedback, suggestions, feature requests through GitHub issues (\url{https://github.com/jesford/cluster-lensing/issues}) or by emailing the author. Contributions to the code can be made by submitting a pull-request against the repository (\url{https://github.com/jesford/cluster-lensing/pulls}). If \code{cluster-lensing} is used in a research project, the authors would appreciate citations to the code \attn{Zenodo citation} and this paper.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -556,7 +556,7 @@ Compared to existing code, \code{cluster-lensing} stands out by seemingly being 
 \section*{Acknowledgements}
 The authors are grateful for funding from the Washington Research Foundation Fund for Innovation in Data-Intensive Discovery and the Moore/Sloan Data Science Environments Project at the University of Washington. This project makes use of Astropy, a community-developed core Python package for Astronomy (Astropy Collaboration, 2013), \url{http://www.astropy.org}.
 
-\bibliographystyle{apj}
+\bibliographystyle{aasjournal}
 \bibliography{References}
 
 \end{document}

@@ -203,10 +203,10 @@ sigma
 %----------------------------
 
 The miscentered surface mass density profiles are given by the centered profiles (Equations \ref{sigma} and \ref{dsigma}), convolved with the offset distribution (Equation \ref{PofR}). We follow the offset halo formalism first written down by \citet{Yang06}, and applied to cluster miscentering by, {\textit e.g.} \citet{Johnston07, George12, Ford14, Ford15, Simet16}. Specifically, we calculate the offset surface mass density $\Sigma^{\rm off}$ as follows:
-\begin{equation}
+\begin{equation}\label{sigma_off}
 \Sigma^{\rm off}(R) = \int_{0}^{\infty} \Sigma(R | R_{\rm off})\ P(R_{\rm off})\ {\rm d}R_{\rm off}
 \end{equation}
-\begin{equation}
+\begin{equation}\label{sigma_RgivenRoff}
 \Sigma(R|R_{\mathrm{off}})=\frac{1}{2\pi}\int_{0}^{2\pi}\Sigma(r) \mathrm{d}\theta
 \end{equation}
 Here $r = \sqrt{R^2+R_{\mathrm{off}}^2-2RR_{\mathrm{off}}\cos(\theta)}$ and $\theta$ is the azimuthal angle \citep{Yang06}. The $\Delta\Sigma^{\rm off}$ profile is calculated from $\Sigma^{\rm off}$, in analogy with Equations \ref{dsigma} and \ref{sigbar}.
@@ -536,7 +536,11 @@ Another related set of code is provided by J\"{o}rg Dietrich's NFW routines \cit
 \section{Future Development}
 \label{future}
 
-Plans for the future.
+Some of the future plans for \code{cluster-lensing} include adding support for different density profiles. Currently only the NFW model is provided, and alternative mass density models would make the package more complete and useful. The first priority will be inclusion of the Einasto profile \citep{Einasto65}, and later possibilities may include the generalized-NFW \citep{Zhao96}. The default cosmology is currently that of \citet{PlanckXVI}, but should be updated to \citet{PlanckXIII_15}, since this is now available as \code{astropy.cosmology.Planck15} (the user can currently specify this cosmology, it is just not the default). 
+
+When surface mass density profiles have to be calculated many times for many clusters, as is the case when iterating over parameters in the process of fitting a model, the processing time can become lengthy. This issue is most pronounced for calculation of miscentered profiles, which require the convolution laid out in Equations \ref{sigma_off} and \ref{sigma_RgivenRoff}. One major improvement to \code{cluster-lensing} will be the option to use parallel-processing in these computations. The likely structure of this parallelism will be to divide the halos in a \code{ClusterEnsemble()} catalog object among the parallel threads, which will calculate the profiles for each of their assigned clusters.
+
+All of these future developments are currently listed as issues at \url{https://github.com/jesford/cluster-lensing/issues}. This GitHub Issue tracker will continue to serve as the central place for listing future improvements and feature requests. Users and potential-users alike are encouraged to submit ideas and requests through that URL.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -547,7 +551,7 @@ In this work we presented \code{cluster-lensing}, a pure-\code{Python} package f
 
 Compared to existing code, \code{cluster-lensing} stands out by seemingly being the only publicly-available software for calculating miscentered halo profiles. Miscentering is a problem of great relevance for stacked weak lensing studies of galaxy clusters, where halo centers are imperfectly estimated from observational data or simply not well defined (as is the case for individual non-spherical halos -- for example in merging systems). The resulting offsets between the assumed and real centers change the shape of the measured shear or magnification profile and need to be accounted for in the modeling. 
 
-\code{cluster-lensing} is released under the MIT license, and can be downloaded from the Python Package Index, by running \code{$ pip install cluster-lensing} on the command line. It being developed in a public repository on GitHub, \url{http://github.com/jesford/cluster-lensing/}. Much of the content of this paper is also available in the online documentation, available at \url{http://jesford.github.io/cluster-lensing/}. We welcome feedback, suggestions, feature requests through GitHub issues (\url{https://github.com/jesford/cluster-lensing/issues}) or by emailing the author. Contributions to the code can be made by submitting a pull-request against the repository (\url{https://github.com/jesford/cluster-lensing/pulls}). If \code{cluster-lensing} is used in a research project, the authors would appreciate citations to the code \attn{Zenodo citation} and this paper.
+\code{cluster-lensing} is released under the MIT license, and can be downloaded from the Python Package Index, by running \code{$ pip install cluster-lensing} on the command line, or by manually downloading the package from \url{https://pypi.python.org/pypi/cluster-lensing}. It being developed in a public repository on GitHub, \url{http://github.com/jesford/cluster-lensing/}. Much of the content of this paper is also available in the online documentation, available at \url{http://jesford.github.io/cluster-lensing/}. We welcome feedback, suggestions, and feature requests through GitHub issues (\url{https://github.com/jesford/cluster-lensing/issues}) or by emailing the author. Contributions to the code can be made by submitting a pull request to the repository (\url{https://github.com/jesford/cluster-lensing/pulls}). If \code{cluster-lensing} is used in a research project, the authors would appreciate citations to the code \attn{Zenodo citation} and this paper.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

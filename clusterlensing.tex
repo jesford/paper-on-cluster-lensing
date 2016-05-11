@@ -463,7 +463,7 @@ Then all the ingredients are in place to calculate halo profiles by invoking the
 \begin{lstlisting}
 import numpy as np
 # create some logarithmic bins:
-rmin, rmax = 0.1, 5. # Mpc
+rmin, rmax = 0.1, 5.  # Mpc
 rbins = np.logspace(np.log10(rmin), 
                     np.log10(rmax), 
                     num = 8)
@@ -497,7 +497,7 @@ Similar to the direct use of \code{SurfaceMassDensity()}, discussed in Section \
 %---------- code ----------
 \begin{lstlisting}
 c.calc_nfw(rbins=rbins, offsets=[0.3,0.3,0.3])
-#the offset sigma profile is now:
+# the offset sigma profile is now:
 c.sigma_nfw
 <Quantity [[ 42.50844685, 39.74291121, 
 32.29894213, 18.50988719, 6.16284894, 
@@ -515,9 +515,151 @@ Although \code{SurfaceMassDensity()} from the \code{nfw.py} module, and \code{Cl
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Examples}
+\section{Example}
 \label{ex}
-Some more detailed examples.
+As an example use case, we take the Canada-France-Hawaii Telescope Lensing Survey \citep[CFHTLenS;][]{Heymans12, Erben13} public galaxy cluster catalog, which is available on Zenodo at \url{http://dx.doi.org/10.5281/zenodo.51291} \citep{3DMFcatalog}. This dataset was previously explored using a pre-release version of the \code{cluster-lensing} software in \citet{Ford14, Ford15}. The W1 field of this survey contains 10,745 galaxy cluster candidates in the redshift range $0.2 \le z \le 0.9$:
+
+%---------- code ----------
+\begin{lstlisting}
+import numpy as np
+data = np.loadtxt('Clusters_W1.dat')
+data.shape
+(10745, 5)
+data[0:4, :]  # print first 4 clusters
+array([[ 34.8023, -7.01005, 0.3, 4.435, 10.],
+       [ 34.9425, -7.38996, 0.5, 4.545, 21.],
+       [ 34.8651, -6.69449, 0.5, 3.858, 6.],
+       [ 34.6224, -7.32768, 0.5, 3.619, 8.]])
+redshift = data[:, 2]
+sig = data[:, 3]
+richness = data[:, 4]
+\end{lstlisting}
+%----------------------------
+
+We select a subset of the lower redshift clusters that were detected at the highest significance. Then we import \code{clusterlensing} to create a dataframe of the cluster properties, of which we just print the first several, and calculate the NFW profiles.
+
+%---------- code ----------
+\begin{lstlisting}
+
+# select a subset
+here = (sig > 15) & (redshift < 0.5)
+sig[here].shape
+z = redshift[here]
+n200 = richness[here]
+
+import clusterlensing
+c = clusterlensing.ClusterEnsemble(z)
+c.n200 = n200
+c.dataframe.head()
+     z  n200          m200      r200      c200      delta_c        rs
+0  0.4   181  5.897552e+14  1.531367  3.966101  5173.016417  0.386114
+1  0.3   420  1.916332e+15  2.357815  3.658237  4332.615805  0.644522
+2  0.4   176  5.670737e+14  1.511478  3.980218  5213.746469  0.379747
+3  0.3   113  3.049521e+14  1.277703  4.341779  6324.420397  0.294281
+4  0.4   162  5.049435e+14  1.454129  4.022285  5336.272412  0.361518
+
+rbins = np.logspace(np.log10(0.1),
+                    np.log10(10.0), num=20)
+c.calc_nfw(rbins)
+\end{lstlisting}
+%----------------------------
+
+Next we import the \code{matplotlib} and \code{seaborn} libraries and configure some settings to make our plots more readable. The first plot we create with the commands below presents the $\Sigma(R)$ profile for every one of these 15 clusters, and is given in Figure \ref{f1}.
+
+%---------- code ----------
+\begin{lstlisting}
+
+import matplotlib.pyplot as plt
+import seaborn as sns; sns.set()
+import matplotlib
+matplotlib.rcParams['axes.labelsize'] = 20
+matplotlib.rcParams['legend.fontsize'] = 20
+
+# strings for plots
+raxis = '$R\ [\mathrm{Mpc}]$'
+sgma = '$\Sigma(R)$'
+sgmaoff = '$\Sigma^\mathrm{off}(R)$'
+delta = '$\Delta$'
+sgmaunits = ' $[M_{\odot} / \mathrm{pc}^2]$'
+
+# order from high to low richness
+order = c.n200.argsort()[::-1]
+
+for s, n in zip(c.sigma_nfw[order], c.n200[order]):
+    plt.plot(rbins, s, label=str(int(n)))
+plt.xscale('log')
+plt.legend(fontsize=10)
+plt.ylabel(sgma+sgmaunits)
+plt.xlabel(raxis)
+plt.savefig('all_sigma_EXAMPLE.eps')
+plt.close()
+# output of this plot is in Figure 1
+
+\end{lstlisting}
+%----------------------------
+
+\begin{figure}\label{f1}
+\epsscale{1.2}
+\plotone{data/f1.eps}
+\figcaption{This is a caption.}
+\end{figure}
+
+If we had made a stacked measurement of the shear or magnification profile of these clusters, then we will want to know what the average profile of the stack looks like. Since we already have the individual profiles, we just need to calculate the mean across the 0$^{\rm th}$ axis of the \code{sigma_nfw} and \code{deltasigma_nfw} arrays. The plot of these average profiles is given in Figure \ref{f2}.
+
+%---------- code ----------
+\begin{lstlisting}
+
+sigma = c.sigma_nfw.mean(axis=0)
+dsigma = c.deltasigma_nfw.mean(axis=0)
+
+plt.plot(rbins, sigma, label=sgma)
+plt.plot(rbins, dsigma, label=delta+sgma)
+plt.legend()
+plt.ylim([0., 1400.])
+plt.xscale('log')
+plt.xlabel(raxis)
+plt.ylabel(sgmaunits)
+plt.savefig('f2.eps')
+plt.close()
+# output of this plot is in Figure 2
+
+\end{lstlisting}
+%----------------------------
+
+\begin{figure}\label{f2}
+\epsscale{1.2}
+\plotone{data/f2.eps}
+\figcaption{This is a caption.}
+\end{figure}
+
+Finally, we may want to investigate whether cluster miscentering has a significant effect on our sample. We calculate the miscentered profiles, given in Figure \ref{f3}, which could be compared to the centered profiles in Figure \ref{f2} to see which is a better fit to our measurement.
+
+%---------- code ----------
+\begin{lstlisting}
+
+offsets = np.ones(c.z.shape[0]) * 0.1
+c.calc_nfw(rbins, offsets=offsets)
+sigma_offset = c.sigma_nfw.mean(axis=0)
+dsigma_offset = c.deltasigma_nfw.mean(axis=0)
+
+plt.plot(rbins, sigma_offset, label=sgmaoff)
+plt.plot(rbins, dsigma_offset, label=delta+sgmaoff)
+plt.legend()
+plt.ylim([0., 1400.])
+plt.xscale('log')
+plt.xlabel(raxis)
+plt.ylabel(sgmaunits)
+plt.savefig('f3.eps')
+plt.close()
+# output of this plot is in Figure 3
+
+\end{lstlisting}
+%----------------------------
+\begin{figure}\label{f3}
+\epsscale{1.2}
+\plotone{data/f3.eps}
+\figcaption[data/f3.eps]{This is a caption.}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -547,11 +689,11 @@ All of these future developments are currently listed as issues at \url{https://
 \section{Summary}
 \label{summary}
 
-In this work we presented \code{cluster-lensing}, a pure-\code{Python} package for calculating galaxy cluster profiles and properties. We described and gave worked examples of all the functionality currently available, including mass-concentration and mass-richness scaling relations, and the surface mass density profiles $\Sigma(R)$ and $\Delta\Sigma(R)$, which are relevant for gravitational lensing. The latter density profiles are not cluster-specific, but apply to any mass halo that can be approximated as following the NFW prescription. The structure of \code{cluster-lensing} is ideal for calculating properties and profiles for many galaxy clusters at once. This ``composite-halo'' approach \citep[see {\it e.g.}][]{Ford15}, is especially useful for fitting models to a stacked sample of clusters that span a range of mass and/or redshift.
+In this work we presented \code{cluster-lensing}, a pure-\code{Python} package for calculating galaxy cluster profiles and properties. We described and gave worked examples of all the functionality currently available, including mass-concentration and mass-richness scaling relations, and the surface mass density profiles $\Sigma(R)$ and $\Delta\Sigma(R)$, which are relevant for gravitational lensing. The latter density profiles are not cluster-specific, but apply to any mass halo that can be approximated by the NFW prescription. The structure of \code{cluster-lensing} is ideal for calculating properties and profiles for many galaxy clusters at once. This ``composite-halo'' approach \citep[see {\it e.g.}][]{Ford15}, is especially useful for fitting models to a stacked sample of clusters that span a range of mass and/or redshift.
 
 Compared to existing code, \code{cluster-lensing} stands out by seemingly being the only publicly-available software for calculating miscentered halo profiles. Miscentering is a problem of great relevance for stacked weak lensing studies of galaxy clusters, where halo centers are imperfectly estimated from observational data or simply not well defined (as is the case for individual non-spherical halos -- for example in merging systems). The resulting offsets between the assumed and real centers change the shape of the measured shear or magnification profile and need to be accounted for in the modeling. 
 
-\code{cluster-lensing} is released under the MIT license, and can be downloaded from the Python Package Index, by running \code{$ pip install cluster-lensing} on the command line, or by manually downloading the package from \url{https://pypi.python.org/pypi/cluster-lensing}. It being developed in a public repository on GitHub, \url{http://github.com/jesford/cluster-lensing/}. Much of the content of this paper is also available in the online documentation, available at \url{http://jesford.github.io/cluster-lensing/}. We welcome feedback, suggestions, and feature requests through GitHub issues (\url{https://github.com/jesford/cluster-lensing/issues}) or by emailing the author. Contributions to the code can be made by submitting a pull request to the repository (\url{https://github.com/jesford/cluster-lensing/pulls}). If \code{cluster-lensing} is used in a research project, the authors would appreciate citations to the code \attn{Zenodo citation} and this paper.
+\code{cluster-lensing} is released under the MIT license, and can be downloaded from the Python Package Index, by running \code{$ pip install cluster-lensing} on the command line, or by manually downloading the package from \url{https://pypi.python.org/pypi/cluster-lensing}. It being developed in a public repository on GitHub, \url{http://github.com/jesford/cluster-lensing/}. Much of the content of this paper is also available in the online documentation, available at \url{http://jesford.github.io/cluster-lensing/}. We welcome feedback, suggestions, and feature requests through GitHub issues (\url{https://github.com/jesford/cluster-lensing/issues}) or by emailing the author. Contributions to the code can be made by submitting a pull request to the repository (\url{https://github.com/jesford/cluster-lensing/pulls}). If \code{cluster-lensing} is used in a research project, the authors would appreciate citations to the code, \attn{Zenodo citation}, and this paper.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

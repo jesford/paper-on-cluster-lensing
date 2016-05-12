@@ -255,7 +255,7 @@ The \code{c_DuttonMaccio()} calculation of concentration is done according to th
 \end{equation}
 where
 \begin{equation}
-a = 0.52 + 0.385 \cdot {\rm exp}[-0.617\ z^{1.21}],
+a = 0.52 + 0.385\ {\rm exp}[-0.617\ z^{1.21}],
 \end{equation}
 \begin{equation}
 b = -0.101 + 0.206 z.
@@ -276,7 +276,7 @@ array([ 5.13397936,  3.67907305])
 
 The concentration calculation in \code{c_Duffy()} is
 \begin{equation}\label{c_Duffy}
-c_{200} = A \cdot (M_{200} / M_{\rm pivot})^B \cdot (1 + z)^C,
+c_{200} = A\ (M_{200} / M_{\rm pivot})^B \ (1 + z)^C,
 \end{equation}
 where
 \begin{equation}

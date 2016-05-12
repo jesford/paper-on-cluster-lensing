@@ -32,7 +32,7 @@ raxis = '$R\ [\mathrm{Mpc}]$'
 sgma = '$\Sigma(R)$'
 sgmaoff = '$\Sigma^\mathrm{off}(R)$'
 delta = '$\Delta$'
-sgmaunits = ' $[M_{\odot} / \mathrm{pc}^2]$'
+sgmaunits = ' $[M_{\odot}\ \mathrm{pc}^{-2}]$'
 
 # order from high to low richness
 order = c.n200.argsort()[::-1]
@@ -43,6 +43,7 @@ plt.xscale('log')
 plt.legend(fontsize=10)
 plt.ylabel(sgma+sgmaunits)
 plt.xlabel(raxis)
+plt.tight_layout()
 plt.savefig('f1.eps')
 plt.close()
 
@@ -56,6 +57,7 @@ plt.ylim([0., 1400.])
 plt.xscale('log')
 plt.xlabel(raxis)
 plt.ylabel(sgmaunits)
+plt.tight_layout()
 plt.savefig('f2.eps')
 plt.close()
 
@@ -65,11 +67,12 @@ sigma_offset = c.sigma_nfw.mean(axis=0)
 dsigma_offset = c.deltasigma_nfw.mean(axis=0)
 
 plt.plot(rbins, sigma_offset, label=sgmaoff)
-plt.plot(rbins, dsigma_offset, label=delta+sgmaoff)
+plt.plot(rbins, dsigma_offset, '--', label=delta+sgmaoff)
 plt.legend()
 plt.ylim([0., 1400.])
 plt.xscale('log')
 plt.xlabel(raxis)
 plt.ylabel(sgmaunits)
+plt.tight_layout()
 plt.savefig('f3.eps')
 plt.close()

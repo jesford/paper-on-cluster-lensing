@@ -591,9 +591,9 @@ plt.xscale('log')
 plt.legend(fontsize=10)
 plt.ylabel(sgma+sgmaunits)
 plt.xlabel(raxis)
-plt.savefig('all_sigma_EXAMPLE.eps')
-plt.close()
-# output of this plot is in Figure 1
+plt.tight_layout()
+plt.savefig('f1.eps')
+plt.close()  # output is Figure 1
 
 \end{lstlisting}
 %----------------------------
@@ -601,7 +601,7 @@ plt.close()
 \begin{figure}\label{f1}
 \epsscale{1.2}
 \plotone{data/f1.eps}
-\figcaption{This is a caption.}
+\figcaption{Surface mass density profiles $\Sigma(R)$ for all 15 clusters used in this example. These are the most significant (S/N $>15$) clusters detected at low redshifts ($z < 0.5$) in the W1 field of CFHTLenS. See the text for links to download this public dataset. The legend gives the richness values estimated in \citet{Ford15} corresponding to each of these clusters, which are assumed to scale with mass. They are listed from highest to lowest richness, in the same order as the curves.}
 \end{figure}
 
 If we had made a stacked measurement of the shear or magnification profile of these clusters, then we will want to know what the average profile of the stack looks like. Since we already have the individual profiles, we just need to calculate the mean across the 0$^{\rm th}$ axis of the \code{sigma_nfw} and \code{deltasigma_nfw} arrays. The plot of these average profiles is given in Figure \ref{f2}.
@@ -613,15 +613,15 @@ sigma = c.sigma_nfw.mean(axis=0)
 dsigma = c.deltasigma_nfw.mean(axis=0)
 
 plt.plot(rbins, sigma, label=sgma)
-plt.plot(rbins, dsigma, label=delta+sgma)
+plt.plot(rbins, dsigma, '--', label=delta+sgma)
 plt.legend()
 plt.ylim([0., 1400.])
 plt.xscale('log')
 plt.xlabel(raxis)
 plt.ylabel(sgmaunits)
+plt.tight_layout()
 plt.savefig('f2.eps')
-plt.close()
-# output of this plot is in Figure 2
+plt.close()  # output is Figure 2
 
 \end{lstlisting}
 %----------------------------
@@ -629,7 +629,7 @@ plt.close()
 \begin{figure}\label{f2}
 \epsscale{1.2}
 \plotone{data/f2.eps}
-\figcaption{This is a caption.}
+\figcaption{The average of all the surface mass density profiles $\Sigma(R)$ for each of the clusters shown in Figure \ref{f1} is given in blue. The green curve is the average of all the individual differential mass density profiles $\Delta\Sigma(R)$.}
 \end{figure}
 
 Finally, we may want to investigate whether cluster miscentering has a significant effect on our sample. We calculate the miscentered profiles, given in Figure \ref{f3}, which could be compared to the centered profiles in Figure \ref{f2} to see which is a better fit to our measurement.
@@ -643,23 +643,26 @@ sigma_offset = c.sigma_nfw.mean(axis=0)
 dsigma_offset = c.deltasigma_nfw.mean(axis=0)
 
 plt.plot(rbins, sigma_offset, label=sgmaoff)
-plt.plot(rbins, dsigma_offset, label=delta+sgmaoff)
+plt.plot(rbins, dsigma_offset, '--', 
+         label=delta+sgmaoff)
 plt.legend()
 plt.ylim([0., 1400.])
 plt.xscale('log')
 plt.xlabel(raxis)
 plt.ylabel(sgmaunits)
+plt.tight_layout()
 plt.savefig('f3.eps')
-plt.close()
-# output of this plot is in Figure 3
+plt.close()  # output is Figure 3
 
 \end{lstlisting}
 %----------------------------
 \begin{figure}\label{f3}
 \epsscale{1.2}
 \plotone{data/f3.eps}
-\figcaption[data/f3.eps]{This is a caption.}
+\figcaption[data/f3.eps]{Same as Figure \ref{f2} except for miscentered profiles. Cluster centroid offsets are assumed to follow a Rayleigh probability distribution, which is convolved with the perfectly centered profiles to achieve this result.}
 \end{figure}
+
+The above example shows a simple application of \code{cluster-lensing} to a real dataset -- a subset of the CFHTLenS cluster catalog.  For this example we kept the customizations to a minimum, but as shown in Sections \ref{clusters}, the user can alter the parameters in the power-law relation used to convert richness to mass, choose the form of the mass-concentration relation assumed for the NFW profiles, and specify a particular background cosmology. When fitting a model produced by \code{cluster-lensing} to a measurement, one could iterate through parameters in this space by setting various attributes of the \code{ClusterEnsemble()} object \citep[as done, {\it e.g.} in][]{Ford14, Ford15}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

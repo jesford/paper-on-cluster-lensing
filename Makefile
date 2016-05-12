@@ -19,4 +19,5 @@ clean:
 		rm -f *.snippets
 		rm -f clusterlensingNotes.bib
 		#rm -f clusterlensing.pdf
+		rm -f data/*eps-converted-to.pdf
 		ls -ltr

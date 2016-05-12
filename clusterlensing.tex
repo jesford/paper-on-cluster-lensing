@@ -1,12 +1,12 @@
-\documentclass{emulateapj}
+%\documentclass{emulateapj}
+\documentclass[twocolumn]{aastex6}
 
-%\usepackage{color}
-\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
-\usepackage{graphicx}
-\usepackage[backref,breaklinks,colorlinks,citecolor=blue]{hyperref}
-\usepackage[all]{hypcap}
+%\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+%\usepackage{graphicx}
+%\usepackage[backref,breaklinks,colorlinks,citecolor=blue]{hyperref}
+%\usepackage[all]{hypcap}
 \usepackage{amsmath}
-\usepackage{verbatim}
+%\usepackage{verbatim}
 
 \usepackage{enumitem}
 \setitemize{itemsep=0pt}
@@ -40,7 +40,7 @@
 \newcommand{\hcode}{\large\normalfont\texttt} %code in titles, section headers, etc
 
 \newcommand{\attn}[2][red]{\textcolor{#1}{\textit{#2}}}
-\renewcommand*{\backref}[1]{[#1]}
+%\renewcommand*{\backref}[1]{[#1]}
 
 \begin{document}
 
@@ -114,7 +114,7 @@ We can adopt the dimensional radius $x \equiv R/r_{\rm s}$ and, following from \
 where $f(x) = $
 \begin{equation}
     \begin{cases}
-        \frac{1}{x^2 - 1} \left( 1 - \ln{ \left[ \frac{1}{x} + \sqrt{\frac{1}{x^2} - 1} \right]} / \sqrt{1 - x^2} \right), & \text{for } x < 1; \\
+        \frac{1}{x^2 - 1} \left( 1 - \ln{ \left[ \frac{1}{x} + \sqrt{ \frac{1}{x^2} - 1} \right]} / \sqrt{1 - x^2} \right), & \text{for } x < 1; \\
         1/3, & \text{for } x = 1; \\
         \frac{1}{x^2 - 1} \left( 1 - \arccos{(1/x)} / \sqrt{x^2 - 1} \right), & \text{for } x > 1.
     \end{cases}
@@ -458,7 +458,7 @@ M200 = norm * (N200 / 20) ^ slope
 %----------------------------
 The last example also demonstrates how the slope or normalization of the mass-richness relation can be altered, and the changes propagate from richness through to mass and other variables.
 
-Then all the ingredients are in place to calculate halo profiles by invoking the \code{calc_nfw()} method, which interfaces to the \code{sigma_nfw()} and \code{deltasigma_nfw()} methods of the \code{SurfaceMassDensity()} class, and passes it the required inputs $\{ r_{\rm s}, \rho_{\rm crit}, \delta_{\rm c} \}$ for all the clusters behind the scenes. $\rho_{\rm crit}$ is calculated at every cluster redshift using the (default \code{astropy.cosmology.Planck13} or user-specified) cosmological model. The user must specify the desired radial bins \code{rbins} in Mpc.
+Then all the ingredients are in place to calculate halo profiles by invoking the \code{calc_nfw()} method, which interfaces to the \code{sigma_nfw()} and \code{deltasigma_nfw()} methods of the \code{SurfaceMassDensity()} class, and passes it the required inputs $\{ r_{\rm s}, \rho_{\rm crit}, \delta_{\rm c} \}$ for all the clusters behind the scenes. The value of $\rho_{\rm crit}$ is calculated at every cluster redshift using the (default \code{astropy.cosmology.Planck13} or user-specified) cosmological model. The user must specify the desired radial bins \code{rbins} in Mpc.
 %---------- code ----------
 \begin{lstlisting}
 import numpy as np
@@ -522,7 +522,7 @@ As an example use case, we take the Canada-France-Hawaii Telescope Lensing Surve
 %---------- code ----------
 \begin{lstlisting}
 import numpy as np
-data = np.loadtxt('Clusters_W1.dat')
+data = np.loadtxt("Clusters_W1.dat")
 data.shape
 (10745, 5)
 data[0:4, :]  # print first 4 clusters
@@ -572,27 +572,27 @@ Next we import the \code{matplotlib} and \code{seaborn} libraries and configure 
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set()
 import matplotlib
-matplotlib.rcParams['axes.labelsize'] = 20
-matplotlib.rcParams['legend.fontsize'] = 20
+matplotlib.rcParams["axes.labelsize"] = 20
+matplotlib.rcParams["legend.fontsize"] = 20
 
 # strings for plots
-raxis = '$R\ [\mathrm{Mpc}]$'
-sgma = '$\Sigma(R)$'
-sgmaoff = '$\Sigma^\mathrm{off}(R)$'
-delta = '$\Delta$'
-sgmaunits = ' $[M_{\odot}\ \mathrm{pc}^{-2}]$'
+raxis = "$R\ [\mathrm{Mpc}]$"
+sgma = "$\Sigma(R)$"
+sgmaoff = "$\Sigma^\mathrm{off}(R)$"
+delta = "$\Delta$"
+sgmaunits = " $[M_{\odot}\ \mathrm{pc}^{-2}]$"
 
 # order from high to low richness
 order = c.n200.argsort()[::-1]
 
 for s, n in zip(c.sigma_nfw[order], c.n200[order]):
     plt.plot(rbins, s, label=str(int(n)))
-plt.xscale('log')
+plt.xscale("log")
 plt.legend(fontsize=10)
 plt.ylabel(sgma+sgmaunits)
 plt.xlabel(raxis)
 plt.tight_layout()
-plt.savefig('f1.eps')
+plt.savefig("f1.eps")
 plt.close()  # output is Figure 1
 
 \end{lstlisting}
@@ -613,14 +613,14 @@ sigma = c.sigma_nfw.mean(axis=0)
 dsigma = c.deltasigma_nfw.mean(axis=0)
 
 plt.plot(rbins, sigma, label=sgma)
-plt.plot(rbins, dsigma, '--', label=delta+sgma)
+plt.plot(rbins, dsigma, "--", label=delta+sgma)
 plt.legend()
 plt.ylim([0., 1400.])
-plt.xscale('log')
+plt.xscale("log")
 plt.xlabel(raxis)
 plt.ylabel(sgmaunits)
 plt.tight_layout()
-plt.savefig('f2.eps')
+plt.savefig("f2.eps")
 plt.close()  # output is Figure 2
 
 \end{lstlisting}
@@ -643,15 +643,15 @@ sigma_offset = c.sigma_nfw.mean(axis=0)
 dsigma_offset = c.deltasigma_nfw.mean(axis=0)
 
 plt.plot(rbins, sigma_offset, label=sgmaoff)
-plt.plot(rbins, dsigma_offset, '--', 
+plt.plot(rbins, dsigma_offset, "--", 
          label=delta+sgmaoff)
 plt.legend()
 plt.ylim([0., 1400.])
-plt.xscale('log')
+plt.xscale("log")
 plt.xlabel(raxis)
 plt.ylabel(sgmaunits)
 plt.tight_layout()
-plt.savefig('f3.eps')
+plt.savefig("f3.eps")
 plt.close()  # output is Figure 3
 
 \end{lstlisting}

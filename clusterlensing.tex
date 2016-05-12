@@ -56,7 +56,7 @@
 
 
 \begin{abstract}
-We describe a new open source package for calculating properties of galaxy clusters, including NFW halo profiles with and without the effects of cluster miscentering. This pure-\code{Python} package, \code{cluster-lensing}, provides well-documented and easy-to-use classes and functions for calculating cluster scaling relations, including mass-richness and mass-concentration relations from the literature, as well as the surface mass density $\Sigma(R)$ and differential surface mass density $\Delta\Sigma(R)$ profiles, probed by weak lensing magnification and shear, respectively. Galaxy cluster miscentering is especially a concern for stacked weak lensing shear studies of galaxy clusters, where offsets between the assumed and the true underlying matter distribution can lead to a significant bias in the mass estimates if not taken into account. This software has been developed and released in a public GitHub repository, and is licensed under the permissive free MIT license. The \code{cluster-lensing} package can be downloaded through the Python Package Index, \url{https://pypi.python.org/pypi/cluster-lensing}, or directly from GitHub at \url{https://github.com/jesford/cluster-lensing}, and is archived on Zenodo \citep{clusterlensing}. Full documentation is available at \url{http://jesford.github.io/cluster-lensing/}.
+We describe a new open source package for calculating properties of galaxy clusters, including NFW halo profiles with and without the effects of cluster miscentering. This pure-\code{Python} package, \code{cluster-lensing}, provides well-documented and easy-to-use classes and functions for calculating cluster scaling relations, including mass-richness and mass-concentration relations from the literature, as well as the surface mass density $\Sigma(R)$ and differential surface mass density $\Delta\Sigma(R)$ profiles, probed by weak lensing magnification and shear. Galaxy cluster miscentering is especially a concern for stacked weak lensing shear studies of galaxy clusters, where offsets between the assumed and the true underlying matter distribution can lead to a significant bias in the mass estimates if not accounted for. This software has been developed and released in a public GitHub repository, and is licensed under the permissive free MIT license. The \code{cluster-lensing} package can be downloaded through the Python Package Index, \url{https://pypi.python.org/pypi/cluster-lensing}, or directly from GitHub at \url{https://github.com/jesford/cluster-lensing}, and is archived on Zenodo \citep{clusterlensing}. Full documentation is available at \url{http://jesford.github.io/cluster-lensing/}.
 \end{abstract}
 
 \keywords{methods: data analysis -- methods: numerical -- galaxies: clusters: general -- gravitational lensing: weak -- dark matter}
@@ -72,15 +72,15 @@ We describe a new open source package for calculating properties of galaxy clust
 
 Clusters of galaxies are the largest gravitationally collapsed structures to have formed in the history of the universe.  As such, they are interesting both from a cosmological as well as an astrophysics perspective. In the former case, the galaxy cluster number density as a function of mass (the cluster mass function) is a probe of cosmological parameters including the fractional matter density $\Omega_{\rm m}$ and the normalization of the matter power spectrum $\sigma_8$. Astrophysically, the deep potential wells of galaxy clusters are environments useful for testing theories of general relativity, galaxy evolution, and gas and plasma physics, among other things \citep{Voit05}. 
 
-The common thread among these diverse investigations is the requisite knowledge of the mass of the galaxy cluster, which is largely composed of its invisible dark matter halo. Although many techniques exist for estimated the total mass of these systems, weak lensing has emerged as somewhat of a gold standard, since it is sensitive to the mass itself, and not to the dynamical state or other biased tracers of the underlying mass. Scaling relations between weak lensing derived masses, and other observables, including richness, X-ray luminosity and temperature, for examples, are typically calibrated from large surveys and extrapolated to clusters for which gravitational lensing measurements are impossible or unreliable. Since weak lensing masses are often considered the ``true'' masses, against which other estimates are compared \citep[e.g.][]{Leauthaud10, vonderLinden14, Hoekstra15}, it is paramount that cluster masses from weak lensing modeling are as unbiased as possible.
+The common thread among these diverse investigations is the requisite knowledge of the mass of the galaxy cluster, which is largely composed of its invisible dark matter halo. Although many techniques exist for estimating the total mass of these systems, weak lensing has emerged as somewhat of a gold standard, since it is sensitive to the mass itself, and not to the dynamical state or other biased tracers of the underlying mass. Scaling relations between weak lensing derived masses, and other observables, including richness, X-ray luminosity and temperature, for examples, are typically calibrated from large surveys and extrapolated to clusters for which gravitational lensing measurements are impossible or unreliable. Since weak lensing masses are often considered the ``true'' masses, against which other estimates are compared \citep[e.g.][]{Leauthaud10, vonderLinden14, Hoekstra15}, it is paramount that cluster masses from weak lensing modeling are as unbiased as possible.
 
-For stacked weak lensing measurements of galaxy clusters, an important source of bias in fitting a mass model is the inclusion of the effect of miscentering offsets. Miscentering occurs when the center of the mass distribution, the dark matter halo, does not perfectly coincide with the assumed center around which tangential shear (or magnification) profiles are being measured. Candidate centers for galaxy clusters are necessarily chosen from observational proxies, and often include a single galaxy, such as the brightest or most massive cluster galaxy, or the centroid of some extended quantity like the peak of X-ray emission or average of galaxy positions \citep{George12}. The particular choice of center may be offset from the true center due to interesting physical processes such as recent mergers and cluster evolution, or simply due to misidentification of the proxy of interest \citep{Johnston07}. 
+For stacked weak lensing measurements of galaxy clusters, an important source of bias in fitting a mass model is the inclusion of the effect of miscentering offsets. Miscentering occurs when the center of the mass distribution -- the dark matter halo -- does not perfectly coincide with the assumed center around which tangential shear (or magnification) profiles are being measured. Candidate centers for galaxy clusters are necessarily chosen from observational proxies, and often include a single galaxy, such as the brightest or most massive member, or the centroid of some extended quantity like the peak of X-ray emission or average of galaxy positions \citep{George12}. The particular choice of center may be offset from the true center due to interesting physical processes such as recent mergers and cluster evolution, or simply due to misidentification of the proxy of interest \citep{Johnston07}. 
 
-The miscentering effect on the stacked weak lensing profile can be included in a proper modeling of the measurement, as done in \citet{Johnston07, Mandelbaum10, Oguri11, George12, Sehgal13, Oguri14, Ford14, Ford15, Simet16}. The inclusion of this effect commonly assumes a form for the distribution of offsets, such as a Rayleigh distribution in radius (which represents a 2D Gaussian in the plane of the sky), which is convolved with the centered profile. Software for performing the integrations for the miscentered weak lensing profiles was developed in order to produce results in \citet{Ford14, Ford15}, and has recently been publicly released to the astronomical community.\footnote{\url{https://github.com/jesford/cluster-lensing}}
+The miscentering effect on the stacked weak lensing profile can be included in a proper modeling of the measurement, as done in \citet{Johnston07, Mandelbaum10, Oguri11, George12, Sehgal13, Oguri14, Ford14, Ford15, Simet16}. The inclusion of this effect commonly assumes a form for the distribution of offsets, such as a Rayleigh distribution in radius (which represents a 2D Gaussian in the plane of the sky). This distribution is convolved with the standard (centered) halo profile to obtain the miscentered version. Software for calculating these miscentered weak lensing profiles was developed in order to produce results in \citet{Ford14, Ford15}, and has recently been publicly released to the astronomical community \citep{clusterlensing}.\footnote{\url{https://github.com/jesford/cluster-lensing}}
 
 When many different gravitational lenses are stacked, as is often necessary to increase signal-to-noise for weak lensing measurements, care must be taken in the interpretation of the average signal. The issue here is that the (differential) surface mass density is not a linear function of the mass, so the average of many stacked profiles does not directly yield the average mass of the lens sample. Care must be taken to consider the underlying distribution of cluster masses as well as the redshifts of lenses and sources, all of which affect the amplitude of the measured lensing profile. One approach to this is to use a so-called composite-halo approach \citep[e.g.][]{Hildebrandt11, Ford12, Ford14, Ford15, Simet16}, where profiles are calculated for all individual lens objects and then averaged together to create a model that can be fit to the measurement. The \code{ClusterEnsemble()} class discussed in Section \ref{clusters} is designed with this approach in mind.
 
-A popular model for the dark matter distribution in a gravitationally collapsed halo, such as a galaxy cluster, is the Navarro, Frenk, and White (NFW) model. This density profile (given in Equation \ref{nfw3d} below) was determined from numerical simulations, including the dissipationless collapse of density fluctuations under gravity \citep{nfw97}. The simpler Singular Isothermal Sphere density model, which only has one free parameter in contrast to the two for NFW, does not tend to fit the inner profiles of halos well and is also unphysical in that the total mass diverges \citep{Schneider06_WeakGravLens}. Other models such as the generalized-NFW and the Einasto profile tend to better describe the full radial distribution of dark matter in halos, at the expense of adding a third parameter to characterize the inner slope of the density profiles \citep[see e.g. discussion in][]{Dutton14}. In the software package presented in this work we only include the standard 2-parameter NFW model, but future work should make alternative models available as well.
+A popular model for the dark matter distribution in a gravitationally collapsed halo, such as a galaxy cluster, is the Navarro, Frenk, and White (NFW) model. This density profile (given in Equation \ref{nfw3d} below) was determined from numerical simulations that included the dissipationless collapse of density fluctuations under gravity \citep{nfw97}. The simpler Singular Isothermal Sphere density model, which only has one free parameter in contrast to the two for NFW, does not tend to fit the inner profiles of halos well and is also unphysical in that the total mass diverges \citep{Schneider06_WeakGravLens}. Other models such as the generalized-NFW and the Einasto profile tend to better describe the full radial distribution of dark matter in halos, at the expense of adding a third parameter to characterize the inner slope of the density profiles \citep[see e.g. discussion in][]{Dutton14}. In the software package presented in this work we only include the standard 2-parameter NFW model, but future work should make alternative models available as well.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -100,13 +100,13 @@ The 3-dimensional density profile of an NFW halo is given by
 \begin{equation}\label{nfw3d}
 \rho(r) = \frac{\delta_{\rm c} \rho_{\rm crit}}{(r/r_{\rm s})(1+r/r_{\rm s})^2},
 \end{equation}
-where $r_{\rm s}$ is the cluster scale radius, $\delta_{\rm c}$ is the characteristic halo overdensity, and $\rho_{\rm crit} = \rho_{\rm crit}(z)$ is the critical energy density of the universe at the lens redshift. These three parameters\footnote{or, in the case of calculating multiple NFW halos at once, three array-like objects representing each of these parameters} must be specified when instantiating the class \code{SurfaceMassDensity()}, via the arguments \code{rs}, \code{delta_c}, and \code{rho_crit}, respectively. The units on \code{rs} are assumed to be Mpc, \code{delta_c} is dimensionless, and \code{rho_crit} is in $M_{\odot}/{\rm Mpc}/{\rm pc}^2$, although the actual inclusion of the \code{astropy.units} on these variables is optional. The user will probably also want to choose the radial bins for the calculation, which are specified via the keyword argument \code{rbins}, in Mpc. The surface mass density is the integral along the line-of-sight of the 3-dimensional density:
+where $r_{\rm s}$ is the cluster scale radius, $\delta_{\rm c}$ is the characteristic halo overdensity, and $\rho_{\rm crit} = \rho_{\rm crit}(z)$ is the critical energy density of the universe at the lens redshift. These three parameters\footnote{or, in the case of calculating multiple NFW halos at once, three array-like objects representing each of these parameters} must be specified when instantiating the class \code{SurfaceMassDensity()}, via the arguments \code{rs}, \code{delta_c}, and \code{rho_crit}, respectively. The units on \code{rs} are assumed to be Mpc, \code{delta_c} is dimensionless, and \code{rho_crit} is in $M_{\odot}{\rm Mpc}^{-1}{\rm pc}^{-2}$, although the actual inclusion of the \code{astropy.units} on these variables is optional. The user will probably also want to choose the radial bins for the calculation, which are specified via the keyword argument \code{rbins}, in Mpc. The surface mass density is the integral along the line-of-sight of the 3-dimensional density:
 \begin{equation}
 \Sigma(R) = 2 \int_0^{\infty} \rho(R,y) {\rm d}y.
 \end{equation}
 Here $R$ is the projected radial distance (in the plane of the sky).  
 
-We can adopt the dimensional radius $x \equiv R/r_{\rm s}$ and, following from \citet{Wright00}, show that:
+We can adopt the dimensionless radius $x \equiv R/r_{\rm s}$ and, following from \citet{Wright00}, show that:
 \begin{equation}\label{sigma}
 \Sigma(x) = 2 r_{\rm s} \delta_{\rm c} \rho_{\rm crit} f(x),
 \end{equation}
@@ -160,6 +160,7 @@ sigma = smd.sigma_nfw()
 sigma[0]
 <Quantity [ 129.33333333, 11.64751032, 3.33992059, 
 0.89839601, 0.23327149] solMass / pc2>
+
 # surface mass density with no units
 sigma[0].value
 array([ 129.33333333, 11.64751032, 3.33992059, 
@@ -167,7 +168,7 @@ array([ 129.33333333, 11.64751032, 3.33992059,
 \end{lstlisting}
 %----------------------------
 
-These are the standard centered NFW profiles, under the assumption that the peak of the halo density distribution perfectly coincides with the identified halo center. This may not be a good assumption, however, and the user can instead run these calculations for miscentered halos by specifying the optional input parameter \code{offsets}. This parameter sets the width of a distribution of centroid offsets, assuming a 2-dimensional Gaussian distribution on the sky. This offset distribution is equivalent to, and implemented in code as, a uniform distribution in angle and a Rayleigh probability distribution in $R$:
+These are the standard centered NFW profiles, under the assumption that the peak of the halo density distribution perfectly coincides with the identified halo center. This may not be a good assumption, however, and the user can instead run these calculations for miscentered halos by specifying the optional input parameter \code{offsets}. This parameter sets the width of a distribution of centroid offsets, assuming a 2-dimensional Gaussian distribution on the sky. This offset distribution is equivalent to, and implemented in code as, a uniform distribution in angle and a Rayleigh probability distribution in radius:
 \begin{equation}\label{PofR}
 P(R_{\mathrm{off}})=\frac{R_{\mathrm{off}}}{\sigma_{\mathrm{off}}^2}\ \mathrm{exp}\bigg[-\frac{1}{2}\bigg(\frac{R_{\mathrm{off}}}{\sigma_{\mathrm{off}}}\bigg)^2\ \bigg].
 \end{equation}
@@ -187,6 +188,7 @@ sigma = smd.sigma_nfw()
 sigma[0]
 <Quantity [ 38.60655298, 17.57285034, 4.11253461, 
 0.93809627, 0.23574031] solMass / pc2>
+
 # example calculating multiple profiles
 smd = SurfaceMassDensity(rs=[0.1,0.2,0.2], 
                          rho_crit=[0.2,0.2,0.2], 
@@ -223,8 +225,8 @@ deltasigma = smd.deltasigma_nfw()
 deltasigma[0]
 <Quantity [ 108.78445455, 25.47093418, 10.29627483, 
 3.71631903, 1.23840727] solMass / pc2>
+
 # miscentered DeltaSigma profile
-rbins = [0.1, 0.5, 1.0, 2.0, 4.0]
 smd = SurfaceMassDensity(rs=[0.1], 
                          rho_crit=[0.2], 
                          delta_c=[9700.], 
@@ -259,7 +261,7 @@ a = 0.52 + 0.385\ {\rm exp}[-0.617\ z^{1.21}],
 \begin{equation}
 b = -0.101 + 0.206 z.
 \end{equation}
-The above three equations map to Equations 7, 11, and 10, respectively in \citet{Dutton14}. The values in these expressions were determined from simulations of halos between $0 < z < 5$, spanning over 5 orders of magnitude in mass, and shown to match observational measurements of low-redshift galaxies and clusters \citep{Dutton14}. This concentration-mass relation is the default one used by the \code{clusters.py} module
+The above three equations map to Equations 7, 11, and 10, respectively in \citet{Dutton14}. The values in these expressions were determined from simulations of halos between $0 < z < 5$, spanning over 5 orders of magnitude in mass, and were shown to match observational measurements of low-redshift galaxies and clusters \citep{Dutton14}. This concentration-mass relation is the default one used by the \code{clusters.py} module, discussed in Section \ref{clusters}.
 
 %---------- code ----------
 \begin{lstlisting}
@@ -284,12 +286,12 @@ where
 \begin{equation}
 M_{\rm pivot} = 2 \times 10^{12}\ h^{-1} M_{\odot}.
 \end{equation}
-Equation \ref{c_Duffy} in this work maps to Equation 4 in \citet{Duffy08}. The values for $A$, $B$, and $C$ can be found in Table 1 of that work, where they are specific to the ``full'' (relaxed and unrelaxed) sample of simulated NFW halos, spanning the redshift range $0 < z < 2$. $M_{\rm pivot}$ can be found in the caption of Table 1 as well. One caveat with this relation is that the cosmology used in creating the \citet{Duffy08} simulations was that of the now outdated WMAP5 experiment \citep{WMAP5}.
+Equation \ref{c_Duffy} above corresponds to Equation 4 in \citet{Duffy08}. The values for $A$, $B$, and $C$ can be found in Table 1 of that work, where they are specific to the ``full'' (relaxed and unrelaxed) sample of simulated NFW halos, spanning the redshift range $0 < z < 2$. $M_{\rm pivot}$ can be found in the caption of their Table 1 as well. One caveat with this relation is that the cosmology used in creating the \citet{Duffy08} simulations was that of the now outdated WMAP5 experiment \citep{WMAP5}.
 
 %---------- code ----------
 \begin{lstlisting}
 from clusterlensing import cofm
-# default cosmology, h=0.6777
+# default cosmology (h=0.6777)
 cofm.c_Duffy([0.1, 0.5], [1e14, 1e15])
 array([ 4.06126115, 2.89302767])
 # with h=1
@@ -341,7 +343,7 @@ cofm.c_Prada([0.1, 0.1, 0.1], [1e13, 1e14, 1e15])
 array([ 5.71130928, 5.06733941, 5.30163572])
 \end{lstlisting}
 %----------------------------
-The last code example demonstrates the controversial feature of the \citet{Prada12} mass-concentration relation -- an upturn in concentration values for the highest mass halos -- in opposition to the canonical view that higher mass halos have lower concentrations \citep{nfw96, nfw97, Jing00, Bullock01}.
+The last code example demonstrates the controversial feature of the \citet{Prada12} mass-concentration relation -- an upturn in concentration values for the highest mass halos. This is in opposition to the canonical view that higher mass halos have lower concentrations \citep{nfw96, nfw97, Jing00, Bullock01}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -381,7 +383,7 @@ richness_to_mass(20, slope=1.5, norm=1e14)
 \end{lstlisting}
 %----------------------------
 
-The \code{ClusterEnsemble()} class creates, modifies and tracks a Pandas DataFrame containing the properties and attributes of many galaxy clusters at once. When given a new or updated cluster property, it calculates and updates all dependent cluster properties, treating each cluster (row) in the DataFrame as an individual object. This makes it easy to calculate the $\Sigma(R)$ and $\Delta\Sigma(R)$ weak lensing profiles for many different mass clusters at different redshifts, for example. In contrast to using the \code{SurfaceMassDensity()} class discussed in Section \ref{nfw}, the user only needs to specify the cluster redshifts and either of the mass or richness. If richness is supplied, then mass is calculated from it, assuming the form of Equation \ref{massrich} (which is customizable); if mass is specified instead, than the inverse relation is used to calculate richness. In either case the changes are propagated to any dependent variables:
+The \code{ClusterEnsemble()} class creates, modifies and tracks a Pandas DataFrame containing the properties and attributes of many galaxy clusters at once. When given a new or updated cluster property, it calculates and updates all dependent cluster properties, treating each cluster (row) in the DataFrame as an individual object. This makes it easy to calculate the $\Sigma(R)$ and $\Delta\Sigma(R)$ weak lensing profiles for many different mass clusters at different redshifts, with a single command. In contrast to using the \code{SurfaceMassDensity()} class discussed in Section \ref{nfw}, the user only needs to specify the cluster redshifts and either of the mass or richness. If richness is supplied, then mass is calculated from it, assuming the form of Equation \ref{massrich} (which is customizable); if mass is specified instead, than the inverse relation is used to calculate richness. In either case the changes are propagated to any dependent variables:
 %---------- code ----------
 \begin{lstlisting}
 from clusterlensing import ClusterEnsemble
@@ -405,7 +407,7 @@ c.dataframe
 \end{lstlisting}
 %----------------------------
 
-The above examples also demonstrate that cluster masses are converted to concentrations and to characteristic halo overdensities. This assumes the default mass-concentration relation of the \code{c_DuttonMaccio()} form, or the user can instead specify another of the relations by setting the keyword \code{cm="Prada"} or \code{cm="Duffy"}, when the \code{ClusterEnsemble()} object is instantiated. Cosmology can also be specified upon instantiation, by setting the \code{cosmology} keyword to any \code{astropy.cosmology} object that has an \code{h} and a \code{Om0} attribute. If not specified explicitly, the default cosmological model used is \code{astropy.cosmology.Planck13}. Here is an example of creating a \code{ClusterEnsemble()} object that uses the WMAP5 cosmology \citep{WMAP5} and the \citet{Duffy08} concentration:
+The above examples also demonstrate that cluster masses are converted to concentrations and to characteristic halo overdensities. This assumes the default mass-concentration relation of the \code{c_DuttonMaccio()} form, or the user can instead specify another of the relations by setting the keyword \code{cm="Prada"} or \code{cm="Duffy"}, when the \code{ClusterEnsemble()} object is instantiated. Cosmology can also be specified upon instantiation, by setting the \code{cosmology} keyword to be any \code{astropy.cosmology} object that has an \code{h} and a \code{Om0} attribute. If not specified explicitly, the default cosmological model used is \code{astropy.cosmology.Planck13}. Here is an example of creating a \code{ClusterEnsemble()} object that uses the WMAP5 cosmology \citep{WMAP5} and the \citet{Duffy08} concentration:
 %---------- code ----------
 \begin{lstlisting}
 from astropy.cosmology import WMAP5 as cosmo
@@ -517,7 +519,7 @@ Although \code{SurfaceMassDensity()} from the \code{nfw.py} module, and \code{Cl
 
 \section{Example}
 \label{ex}
-As an example use case, we take the Canada-France-Hawaii Telescope Lensing Survey \citep[CFHTLenS;][]{Heymans12, Erben13} public galaxy cluster catalog, which is available on Zenodo at \url{http://dx.doi.org/10.5281/zenodo.51291} \citep{3DMFcatalog}. This dataset was previously explored using a pre-release version of the \code{cluster-lensing} software in \citet{Ford14, Ford15}. The W1 field of this survey contains 10,745 galaxy cluster candidates in the redshift range $0.2 \le z \le 0.9$:
+As an example use case, we take the Canada-France-Hawaii Telescope Lensing Survey \citep[CFHTLenS;][]{Heymans12, Erben13} public galaxy cluster catalog, which is available on Zenodo\footnote{\url{http://dx.doi.org/10.5281/zenodo.51291}} \citep{3DMFcatalog}. This dataset was previously explored using a pre-release version of the \code{cluster-lensing} software in \citet{Ford14, Ford15}. The W1 field of this survey contains 10,745 galaxy cluster candidates in the redshift range $0.2 \le z \le 0.9$:
 
 %---------- code ----------
 \begin{lstlisting}
@@ -536,7 +538,7 @@ richness = data[:, 4]
 \end{lstlisting}
 %----------------------------
 
-We select a subset of the lower redshift clusters that were detected at the highest significance. Then we import \code{clusterlensing} to create a dataframe of the cluster properties, of which we just print the first several, and calculate the NFW profiles.
+We select a subset of the lower redshift clusters that were detected at high significance. Then we import \code{clusterlensing} to create a dataframe of the cluster properties, of which we just print the first several, and calculate the NFW profiles.
 
 %---------- code ----------
 \begin{lstlisting}
@@ -544,6 +546,7 @@ We select a subset of the lower redshift clusters that were detected at the high
 # select a subset
 here = (sig > 15) & (redshift < 0.5)
 sig[here].shape
+(15,)
 z = redshift[here]
 n200 = richness[here]
 
@@ -564,7 +567,7 @@ c.calc_nfw(rbins)
 \end{lstlisting}
 %----------------------------
 
-Next we import the \code{matplotlib} and \code{seaborn} libraries and configure some settings to make our plots more readable. The first plot we create with the commands below presents the $\Sigma(R)$ profile for every one of these 15 clusters, and is given in Figure \ref{f1}.
+Next we import the \code{matplotlib} and \code{seaborn} libraries and configure some settings to make our plots more readable. The first plot we create with the commands below presents the $\Sigma(R)$ profiles for every one of these 15 clusters, and is given in Figure \ref{f1}.
 
 %---------- code ----------
 \begin{lstlisting}
@@ -598,13 +601,15 @@ plt.close()  # output is Figure 1
 \end{lstlisting}
 %----------------------------
 
-\begin{figure}\label{f1}
+\begin{figure}
+\figurenum{1}
 \epsscale{1.2}
 \plotone{data/f1.eps}
-\figcaption{Surface mass density profiles $\Sigma(R)$ for all 15 clusters used in this example. These are the most significant (S/N $>15$) clusters detected at low redshifts ($z < 0.5$) in the W1 field of CFHTLenS. See the text for links to download this public dataset. The legend gives the richness values estimated in \citet{Ford15} corresponding to each of these clusters, which are assumed to scale with mass. They are listed from highest to lowest richness, in the same order as the curves.}
+\caption{Surface mass density profiles $\Sigma(R)$ for all 15 clusters used in this example. These are the most significant (S/N $>15$) clusters detected at low redshifts ($z < 0.5$) in the W1 field of CFHTLenS. See the text for links to download this public dataset. The legend gives the richness values estimated in \citet{Ford15} corresponding to each of these clusters, which are assumed to scale with mass. They are listed from highest to lowest richness, in the same order as the curves.}
+\label{f1}
 \end{figure}
 
-If we had made a stacked measurement of the shear or magnification profile of these clusters, then we will want to know what the average profile of the stack looks like. Since we already have the individual profiles, we just need to calculate the mean across the 0$^{\rm th}$ axis of the \code{sigma_nfw} and \code{deltasigma_nfw} attribute arrays. The plot of these average profiles is given in Figure \ref{f2}.
+If we had made a stacked measurement of the shear or magnification profile of these clusters, then we would want to know what the average profile of the stack looks like. Since we already have the individual profiles, we just need to calculate the mean across the 0$^{\rm th}$ axis of the \code{sigma_nfw} and \code{deltasigma_nfw} attribute arrays. The plot of these average profiles is given in Figure \ref{f2}.
 
 %---------- code ----------
 \begin{lstlisting}
@@ -626,13 +631,15 @@ plt.close()  # output is Figure 2
 \end{lstlisting}
 %----------------------------
 
-\begin{figure}\label{f2}
+\begin{figure}
+\figurenum{2}
 \epsscale{1.2}
 \plotone{data/f2.eps}
-\figcaption{The average of all the surface mass density profiles $\Sigma(R)$ for each of the clusters shown in Figure \ref{f1} is given in blue. The green curve is the average of all the individual differential mass density profiles $\Delta\Sigma(R)$. These curves assume clusters are perfectly centered on their NFW halos.}
+\caption{The average of all the surface mass density profiles $\Sigma(R)$ for each of the clusters shown in Figure \ref{f1} is given in blue. The green curve is the average of all the individual differential mass density profiles $\Delta\Sigma(R)$. These curves assume clusters are perfectly centered on their NFW halos.}
+\label{f2}
 \end{figure}
 
-Finally, we may want to investigate whether cluster miscentering has a significant effect on our sample. We calculate the miscentered profiles, given in Figure \ref{f3}, which could be compared to the centered profiles in Figure \ref{f2} to see which is a better fit to our measurement.
+Finally, we may want to investigate whether cluster miscentering has a significant effect on our sample. We would calculate the miscentered profiles, given in Figure \ref{f3}, which could be compared to the centered profiles in Figure \ref{f2} to see which is a better fit to our measurement. Below we will assume that the miscentering offset distribution peaks at 0.1 Mpc.
 
 %---------- code ----------
 \begin{lstlisting}
@@ -656,10 +663,12 @@ plt.close()  # output is Figure 3
 
 \end{lstlisting}
 %----------------------------
-\begin{figure}\label{f3}
+\begin{figure}
+\figurenum{3}
 \epsscale{1.2}
 \plotone{data/f3.eps}
-\figcaption[data/f3.eps]{Same as Figure \ref{f2} but for miscentered profiles. Cluster centroid offsets are assumed to follow a Rayleigh probability distribution (Equation \ref{PofR}, discussed in Section \ref{nfw}), which is convolved with the perfectly centered profiles to achieve this result.}
+\caption{Same as Figure \ref{f2} but for miscentered profiles. Cluster centroid offsets are assumed to follow a Rayleigh probability distribution (Equation \ref{PofR}, discussed in Section \ref{nfw}), which is convolved with the perfectly centered profiles to achieve this result.}
+\label{f3}
 \end{figure}
 
 The above example shows a simple application of \code{cluster-lensing} to a real dataset -- a subset of the CFHTLenS cluster catalog.  For this example we kept the customizations to a minimum, but as shown in Sections \ref{clusters}, the user can alter the parameters in the power-law relation used to convert richness to mass, choose the form of the mass-concentration relation assumed for the NFW profiles, and specify a particular background cosmology. When fitting a model produced by \code{cluster-lensing} to a measurement, one could iterate through parameters in this space by setting various attributes of the \code{ClusterEnsemble()} object \citep[as done, e.g. in][]{Ford14, Ford15}.
@@ -696,7 +705,7 @@ In this work we presented \code{cluster-lensing}, a pure-\code{Python} package f
 
 Compared to existing code, \code{cluster-lensing} stands out by seemingly being the only publicly-available software for calculating miscentered halo profiles. Miscentering is a problem of great relevance for stacked weak lensing studies of galaxy clusters, where halo centers are imperfectly estimated from observational data or simply not well defined (as is the case for individual non-spherical halos -- for example in merging systems). The resulting offsets between the assumed and real centers change the shape of the measured shear or magnification profile and need to be accounted for in the modeling. 
 
-\code{cluster-lensing} is released under the MIT license, and can be downloaded from the Python Package Index, by running \code{$ pip install cluster-lensing} on the command line, or by manually downloading the package from \url{https://pypi.python.org/pypi/cluster-lensing}. It being developed in a public repository on GitHub, \url{http://github.com/jesford/cluster-lensing/}. Much of the content of this paper is also available in the online documentation, available at \url{http://jesford.github.io/cluster-lensing/}. We welcome feedback, suggestions, and feature requests through GitHub issues (\url{https://github.com/jesford/cluster-lensing/issues}) or by emailing the author. Contributions to the code can be made by submitting a pull request to the repository (\url{https://github.com/jesford/cluster-lensing/pulls}). If \code{cluster-lensing} is used in a research project, the authors would appreciate citations to the code \citep[e.g.][]{clusterlensing} and this paper.
+\code{cluster-lensing} is released under the MIT license, and can be downloaded from the Python Package Index, by running \code{$ pip install cluster-lensing} on the command line, or by manually downloading the package from \url{https://pypi.python.org/pypi/cluster-lensing}. It being developed in a public repository on GitHub, \url{http://github.com/jesford/cluster-lensing/}. Much of the content of this paper is also available in the online documentation, available at \url{http://jesford.github.io/cluster-lensing/}. We welcome feedback, suggestions, and feature requests through GitHub issues (\url{https://github.com/jesford/cluster-lensing/issues}) or by emailing the author. Contributions to the code can be made by submitting a pull request to the repository (\url{https://github.com/jesford/cluster-lensing/pulls}). If \code{cluster-lensing} is used in a research project, the authors would appreciate citations to the code \citep[i.e.][]{clusterlensing} and this paper.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

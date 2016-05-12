@@ -50,7 +50,7 @@ sigma = c.sigma_nfw.mean(axis=0)
 dsigma = c.deltasigma_nfw.mean(axis=0)
 
 plt.plot(rbins, sigma, label=sgma)
-plt.plot(rbins, dsigma, label=delta+sgma)
+plt.plot(rbins, dsigma, '--', label=delta+sgma)
 plt.legend()
 plt.ylim([0., 1400.])
 plt.xscale('log')

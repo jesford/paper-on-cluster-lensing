@@ -12,3 +12,4 @@ before_install:
      texlive-latex-recommended
      texlive-xetex
      texlive-publishers
+     texlive-humanities

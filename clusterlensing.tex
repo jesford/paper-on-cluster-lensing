@@ -88,7 +88,7 @@ A popular model for the dark matter distribution in a gravitationally collapsed 
 \section{Description of the Code}
 \label{code}
 
-In this section we describe each of the individual modules and a few of the functions available in the \code{cluster-lensing} package. Much of this content comes directly from pages within the online documentation.\footnote{\url{http://jesford.github.io/cluster-lensing/}} Throughout the modules, dimensionful quantities are labelled as such by means of the \code{astropy.units} package.
+In this section we demonstrate each of the individual modules available in the \code{cluster-lensing} package. In Section \ref{nfw} we describe a class for calculating surface mass density profiles directly from NFW and cosmological parameters. Next we outline the functions available for mass-concentration relations in Section \ref{cofm}. Then in Section \ref{clusters} we present the class \code{ClusterEnsemble()}, and its related functions, which tie together the previously discussed functionality into a framework for easily manipulating and producing profiles for multiple galaxy clusters at once, from common observational quantities. Much of the content of this section comes directly from the online documentation.\footnote{\url{http://jesford.github.io/cluster-lensing/}} Throughout the modules, dimensionful quantities are labelled as such by means of the \code{astropy.units} package.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -370,6 +370,7 @@ The pair of functions \code{mass_to_richness()} and \code{richness_to_mass()}, a
 M_{200} = M_0 \left( \frac{N_{200}}{20} \right) ^ \beta.
 \end{equation}
 Here $M_0$ is the normalization, which defaults to $2.7 \times 10^{13}$, but can be changed in the call to either function by setting the \code{norm} keyword argument. The power-law slope $\beta = 1.4$ by default, but can be set by specifying the optional \code{slope} input parameter. When these functions are invoked by the \code{ClusterEnsemble()} class, they are applied to the particular mass definition $M_{200}$, and assume units of $M_{\odot}$. However the functions themselves do not assume a mass definition or unit, and can be generalized to any parameter (or type of richness) that has a power-law relationship with mass.
+
 %---------- code ----------
 \begin{lstlisting}
 from clusterlensing.clusters import \
@@ -384,7 +385,8 @@ richness_to_mass(20, slope=1.5, norm=1e14)
 \end{lstlisting}
 %----------------------------
 
-The \code{ClusterEnsemble()} class creates, modifies and tracks a Pandas DataFrame containing the properties and attributes of many galaxy clusters at once. When given a new or updated cluster property, it calculates and updates all dependent cluster properties, treating each cluster (row) in the DataFrame as an individual object. This makes it easy to calculate the $\Sigma(R)$ and $\Delta\Sigma(R)$ weak lensing profiles for many different mass clusters at different redshifts, with a single command. In contrast to using the \code{SurfaceMassDensity()} class discussed in Section \ref{nfw}, the user only needs to specify the cluster redshifts and either of the mass or richness. If richness is supplied, then mass is calculated from it, assuming the form of Equation \ref{massrich} (which is customizable); if mass is specified instead, than the inverse relation is used to calculate richness. In either case the changes are propagated to any dependent variables:
+The \code{ClusterEnsemble()} class creates, modifies and tracks a Pandas DataFrame containing the properties and attributes of many galaxy clusters at once. When given a new or updated cluster property, it calculates and updates all dependent cluster properties, treating each cluster (row) in the DataFrame as an individual object. This makes it easy to calculate the $\Sigma(R)$ and $\Delta\Sigma(R)$ weak lensing profiles for many different mass clusters at different redshifts, with a single command. In contrast to using the \code{SurfaceMassDensity()} class discussed in Section \ref{nfw}, the user only needs to specify the cluster redshifts and either of the mass or richness. If richness is supplied, then mass is calculated from it, assuming the form of Equation \ref{massrich} (which is customizable); if mass is specified instead, than the inverse relation is used to calculate richness. In either case the changes are propagated to any dependent variables.
+
 %---------- code ----------
 \begin{lstlisting}
 from clusterlensing import ClusterEnsemble
@@ -392,12 +394,14 @@ z = [0.1,0.2,0.3]
 c = ClusterEnsemble(z)
 n200 = [20, 20, 20]
 c.n200 = n200
+
 # display cluster dataframe
 c.dataframe
      z  n200          m200      r200      c200       delta_c        rs
 0  0.1    20  2.700000e+13  0.612222  5.839934  12421.201995  0.104834
 1  0.2    20  2.700000e+13  0.591082  5.644512  11480.644557  0.104718
 2  0.3    20  2.700000e+13  0.569474  5.442457  10555.781440  0.104636
+
 # specify mass directly
 c.m200 = [1e13, 1e14, 1e15]
 c.dataframe

@@ -690,7 +690,7 @@ Some of the future plans for \code{cluster-lensing} include adding support for d
 
 When surface mass density profiles have to be calculated many times for many clusters, as is the case when iterating over parameters in the process of fitting a model, the processing time can become lengthy. This issue is most pronounced for calculation of miscentered profiles, which require the convolution laid out in Equations \ref{sigma_off} and \ref{sigma_RgivenRoff}. One major improvement to \code{cluster-lensing} will be the option to use parallel-processing in these computations. The likely structure of this parallelism will be to divide the halos in a \code{ClusterEnsemble()} catalog object among the parallel threads, which will calculate the profiles for each of their assigned clusters.
 
-All of these future developments are currently listed as issues at \url{https://github.com/jesford/cluster-lensing/issues}. This GitHub Issue tracker will continue to serve as the central place for listing future improvements and feature requests. Users and potential-users alike are encouraged to submit ideas and requests through that URL.
+All of these future developments are currently listed as issues on the GitHub repository. This GitHub Issue tracker\footnote{\url{https://github.com/jesford/cluster-lensing/issues}} will continue to serve as the central place for listing future improvements and feature requests. Users and potential-users alike are encouraged to submit ideas and requests through that URL.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

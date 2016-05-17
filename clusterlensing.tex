@@ -1,19 +1,10 @@
-%\documentclass{emulateapj}
 \documentclass[twocolumn]{aastex6}
 
-%\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
-%\usepackage{graphicx}
-%\usepackage[backref,breaklinks,colorlinks,citecolor=blue]{hyperref}
-%\usepackage[all]{hypcap}
 \usepackage{amsmath}
-%\usepackage{verbatim}
 
 \usepackage{enumitem}
 \setitemize{itemsep=0pt}
 %\setlist{nolistsep} %really really no itemsep
-
-%\usepackage{url}
-%\graphicspath{{figures/}}
 
 \usepackage{listings}
 \lstset{language=Python,
@@ -40,7 +31,7 @@
 \newcommand{\hcode}{\large\normalfont\texttt} %code in titles, section headers, etc
 
 \newcommand{\attn}[2][red]{\textcolor{#1}{\textit{#2}}}
-%\renewcommand*{\backref}[1]{[#1]}
+
 
 \begin{document}
 
@@ -609,7 +600,7 @@ plt.close()  # output is Figure 1
 \begin{figure}
 \figurenum{1}
 \epsscale{1.2}
-\plotone{data/f1.eps}
+\plotone{f1.eps}
 \caption{Surface mass density profiles $\Sigma(R)$ for all 15 clusters used in this example. These are the most significant (S/N $>15$) clusters detected at low redshifts ($z < 0.5$) in the W1 field of CFHTLenS. See the text for links to download this public dataset. The legend gives the richness values estimated in \citet{Ford15} corresponding to each of these clusters, which are assumed to scale with mass. They are listed from highest to lowest richness, in the same order as the curves.}
 \label{f1}
 \end{figure}
@@ -639,7 +630,7 @@ plt.close()  # output is Figure 2
 \begin{figure}
 \figurenum{2}
 \epsscale{1.2}
-\plotone{data/f2.eps}
+\plotone{f2.eps}
 \caption{The average of all the surface mass density profiles $\Sigma(R)$ for each of the clusters shown in Figure \ref{f1} is given in blue. The green curve is the average of all the individual differential mass density profiles $\Delta\Sigma(R)$. These curves assume clusters are perfectly centered on their NFW halos.}
 \label{f2}
 \end{figure}
@@ -671,7 +662,7 @@ plt.close()  # output is Figure 3
 \begin{figure}
 \figurenum{3}
 \epsscale{1.2}
-\plotone{data/f3.eps}
+\plotone{f3.eps}
 \caption{Same as Figure \ref{f2} but for miscentered profiles. Cluster centroid offsets are assumed to follow a Rayleigh probability distribution (Equation \ref{PofR}, discussed in Section \ref{nfw}), which is convolved with the perfectly centered profiles to achieve this result.}
 \label{f3}
 \end{figure}

@@ -373,7 +373,7 @@ calc_delta_c(5)
 \end{lstlisting}
 %----------------------------
 
-The pair of functions \code{mass_to_richness()} and \code{richness_to_mass()}, as their names imply, perform conversions between cluster mass and richness. The only required input parameter to \code{mass_to_richness()} is the \code{mass}, and likewise the only required input to \code{richness_to_mass()} is \code{richness}. The calculations assume a power-law form for the relationship between these variables:
+The pair of functions \code{mass_to_richness()} and \code{richness_to_mass()}, as their names imply, perform conversions between cluster mass and richness. The only required input parameter to \code{mass_to_richness()} is the \code{mass}, and likewise the only required input to \code{richness_to_mass()} is \code{richness}. The calculations assume a power-law form for the relationship between these variables, {\bf which is a common simple choice for this scaling relation \citep[e.g.][]{Johnston07, Mandelbaum08b, Andreon10}}:\footnote{\bf Note that the factor of 20 is arbitrary, but allows for a straightforward interpretation of $M_0$ as the mass of cluster with richness 20.}
 \begin{equation}\label{massrich}
 M_{200} = M_0 \left( \frac{N_{200}}{20} \right) ^ \beta.
 \end{equation}

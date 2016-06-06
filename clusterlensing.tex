@@ -111,14 +111,23 @@ where $f(x) = $
     \end{cases}
 \end{equation}
 
-The differential surface mass density probed by shear is calculated from the definition
+The differential surface mass density is calculated from the definition
 \begin{equation}\label{dsigma}
 \Delta\Sigma(x) \equiv  \overline{\Sigma}(<x) - \Sigma(x),
 \end{equation}
 where
 \begin{equation}\label{sigbar}
-\overline{\Sigma}(<x) = \frac{2}{x^2} \int_0^{x} \Sigma(x') x' {\rm d}x'.
+\overline{\Sigma}(<x) = \frac{2}{x^2} \int_0^{x} \Sigma(x') x' {\rm d}x'
 \end{equation}
+{\bf is the average surface mass density interior to the dimensionless radius $x$. The quantity $\Delta\Sigma$ is what is actually probed by a weak lensing shear measurement (in contrast to magnification which probes the surface mass density $\Sigma$ directly). It is related to the average tangential shear around a lens by}
+\begin{equation}
+\Delta\Sigma(x) = \langle \gamma_t(x) \rangle \Sigma_{crit},
+\end{equation}
+{\bf where the critical surface mass density is}
+\begin{equation}
+\Sigma_{crit} = \frac{c^2}{4 \pi G}\frac{D_s}{D_l D_{ls}}.
+\end{equation}
+{\bf Here $c$ is the speed of light, $G$ is the gravitational constant, and $D_s$, $D_l$, and $D_{ls}$ are the angular diameter distances between the observer and source, the observer and lens, and the lens and source, respectively.}
 
 We can rewrite the differential surface mass density in the form in which it is computed in \code{nfw.py}:
 \begin{equation}

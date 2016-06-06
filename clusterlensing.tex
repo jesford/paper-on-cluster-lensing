@@ -137,7 +137,7 @@ where
 \end{equation}
 {\bf Here $c$ is the speed of light, $G$ is the gravitational constant, and $D_s$, $D_l$, and $D_{ls}$ are the angular diameter distances between the observer and source, the observer and lens, and the lens and source, respectively.}
 
-We can rewrite the differential surface mass density in the form in which it is computed in \code{nfw}:
+We can rewrite the differential surface mass density in the form in which it is computed in the \code{nfw} module:
 \begin{equation}
      \Delta\Sigma(x) = r_s \delta_c \rho_{crit} g(x),
 \end{equation}
@@ -360,7 +360,7 @@ The last code example demonstrates the controversial feature of the \citet{Prada
 \label{clusters}
 The \code{clusters} module is designed to provide a catalog-level tool for calculating, tracking, and updating galaxy cluster properties and profiles, through structuring data from multiple clusters as an updatable Pandas Dataframe, and providing an intelligent interface to the other modules discussed in Sections \ref{nfw} and \ref{cofm}. This module contains a single class \code{ClusterEnsemble()}, as well as three functions, \code{mass_to_richness()}, \code{richness_to_mass()}, and \code{calc_delta_c()}.
 
-The function \code{calc_delta_c()} takes a single input parameter, the cluster concentration \code{c200} (e.g. as calculated by one of the functions in \code{cofm}), and returns the characteristic halo overdensity:
+The function \code{calc_delta_c()} takes a single input parameter, the cluster concentration \code{c200} (e.g. as calculated by one of the functions in the \code{cofm} module), and returns the characteristic halo overdensity:
 \begin{equation}
 \delta_c = \left( \frac{200}{3} \right) \frac{c_{200}^3}{\ln(1 + c_{200}) - c_{200}/(1 + c_{200})}.
 \end{equation}

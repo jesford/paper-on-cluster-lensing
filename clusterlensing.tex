@@ -91,10 +91,10 @@ In this section we demonstrate each of the individual modules available in the \
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{\normalfont{\hcode{nfw.py}}}
+\subsection{\normalfont{\hcode{nfw}}}
 \label{nfw}
 
-The \code{nfw.py} module contains a single class called \code{SurfaceMassDensity()}, which computes the surface mass density $\Sigma(R)$ and the differential surface mass density $\Delta\Sigma(R)$ using the class methods \code{sigma_nfw()} and \code{deltasigma_nfw()}, respectively. These profiles are calculated according to the analytical formulas first derived by \citet{Wright00}, assuming the spherical NFW model, and can be applied to any dark matter halo: \emph{this module is not specific to galaxy clusters}.
+The \code{nfw} module contains a single class called \code{SurfaceMassDensity()}, which computes the surface mass density $\Sigma(R)$ and the differential surface mass density $\Delta\Sigma(R)$ using the class methods \code{sigma_nfw()} and \code{deltasigma_nfw()}, respectively. These profiles are calculated according to the analytical formulas first derived by \citet{Wright00}, assuming the spherical NFW model, and can be applied to any dark matter halo: \emph{this module is not specific to galaxy clusters}.
 
 The 3-dimensional density profile of an NFW halo is given by
 \begin{equation}\label{nfw3d}
@@ -137,7 +137,7 @@ where
 \end{equation}
 {\bf Here $c$ is the speed of light, $G$ is the gravitational constant, and $D_s$, $D_l$, and $D_{ls}$ are the angular diameter distances between the observer and source, the observer and lens, and the lens and source, respectively.}
 
-We can rewrite the differential surface mass density in the form in which it is computed in \code{nfw.py}:
+We can rewrite the differential surface mass density in the form in which it is computed in \code{nfw}:
 \begin{equation}
      \Delta\Sigma(x) = r_s \delta_c \rho_{crit} g(x),
 \end{equation}
@@ -250,10 +250,10 @@ deltasigma[0]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{\hcode{cofm.py}}
+\subsection{\hcode{cofm}}
 \label{cofm}
 
-The \code{cofm.py} module currently contains three functions, each of which calculates halo concentration from mass, redshift, and cosmology, according to a prescription given in the literature. These functions are \code{c_DuttonMaccio()} \citep[for calculations following][]{Dutton14}, \code{c_Duffy()} \citep[following][]{Duffy08}, and \code{c_Prada()} \citep[for][]{Prada12}. Halo mass-concentration relations are an area of active research, and there have been discrepancies between results from different observations and simulations, and disagreement surrounding the best choice of model \citep[see e.g.][]{Dutton14, Klypin16}. We do not aim to join this discussion here, but focus on outlining the functionality provided by the \code{cluster-lensing} package, for calculating these different concentration values.
+The \code{cofm} module currently contains three functions, each of which calculates halo concentration from mass, redshift, and cosmology, according to a prescription given in the literature. These functions are \code{c_DuttonMaccio()} \citep[for calculations following][]{Dutton14}, \code{c_Duffy()} \citep[following][]{Duffy08}, and \code{c_Prada()} \citep[for][]{Prada12}. Halo mass-concentration relations are an area of active research, and there have been discrepancies between results from different observations and simulations, and disagreement surrounding the best choice of model \citep[see e.g.][]{Dutton14, Klypin16}. We do not aim to join this discussion here, but focus on outlining the functionality provided by the \code{cluster-lensing} package, for calculating these different concentration values.
 
 All three functions require two input parameters (scalars or array-like inputs), which are the halo redshift(s) \code{z} and the halo mass(es) \code{m}. Specifically, the latter is assumed to correspond to the $M_{200}$ mass definition, in units of solar masses. $M_{200}$ is the mass interior to a sphere of radius $r_{200}$, within which the average density is $200\rho_{crit}(z)$.
 
@@ -270,7 +270,7 @@ a = 0.52 + 0.385\ \mathrm{exp}[-0.617\ z^{1.21}],
 \begin{equation}
 b = -0.101 + 0.206 z.
 \end{equation}
-The above three equations map to Equations 7, 11, and 10, respectively in \citet{Dutton14}. The values in these expressions were determined from simulations of halos between $0 < z < 5$, spanning over 5 orders of magnitude in mass, and were shown to match observational measurements of low-redshift galaxies and clusters \citep{Dutton14}. This concentration-mass relation is the default one used by the \code{clusters.py} module, discussed in Section \ref{clusters}.
+The above three equations map to Equations 7, 11, and 10, respectively in \citet{Dutton14}. The values in these expressions were determined from simulations of halos between $0 < z < 5$, spanning over 5 orders of magnitude in mass, and were shown to match observational measurements of low-redshift galaxies and clusters \citep{Dutton14}. This concentration-mass relation is the default one used by the \code{clusters} module, discussed in Section \ref{clusters}.
 
 %---------- code ----------
 \begin{lstlisting}
@@ -356,11 +356,11 @@ The last code example demonstrates the controversial feature of the \citet{Prada
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{\normalfont{\hcode{clusters.py}}}
+\subsection{\normalfont{\hcode{clusters}}}
 \label{clusters}
-The \code{clusters.py} module is designed to provide a catalog-level tool for calculating, tracking, and updating galaxy cluster properties and profiles, through structuring data from multiple clusters as an updatable Pandas Dataframe, and providing an intelligent interface to the other modules discussed in Sections \ref{nfw} and \ref{cofm}. This module contains a single class \code{ClusterEnsemble()}, as well as three functions, \code{mass_to_richness()}, \code{richness_to_mass()}, and \code{calc_delta_c()}.
+The \code{clusters} module is designed to provide a catalog-level tool for calculating, tracking, and updating galaxy cluster properties and profiles, through structuring data from multiple clusters as an updatable Pandas Dataframe, and providing an intelligent interface to the other modules discussed in Sections \ref{nfw} and \ref{cofm}. This module contains a single class \code{ClusterEnsemble()}, as well as three functions, \code{mass_to_richness()}, \code{richness_to_mass()}, and \code{calc_delta_c()}.
 
-The function \code{calc_delta_c()} takes a single input parameter, the cluster concentration \code{c200} (e.g. as calculated by one of the functions in \code{cofm.py}), and returns the characteristic halo overdensity:
+The function \code{calc_delta_c()} takes a single input parameter, the cluster concentration \code{c200} (e.g. as calculated by one of the functions in \code{cofm}), and returns the characteristic halo overdensity:
 \begin{equation}
 \delta_c = \left( \frac{200}{3} \right) \frac{c_{200}^3}{\ln(1 + c_{200}) - c_{200}/(1 + c_{200})}.
 \end{equation}
@@ -526,7 +526,7 @@ c.sigma_nfw
 \end{lstlisting}
 %----------------------------
 
-Although \code{SurfaceMassDensity()} from the \code{nfw.py} module, and \code{ClusterEnsemble().calc_nfw()} from the \code{clusters.py} module, are both capable of computing the same $\Sigma(R)$ and $\Delta\Sigma(R)$ profiles, each require different forms of input which would make sense for different use cases. For the studies in \citet{Ford15}, \citet{Ford14}, and \citet{Ford12}, the authors wanted do the profile computations for many clusters at once, while varying the mass and the miscentering offset distribution during the process of fitting the model to the data. What was known were the redshifts and mass proxies (cluster richness in \citealt{Ford15} and \citealt{Ford14}, and a previous mass estimate in \citealt{Ford12}), and mass-concentration relations from the literature, so the \code{ClusterEnsemble()} framework made sense. However, if someone wanted to simply calculate the NFW profiles according to the \citet{Wright00} formulation, then they might prefer to use \code{SurfaceMassDensity()} as a tool to get profiles directly from the NFW and cosmological parameters $r_s$, $\delta_c$, and $\rho_{crit}(z)$.
+Although \code{SurfaceMassDensity()} from the \code{nfw} module, and \code{ClusterEnsemble().calc_nfw()} from the \code{clusters} module, are both capable of computing the same $\Sigma(R)$ and $\Delta\Sigma(R)$ profiles, each require different forms of input which would make sense for different use cases. For the studies in \citet{Ford15}, \citet{Ford14}, and \citet{Ford12}, the authors wanted do the profile computations for many clusters at once, while varying the mass and the miscentering offset distribution during the process of fitting the model to the data. What was known were the redshifts and mass proxies (cluster richness in \citealt{Ford15} and \citealt{Ford14}, and a previous mass estimate in \citealt{Ford12}), and mass-concentration relations from the literature, so the \code{ClusterEnsemble()} framework made sense. However, if someone wanted to simply calculate the NFW profiles according to the \citet{Wright00} formulation, then they might prefer to use \code{SurfaceMassDensity()} as a tool to get profiles directly from the NFW and cosmological parameters $r_s$, $\delta_c$, and $\rho_{crit}(z)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

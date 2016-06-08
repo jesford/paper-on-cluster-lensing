@@ -13,3 +13,4 @@ before_install:
      texlive-xetex
      texlive-publishers
      texlive-humanities
+     pygmentize

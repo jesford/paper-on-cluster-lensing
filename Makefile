@@ -1,11 +1,11 @@
 default: paper
 	
 paper:
-	pdflatex clusterlensing
+	pdflatex  -shell-escape clusterlensing
 	bibtex clusterlensing
-	pdflatex clusterlensing
-	pdflatex clusterlensing
-	pdflatex clusterlensing
+	pdflatex  -shell-escape clusterlensing
+	pdflatex  -shell-escape clusterlensing
+	pdflatex  -shell-escape clusterlensing
 
 clean:
 		rm -f *.log

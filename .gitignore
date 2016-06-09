@@ -8,3 +8,6 @@
 *.snippets
 clusterlensingNotes.bib
 clusterlensing.pdf
+_minted-clusterlensing/
+.DS_Store
+data/*-eps-converted-to.pdf

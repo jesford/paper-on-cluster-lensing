@@ -6,6 +6,10 @@
 \setitemize{itemsep=0pt}
 %\setlist{nolistsep} %really really no itemsep
 
+\usepackage{cleveref}
+\crefname{listing}{Sample Code}{Sample Codes}
+\crefname{figure}{Figure}{Figures}
+
 \usepackage[newfloat]{minted}
 %\usemintedstyle{trac}
 \setminted{fontsize=\footnotesize,
@@ -15,9 +19,8 @@
 \SetupFloatingEnvironment{listing}{name=Sample Code}
 %\SetupFloatingEnvironment{listing}{listname=List of Program Code}
 
-\usepackage{cleveref}
-\crefname{listing}{Sample Code}{Sample Codes}
-\crefname{figure}{Figure}{Figures}
+\PrepareListOf{listing}{\renewcommand{\cftfigpresnum}{Listing~}}
+
 
 \usepackage{listings}
 \lstdefinestyle{codeintext}{language=Python, basicstyle=\ttfamily} %normal size font for in text
@@ -34,6 +37,7 @@
 \endgroup
 \mathcode`\_=\string"8000
 \catcode`\_=12
+
 
 \begin{document}
 

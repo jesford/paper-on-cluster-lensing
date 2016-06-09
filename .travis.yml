@@ -13,4 +13,4 @@ before_install:
      texlive-xetex
      texlive-publishers
      texlive-humanities
-     python-pygments
+     python3-pygments

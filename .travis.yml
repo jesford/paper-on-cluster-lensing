@@ -21,3 +21,4 @@ before_install:
      texlive-etoolbox
      texlive-xstring
      texlive-lineno
+     texlive-minted

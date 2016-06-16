@@ -14,11 +14,3 @@ before_install:
      texlive-publishers
      texlive-humanities
      python-pygments
-     texlive-oberdiek
-     texlive-fancyvrb
-     texlive-float
-     texlive-ifplatform
-     texlive-etoolbox
-     texlive-xstring
-     texlive-lineno
-     texlive-minted

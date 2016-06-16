@@ -149,7 +149,7 @@ where  $g(x) = $
 Running \code{sigma_nfw()} or \code{deltasigma_nfw()}, with only a specification of halo properties \code{rs}, \code{delta_c}, \code{rho_crit}, and radial bins \code{rbins}, will lead to the calculation of halo profiles according to Equations \ref{sigma} and \ref{dsigma} outlined above.
 
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> from clusterlensing import SurfaceMassDensity
 >>> rbins = [0.1, 0.5, 1.0, 2.0, 4.0] # Mpc
 >>> smd = SurfaceMassDensity(rs=[0.1],
@@ -176,7 +176,7 @@ P(R_{off})=\frac{R_{off}}{\sigma_{off}^2}\ \mathrm{exp}\bigg[-\frac{1}{2}\bigg(\
 The parameter \code{offsets} is equivalent to $\sigma_{off}$ in this equation.
 
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> from clusterlensing import SurfaceMassDensity
 >>> rbins = [0.1, 0.5, 1.0, 2.0, 4.0]
 >>> # single miscentered halo profile
@@ -216,7 +216,7 @@ The miscentered surface mass density profiles are given by the centered profiles
 Here $r = \sqrt{R^2+R_{off}^2-2RR_{off}\cos(\theta)}$ and $\theta$ is the azimuthal angle \citep{Yang06}. The $\Delta\Sigma^\mathrm{off}$ profile is calculated from $\Sigma^\mathrm{off}$, in analogy with Equations \ref{dsigma} and \ref{sigbar}.
 
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> from clusterlensing import SurfaceMassDensity
 >>> rbins = [0.1, 0.5, 1.0, 2.0, 4.0]
 >>> # perfectly centered DeltaSigma profile
@@ -267,7 +267,7 @@ b = -0.101 + 0.206 z.
 The above three equations map to Equations 7, 11, and 10, respectively in \citet{Dutton14}. The values in these expressions were determined from simulations of halos between $0 < z < 5$, spanning over 5 orders of magnitude in mass, and were shown to match observational measurements of low-redshift galaxies and clusters \citep{Dutton14}. This concentration-mass relation is the default one used by the \code{clusters} module, discussed in Section \ref{clusters}.
 
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> from clusterlensing import cofm
 >>> # single 10**14 Msun halo at z=1
 >>> cofm.c_DuttonMaccio(0.1, 1e14)
@@ -292,7 +292,7 @@ M_{pivot} = 2 \times 10^{12}\ h^{-1} M_\odot.
 Equation \ref{c_Duffy} above corresponds to Equation 4 in \citet{Duffy08}. The values for $A$, $B$, and $C$ can be found in Table 1 of that work, where they are specific to the ``full'' (relaxed and unrelaxed) sample of simulated NFW halos, spanning the redshift range $0 < z < 2$. $M_{pivot}$ can be found in the caption of their Table 1 as well. One caveat with this relation is that the cosmology used in creating the \citet{Duffy08} simulations was that of the now outdated WMAP5 experiment \citep{WMAP5}.
 
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> from clusterlensing import cofm
 >>> # default cosmology (h=0.6777)
 >>> cofm.c_Duffy([0.1, 0.5], [1e14, 1e15])
@@ -338,7 +338,7 @@ c_{min}(x_p) = 3.681 + 1.352 \bigg[ \frac{1}{\pi} \arctan[6.948 (x_p - 0.424)] +
 \end{equation}
 In order of appearance above, beginning with our Equation \ref{c_Prada}, these equations correspond to Equations 14-17, 13, 23a, 23b, 12, 18a, 18b, 19, 20 in \citet{Prada12}. The numerical values in these equations were obtained empirically from the simulations described in that work.
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> from clusterlensing import cofm
 >>> cofm.c_Prada([0.1, 0.5], [1e14, 1e15])
 array([ 5.06733941,  5.99897362])
@@ -360,7 +360,7 @@ The function \code{calc_delta_c()} takes a single input parameter, the cluster c
 \end{equation}
 Both input and output are dimensionless here. For example, to convert a concentration value of $c_{200} = 5$ to $\delta_c$, you could do:
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> from clusterlensing.clusters import calc_delta_c
 >>> calc_delta_c(5)
 8694.8101906193315
@@ -374,7 +374,7 @@ M_{200} = M_0 \left( \frac{N_{200}}{20} \right) ^ \beta.
 Here $M_0$ is the normalization, which defaults to $2.7 \times 10^{13}$, but can be changed in the call to either function by setting the \code{norm} keyword argument. The power-law slope $\beta = 1.4$ by default, but can be set by specifying the optional \code{slope} input parameter. When these functions are invoked by the \code{ClusterEnsemble()} class, they are applied to the particular mass definition $M_{200}$, and assume units of $M_{\odot}$. However the functions themselves do not assume a mass definition or unit, and can be generalized to any parameter (or type of richness) that has a power-law relationship with mass.
 
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> from clusterlensing.clusters import \
 >>> mass_to_richness, richness_to_mass
 >>> richness_to_mass(50)
@@ -390,7 +390,7 @@ Here $M_0$ is the normalization, which defaults to $2.7 \times 10^{13}$, but can
 The \code{ClusterEnsemble()} class creates, modifies and tracks a Pandas DataFrame containing the properties and attributes of many galaxy clusters at once. When given a new or updated cluster property, it calculates and updates all dependent cluster properties, treating each cluster (row) in the DataFrame as an individual object. This makes it easy to calculate the $\Sigma(R)$ and $\Delta\Sigma(R)$ weak lensing profiles for many different mass clusters at different redshifts, with a single command. In contrast to using the \code{SurfaceMassDensity()} class discussed in Section \ref{nfw}, the user only needs to specify the cluster redshifts and either of the mass or richness. If richness is supplied, then mass is calculated from it, assuming the form of Equation \ref{massrich} (which is customizable); if mass is specified instead, than the inverse relation is used to calculate richness. In either case the changes are propagated to any dependent variables.
 
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> from clusterlensing import ClusterEnsemble
 >>> z = [0.1,0.2,0.3]
 >>> c = ClusterEnsemble(z)
@@ -425,7 +425,7 @@ The \code{ClusterEnsemble()} class creates, modifies and tracks a Pandas DataFra
 The above examples also demonstrate that cluster masses are converted to concentrations and to characteristic halo overdensities. This assumes the default mass-concentration relation of the \code{c_DuttonMaccio()} form, or the user can instead specify another of the relations by setting the keyword \code{cm="Prada"} or \code{cm="Duffy"}, when the \code{ClusterEnsemble()} object is instantiated. Cosmology can also be specified upon instantiation, by setting the \code{cosmology} keyword to be any \code{astropy.cosmology} object that has an \code{h} and a \code{Om0} attribute. If not specified explicitly, the default cosmological model used is \code{astropy.cosmology.Planck13}. Here is an example of creating a \code{ClusterEnsemble()} object that uses the WMAP5 cosmology \citep{WMAP5} and the \citet{Duffy08} concentration:
 \pagebreak
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> from astropy.cosmology import WMAP5 as cosmo
 >>> c = ClusterEnsemble(z, cm="Duffy",
 >>>                     cosmology=cosmo)
@@ -443,7 +443,7 @@ The above examples also demonstrate that cluster masses are converted to concent
 %----------------------------
 
 Instead of using the \code{dataframe} attribute, which retrieves the Pandas DataFrame object itself, it might be useful to use the \code{show()} method, which prints additional information to the screen, including assumptions of the mass-richness relation:%---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> c.show()
 
 Cluster Ensemble:
@@ -490,7 +490,7 @@ The last example also demonstrates how the slope or normalization of the mass-ri
 
 Then all the ingredients are in place to calculate halo profiles by invoking the \code{calc_nfw()} method, which interfaces to the \code{sigma_nfw()} and \code{deltasigma_nfw()} methods of the \code{SurfaceMassDensity()} class, and passes it the required inputs $\{ r_s, \rho_{crit}, \delta_c \}$ for all the clusters behind the scenes. The value of $\rho_{crit}$ is calculated at every cluster redshift using the (default \code{astropy.cosmology.Planck13} or user-specified) cosmological model. The user must specify the desired radial bins \code{rbins} in Mpc.
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> import numpy as np
 >>> # create some logarithmic bins:
 >>> rmin, rmax = 0.1, 5.  # Mpc
@@ -521,7 +521,7 @@ Then all the ingredients are in place to calculate halo profiles by invoking the
 
 Similar to the direct use of \code{SurfaceMassDensity()}, discussed in Section \ref{nfw}, the miscentered profiles can be calculated from the \code{calc_nfw()} method, by supplying the optional \code{offsets} keyword with an array-like object of length equal to the number of clusters, where each element is the width of the offset distribution in Mpc ($\sigma_{off}$ in Equation \ref{PofR}).
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> c.calc_nfw(rbins=rbins, offsets=[0.3,0.3,0.3])
 >>> # the offset sigma profile is now:
 >>> c.sigma_nfw
@@ -543,7 +543,7 @@ Although \code{SurfaceMassDensity()} from the \code{nfw} module, and \code{Clust
 \label{ex}
 As an example use case, we take the Canada-France-Hawaii Telescope Lensing Survey \citep[CFHTLenS;][]{Heymans12, Erben13} public galaxy cluster catalog, which is available on Zenodo\footnote{\url{http://dx.doi.org/10.5281/zenodo.51291}} \citep{3DMFcatalog}. This dataset was previously explored using a pre-release version of the \code{cluster-lensing} software in \citet{Ford14, Ford15}. The W1 field of this survey contains 10,745 galaxy cluster candidates in the redshift range $0.2 \le z \le 0.9$:
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> import numpy as np
 >>> data = np.loadtxt("Clusters_W1.dat")
 >>> data.shape
@@ -563,7 +563,7 @@ array([[ 34.8023, -7.01005, 0.3, 4.435, 10.],
 We select a subset of the lower redshift clusters that were detected at high significance. Then we import \code{clusterlensing} to create a dataframe of the cluster properties, of which we just print the first several, and calculate the NFW profiles.
 
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> # select a subset
 >>> here = (sig > 15) & (redshift < 0.5)
 >>> sig[here].shape
@@ -598,7 +598,7 @@ We select a subset of the lower redshift clusters that were detected at high sig
 
 Next we import the \code{matplotlib} and \code{seaborn} libraries and configure some settings to make our plots more readable. The first plot we create with the commands below presents the $\Sigma(R)$ profiles for every one of these 15 clusters, and is given in \cref{f1}.
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 
 >>> import matplotlib.pyplot as plt
 >>> import seaborn as sns; sns.set()
@@ -639,7 +639,7 @@ Next we import the \code{matplotlib} and \code{seaborn} libraries and configure 
 If we had made a stacked measurement of the shear or magnification profile of these clusters, then we would want to know what the average profile of the stack looks like. Since we already have the individual profiles, we just need to calculate the mean across the 0$^\mathrm{th}$ axis of the \code{sigma_nfw} and \code{deltasigma_nfw} attribute arrays. The plot of these average profiles is given in \cref{f2}.
 
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 
 >>> sigma = c.sigma_nfw.mean(axis=0)
 >>> dsigma = c.deltasigma_nfw.mean(axis=0)
@@ -668,7 +668,7 @@ If we had made a stacked measurement of the shear or magnification profile of th
 Finally, we may want to investigate whether cluster miscentering has a significant effect on our sample. We would calculate the miscentered profiles, given in \cref{f3}, which could be compared to the centered profiles in \cref{f2} to see which is a better fit to our measurement. Below we will assume that the miscentering offset distribution peaks at 0.1 Mpc.
 \pagebreak
 %---------- code ----------
-\begin{minted}{python}
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 
 >>> offsets = np.ones(c.z.shape[0]) * 0.1
 >>> c.calc_nfw(rbins, offsets=offsets)

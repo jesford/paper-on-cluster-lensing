@@ -242,6 +242,8 @@ Here $r = \sqrt{R^2+R_{off}^2-2RR_{off}\cos(\theta)}$ and $\theta$ is the azimut
 \end{minted}
 %----------------------------
 
+{\bf In the case of perfectly centered clusters, both quantities $\Sigma$ and $\Delta\Sigma$ are calculated independently from straightforward formula \citep{Wright00}. In the miscentered case, however, calculation of $\Delta\Sigma^\mathrm{off}$ is more complicated and relies on the quantity $\Sigma^\mathrm{off}$ directly. If the current instantiation of \code{SurfaceMassDensity()} has already done the $\Sigma^\mathrm{off}$ calculation, then its result will be employed in calculating $\Delta\Sigma^\mathrm{off}$; if not, it will be calculated for the first time. It is because of the interdependence of these two calculations that the decision was made to have the radial bins parameter \code{rbins} be passed into the \code{SurfaceMassDensity()} object itself, instead of being specified when a particular profile is to be calculated. This choice ensures that the same radial bins will be used for every type of profile (so that $\Sigma^\mathrm{off}$ and $\Delta\Sigma^\mathrm{off}$ correspond to the same radii), but also requires the user to instantiate a new \code{SurfaceMassDensity()} object if they want to use different radial bins.}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{\hcode{cofm}}
@@ -372,7 +374,7 @@ The pair of functions \code{mass_to_richness()} and \code{richness_to_mass()}, a
 M_{200} = M_0 \left( \frac{N_{200}}{20} \right) ^ \beta.
 \end{equation}
 Here $M_0$ is the normalization, which defaults to $2.7 \times 10^{13}$, but can be changed in the call to either function by setting the \code{norm} keyword argument. The power-law slope $\beta = 1.4$ by default, but can be set by specifying the optional \code{slope} input parameter. When these functions are invoked by the \code{ClusterEnsemble()} class, they are applied to the particular mass definition $M_{200}$, and assume units of $M_{\odot}$. However the functions themselves do not assume a mass definition or unit, and can be generalized to any parameter (or type of richness) that has a power-law relationship with mass.
-\pagebreak
+
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> from clusterlensing.clusters import \
@@ -597,6 +599,7 @@ We select a subset of the lower redshift clusters that were detected at high sig
 
 
 Next we import the \code{matplotlib} and \code{seaborn} libraries and configure some settings to make our plots more readable. The first plot we create with the commands below presents the $\Sigma(R)$ profiles for every one of these 15 clusters, and is given in \cref{f1}.
+\pagebreak
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 
@@ -735,7 +738,7 @@ Compared to existing code, \code{cluster-lensing} stands out by seemingly being 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\vspace{10.pt}
+%\vspace{50pt}
 
 \section*{Acknowledgements}
 The authors are grateful for funding from the Washington Research Foundation Fund for Innovation in Data-Intensive Discovery and the Moore/Sloan Data Science Environments Project at the University of Washington. {\bf JF acknowledges the International Space Science Institute (ISSI), which supported very useful workshops that helped in the development of this work.}

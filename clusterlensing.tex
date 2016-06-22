@@ -372,7 +372,7 @@ The pair of functions \code{mass_to_richness()} and \code{richness_to_mass()}, a
 M_{200} = M_0 \left( \frac{N_{200}}{20} \right) ^ \beta.
 \end{equation}
 Here $M_0$ is the normalization, which defaults to $2.7 \times 10^{13}$, but can be changed in the call to either function by setting the \code{norm} keyword argument. The power-law slope $\beta = 1.4$ by default, but can be set by specifying the optional \code{slope} input parameter. When these functions are invoked by the \code{ClusterEnsemble()} class, they are applied to the particular mass definition $M_{200}$, and assume units of $M_{\odot}$. However the functions themselves do not assume a mass definition or unit, and can be generalized to any parameter (or type of richness) that has a power-law relationship with mass.
-
+\pagebreak
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> from clusterlensing.clusters import \
@@ -423,7 +423,7 @@ The \code{ClusterEnsemble()} class creates, modifies and tracks a Pandas DataFra
 %----------------------------
 
 The above examples also demonstrate that cluster masses are converted to concentrations and to characteristic halo overdensities. This assumes the default mass-concentration relation of the \code{c_DuttonMaccio()} form, or the user can instead specify another of the relations by setting the keyword \code{cm="Prada"} or \code{cm="Duffy"}, when the \code{ClusterEnsemble()} object is instantiated. Cosmology can also be specified upon instantiation, by setting the \code{cosmology} keyword to be any \code{astropy.cosmology} object that has an \code{h} and a \code{Om0} attribute. If not specified explicitly, the default cosmological model used is \code{astropy.cosmology.Planck13}. Here is an example of creating a \code{ClusterEnsemble()} object that uses the WMAP5 cosmology \citep{WMAP5} and the \citet{Duffy08} concentration:
-\pagebreak
+
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> from astropy.cosmology import WMAP5 as cosmo
@@ -666,7 +666,7 @@ If we had made a stacked measurement of the shear or magnification profile of th
 \end{figure}
 
 Finally, we may want to investigate whether cluster miscentering has a significant effect on our sample. We would calculate the miscentered profiles, given in \cref{f3}, which could be compared to the centered profiles in \cref{f2} to see which is a better fit to our measurement. Below we will assume that the miscentering offset distribution peaks at 0.1 Mpc.
-\pagebreak
+
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 

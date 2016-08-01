@@ -698,6 +698,8 @@ If we had made a stacked measurement of the shear or magnification profile of th
 
 Finally, we may want to investigate whether cluster miscentering has a significant effect on our sample. We would calculate the miscentered profiles, given in \cref{f3}, which could be compared to the centered profiles in \cref{f2} to see which is a better fit to our measurement. Below we will assume that the miscentering offset distribution peaks at 0.1 Mpc.
 
+\pagebreak
+
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 
@@ -727,13 +729,15 @@ Finally, we may want to investigate whether cluster miscentering has a significa
 \label{f3}
 \end{figure}
 
+\pagebreak
+
 The above example shows a simple application of \code{cluster-lensing} to a real dataset -- a subset of the CFHTLenS cluster catalog.  For this example we kept the customizations to a minimum, but as shown in Sections \ref{clusters}, the user can alter the parameters in the power-law relation used to convert richness to mass, choose the form of the mass-concentration relation assumed for the NFW profiles, and specify a particular background cosmology. When fitting a model produced by \code{cluster-lensing} to a measurement, one could iterate through parameters in this space by setting various attributes of the \code{ClusterEnsemble()} object \citep[as done, e.g. in][]{Ford14, Ford15}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Fitting a Model}
 \label{emcee_ex}
-{\bf This example demonstrates the use of the \code{emcee} package \citep{emcee}, to draw Markov chain Monte Carlo samples for fitting a model to a measurement of galaxy cluster shear. We start by creating a synthetic measurement, by using \code{cluster-lensing} to create a miscentered $\Delta\Sigma(R)$ profile to which we add some random scatter. Our goal will be to estimate both the mass and the centroid offset of the fake cluster (which has true $M_{200} = 10^{14} M_{\odot}$ and $\sigma_{\mathrm off} = 0.3$ Mpc), by fitting the offset halo model provided by \code{cluster-lensing}.}
+{\bf This example demonstrates the use of the \code{emcee} package \citep{emcee}, to draw Markov chain Monte Carlo samples for fitting a model to a measurement of galaxy cluster shear. We start by creating a synthetic measurement, by using \code{cluster-lensing} to create a miscentered $\Delta\Sigma(R)$ profile to which we add some random scatter. Our goal will be to estimate both the mass and the centroid offset of the fake cluster (which has true $M_{200} = 10^{14} M_{\odot}$ and $\sigma_{\mathrm off} = 0.3$ Mpc), by fitting the offset halo model provided by \code{cluster-lensing}. We will assume the cluster redshifts $z = 0.2$ are known.}
 
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
@@ -744,7 +748,8 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 >>> off_true = 0.3
 >>> 
 >>> nbins = 10
->>> rbins = np.logspace(np.log10(0.1), np.log10(5), num=nbins)
+>>> rbins = np.logspace(np.log10(0.1), np.log10(5), 
+...                     num=nbins)
 >>> redshift = [0.2]
 >>> cdata = ClusterEnsemble(redshift)
 >>> cdata.m200 = [10**logm_true]
@@ -752,13 +757,16 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 >>> dsigma_true = cdata.deltasigma_nfw.mean(axis=0).value
 >>> 
 >>> # add scatter with a stddev of 20% of data
->>> noise = np.random.normal(scale=dsigma_true*0.2, size=nbins)
+>>> noise = np.random.normal(scale=dsigma_true*0.2, 
+...                          size=nbins)
 >>> y = dsigma_true + noise
 >>> yerr = np.abs(dsigma_true/3)  # 33% error bars
 \end{minted}
 %----------------------------
 
 {\bf We follow a Bayesian approach, and define functions for the likelihood and posterior probabilities. We use an uninformative flat prior, which is constant in the reasonable ranges $10 < \mathrm{log}M_{200} < 16$ and $0 < \sigma_{\mathrm off} < 5$ Mpc, and zero outside of those ranges.}
+
+\pagebreak
 
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
@@ -822,7 +830,7 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 >>> import matplotlib
 >>> matplotlib.rcParams["axes.labelsize"] = 20
 >>> 
->>> burn_in_step = 80
+>>> burn_in_step = 50
 >>> samples = sampler.chain[:, burn_in_step:, 
 ...                         :].reshape((-1, ndim))
 >>> fig = corner.corner(samples,

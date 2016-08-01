@@ -557,7 +557,7 @@ Although \code{SurfaceMassDensity()} from the \code{nfw} module, and \code{Clust
 	100 & no  & 75.0 \\
 	
 \end{tabular}
-\caption{\bf Total runtime for calculating both the $\Sigma(R)$ and $\Delta\Sigma(R)$ NFW profiles for different numbers of clusters. The calculation time is constant for centered calculations. For miscentered calculations, the runtime scales linearly with the number of clusters and with the number of radial bins (these examples all assume 10 bins).}
+\caption{Total runtime for calculating both the $\Sigma(R)$ and $\Delta\Sigma(R)$ NFW profiles for different numbers of clusters. The calculation time is close to constant for centered calculations. For miscentered calculations, the runtime scales linearly with the number of clusters and with the number of radial bins (these examples all assume 10 bins).}
 \label{runtimetable}
 \end{table}
 
@@ -735,7 +735,7 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 \label{emcee_ex}
 {\bf This example demonstrates the use of the \code{emcee} package \citep{emcee}, to draw Markov chain Monte Carlo samples for fitting a model to a measurement of galaxy cluster shear. We start by creating a synthetic measurement, by using \code{cluster-lensing} to create a miscentered $\Delta\Sigma(R)$ profile to which we add some random scatter. Our goal will be to estimate both the mass and the centroid offset of the fake cluster (which has true $M_{200} = 10^{14} M_{\odot}$ and $\sigma_{\mathrm off} = 0.3$ Mpc), by fitting the offset halo model provided by \code{cluster-lensing}.}
 
-%----------------------------
+%---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> import numpy as np
 >>> from clusterlensing import ClusterEnsemble
@@ -760,7 +760,7 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 
 {\bf We follow a Bayesian approach, and define functions for the likelihood and posterior probabilities. We use an uninformative flat prior, which is constant in the reasonable ranges $10 < \mathrm{log}M_{200} < 16$ and $0 < \sigma_{\mathrm off} < 5$ Mpc, and zero outside of those ranges.}
 
-%----------------------------
+%---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> # probability of the data given the model
 >>> def lnlike(theta, z, rbins, data, stddev):
@@ -794,7 +794,7 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 
 {\bf With the help of \code{emcee} \citep{emcee}, we use 20 walkers to draw 500 samples each from the posterior. This sampling process took ??? seconds to run, which is significant because of the miscentering integrations (as shown in Table \ref{runtimetable}, the calculations are many times faster for the centered cluster case).}
 
-%----------------------------
+%---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> import emcee
 >>> 
@@ -813,9 +813,9 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 \end{minted}
 %----------------------------
 
-{\bf Finally, we use the \code{corner} package to neatly display the results...}
+{\bf Finally, we use the \code{corner} package \citep{corner} to neatly display the results...}
 
-%----------------------------
+%---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> import seaborn; seaborn.set()
 >>> import corner

@@ -541,7 +541,7 @@ Although \code{SurfaceMassDensity()} from the \code{nfw} module, and \code{Clust
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Runtime and Scaling?}
+\subsection{Density Profile Runtime}
 \label{time}
 \textbf{The calculation of the standard centered NFW profiles is fast, and the runtime is essentially constant, independent of the number of clusters and radial bins involved. The miscentered profile calculation on the other hand, has been optimized as much as possible for a non-parallel pure-\code{Python} calculation, but still requires several integrations. The runtime for the miscentered calculation scales linearly with both numbers of clusters and with the number of radial bins. The time to run these calculations for different numbers of clusters and bins is given in Table \ref{runtimetable}. A simple shortcut to decrease total run time is to consider binning clusters, to ensure you are not calculating a nearly identical profile multiple times. Of course, care must be taken to avoid stacking clusters of very different masses, as discussed in the introduction.}
 

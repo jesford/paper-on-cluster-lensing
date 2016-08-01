@@ -792,7 +792,7 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 \end{minted}
 %----------------------------
 
-{\bf With the help of \code{emcee} \citep{emcee}, we use 20 walkers to draw 500 samples each from the posterior. This sampling process took ??? seconds to run, which is significant because of the miscentering integrations (as shown in Table \ref{runtimetable}, the calculations are many times faster for the centered cluster case).}
+{\bf With the help of \code{emcee} \citep{emcee}, we use 20 walkers to draw 500 samples each from the posterior. The sampling process below took ??? seconds to run, which is significant because of the miscentering integrations (as shown in Table \ref{runtimetable}, the calculations are many times faster for the centered cluster case).}
 
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
@@ -813,7 +813,7 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 \end{minted}
 %----------------------------
 
-{\bf Finally, we use the \code{corner} package \citep{corner} to neatly display the results...}
+{\bf Finally, we use the \code{corner} module \citep{corner} to neatly display the results. Figure \ref{f4} shows that the probability distribution for the best fit mass and centroid offset overlap with the input values (blue lines).}
 
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
@@ -826,16 +826,16 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 >>> samples = sampler.chain[:, burn_in_step:, 
 ...                         :].reshape((-1, ndim))
 >>> fig = corner.corner(samples,
-...                    labels=["$\mathrm{log}M_{200}$", 
-...                            "$\sigma_\mathrm{off}$"],
-...                    truths=[logm_true, off_true])
+...                     labels=["$\mathrm{log}M_{200}$", 
+...                             "$\sigma_\mathrm{off}$"],
+...                     truths=[logm_true, off_true])
 >>> fig.savefig("f4.eps")  # output is Figure 4
 \end{minted}
 %----------------------------
 \begin{figure}
 \epsscale{1.2}
 \plotone{data/f4.eps}
-\caption{Caption here.}
+\caption{Posterior probability distributions for the two estimated model parameters, the logarithm of the mass, and the centroid offset. The true input values of these parameters are shown by the blue lines, and are $\mathrm{log}(M_{200}/M_{\odot}) = 14$ and $\sigma_{\mathrm off} = 0.3$ Mpc. Random noise was added to the synthetic shear "measurement", which is why the peaks of the distributions do not exactly match the true input values.}
 \label{f4}
 \end{figure}
 

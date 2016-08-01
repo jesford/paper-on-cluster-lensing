@@ -733,10 +733,35 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 
 \subsection{Fitting a Model}
 \label{emcee_ex}
-{\bf This example demonstrates the use of the \code{emcee} package \citep{emcee}, to draw Markov chain Monte Carlo samples for fitting a model to a measurement of galaxy cluster shear. }
+{\bf This example demonstrates the use of the \code{emcee} package \citep{emcee}, to draw Markov chain Monte Carlo samples for fitting a model to a measurement of galaxy cluster shear. We start by creating a synthetic measurement, by using \code{cluster-lensing} to create a miscentered $\Delta\Sigma(R)$ profile to which we add some random scatter. Our goal will be to estimate both the mass and the centroid offset of the fake cluster (which has true $M_{200} = 10^{14} M_{\odot}$ and $\sigma_{\mathrm off} = 0.3$ Mpc), by fitting the offset halo model provided by \code{cluster-lensing}.}
 
+%----------------------------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
+>>> import numpy as np
+>>> from clusterlensing import ClusterEnsemble
+>>> 
+>>> logm_true = 14
+>>> off_true = 0.3
+>>> 
+>>> nbins = 10
+>>> rbins = np.logspace(np.log10(0.1), np.log10(5), num=nbins)
+>>> redshift = [0.2]
+>>> cdata = ClusterEnsemble(redshift)
+>>> cdata.m200 = [10**logm_true]
+>>> cdata.calc_nfw(rbins=rbins, offsets=[off_true])
+>>> dsigma_true = cdata.deltasigma_nfw.mean(axis=0).value
+>>> 
+>>> # add scatter with a stddev of 20% of data
+>>> noise = np.random.normal(scale=dsigma_true*0.2, size=nbins)
+>>> y = dsigma_true + noise
+>>> yerr = np.abs(dsigma_true/3)  # 33% error bars
+\end{minted}
+%----------------------------
 
+{\bf We follow a Bayesian approach, and define functions for the likelihood and posterior probabilities. We use an uninformative flat prior, which is constant in the reasonable ranges $10 < \mathrm{log}M_{200} < 16$ and $0 < \sigma_{\mathrm off} < 5$ Mpc, and zero outside of those ranges.}
+
+%----------------------------
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> # probability of the data given the model
 >>> def lnlike(theta, z, rbins, data, stddev):
 ...     logm, offsets = theta
@@ -750,23 +775,69 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 ...     diff = data - model
 ...     lnlikelihood = -0.5 * np.sum(diff**2 / stddev**2)
 ...     return lnlikelihood
-... 
+>>>
 >>> # uninformative prior
 >>> def lnprior(theta):
 ...     logm, offset = theta
 ...     if 10 < logm < 16 and 0.0 <= offset < 5.0:
 ...         return 0.0
 ...     return -np.inf
-... 
+>>>
 >>> # posterior probability
 >>> def lnprob(theta, z, rbins, data, stddev):
 ...     lp = lnprior(theta)
 ...     if not np.isfinite(lp):
 ...         return -np.inf
 ...     return lp + lnlike(theta, z, rbins, data, stddev)
-...
-
 \end{minted}
+%----------------------------
+
+{\bf With the help of \code{emcee} \citep{emcee}, we use 20 walkers to draw 500 samples each from the posterior. This sampling process took ??? seconds to run, which is significant because of the miscentering integrations (as shown in Table \ref{runtimetable}, the calculations are many times faster for the centered cluster case).}
+
+%----------------------------
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
+>>> import emcee
+>>> 
+>>> ndim = 2
+>>> nwalkers = 20
+>>> p0 = np.random.rand(ndim * nwalkers).reshape((nwalkers, 
+...                                               ndim))
+>>> p0[:, 0] = p0[:, 0] + 13.5
+>>> 
+>>> sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob,
+...                                 args=(redshift, rbins, 
+...                                       y, yerr), 
+...                                 threads=8)
+>>> 
+>>> pos, prob, state = sampler.run_mcmc(p0, 500)
+\end{minted}
+%----------------------------
+
+{\bf Finally, we use the \code{corner} package to neatly display the results...}
+
+%----------------------------
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
+>>> import seaborn; seaborn.set()
+>>> import corner
+>>> import matplotlib
+>>> matplotlib.rcParams["axes.labelsize"] = 20
+>>> 
+>>> burn_in_step = 80
+>>> samples = sampler.chain[:, burn_in_step:, 
+...                         :].reshape((-1, ndim))
+>>> fig = corner.corner(samples,
+...                    labels=["$\mathrm{log}M_{200}$", 
+...                            "$\sigma_\mathrm{off}$"],
+...                    truths=[logm_true, off_true])
+>>> fig.savefig("f4.eps")  # output is Figure 4
+\end{minted}
+%----------------------------
+\begin{figure}
+\epsscale{1.2}
+\plotone{data/f4.eps}
+\caption{Caption here.}
+\label{f4}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

@@ -153,9 +153,9 @@ Running \code{sigma_nfw()} or \code{deltasigma_nfw()}, with only a specification
 >>> from clusterlensing import SurfaceMassDensity
 >>> rbins = [0.1, 0.5, 1.0, 2.0, 4.0] # Mpc
 >>> smd = SurfaceMassDensity(rs=[0.1],
->>>                          rho_crit=[0.2],
->>>                          delta_c=[9700.],
->>>                          rbins=rbins)
+...                          rho_crit=[0.2],
+...                          delta_c=[9700.],
+...                          rbins=rbins)
 >>> sigma = smd.sigma_nfw()
 >>> # surface mass density with default units
 >>> sigma[0]
@@ -181,10 +181,10 @@ The parameter \code{offsets} is equivalent to $\sigma_{off}$ in this equation.
 >>> rbins = [0.1, 0.5, 1.0, 2.0, 4.0]
 >>> # single miscentered halo profile
 >>> smd = SurfaceMassDensity(rs=[0.1],
->>>                          rho_crit=[0.2],
->>>                          delta_c=[9700.],
->>>                          rbins=rbins,
->>>                          offsets=[0.3])
+...                          rho_crit=[0.2],
+...                          delta_c=[9700.],
+...                          rbins=rbins,
+...                          offsets=[0.3])
 >>> sigma = smd.sigma_nfw()
 >>> sigma[0]
 <Quantity [ 38.60655298, 17.57285034, 4.11253461,
@@ -192,10 +192,10 @@ The parameter \code{offsets} is equivalent to $\sigma_{off}$ in this equation.
 >>> 
 >>> # example calculating multiple profiles
 >>> smd = SurfaceMassDensity(rs=[0.1,0.2,0.2],
->>>                          rho_crit=[0.2,0.2,0.2],
->>>                          delta_c=[9700,9700,9000],
->>>                          rbins=rbins,
->>>                          offsets=[0.3,0.3,0.3])
+...                          rho_crit=[0.2,0.2,0.2],
+...                          delta_c=[9700,9700,9000],
+...                          rbins=rbins,
+...                          offsets=[0.3,0.3,0.3])
 >>> sigma = smd.sigma_nfw()
 >>> sigma
 <Quantity [[ 38.60655298, 17.57285034, 4.11253461, 
@@ -221,9 +221,9 @@ Here $r = \sqrt{R^2+R_{off}^2-2RR_{off}\cos(\theta)}$ and $\theta$ is the azimut
 >>> rbins = [0.1, 0.5, 1.0, 2.0, 4.0]
 >>> # perfectly centered DeltaSigma profile
 >>> smd = SurfaceMassDensity(rs=[0.1],
->>>                          rho_crit=[0.2],
->>>                          delta_c=[9700.],
->>>                          rbins=rbins)
+...                          rho_crit=[0.2],
+...                          delta_c=[9700.],
+...                          rbins=rbins)
 >>> deltasigma = smd.deltasigma_nfw()
 >>> deltasigma[0]
 <Quantity [ 108.78445455, 25.47093418, 10.29627483,
@@ -231,10 +231,10 @@ Here $r = \sqrt{R^2+R_{off}^2-2RR_{off}\cos(\theta)}$ and $\theta$ is the azimut
 >>> 
 >>> # miscentered DeltaSigma profile
 >>> smd = SurfaceMassDensity(rs=[0.1],
->>>                          rho_crit=[0.2],
->>>                          delta_c=[9700.],
->>>                          rbins=rbins,
->>>                          offsets=[0.3])
+...                          rho_crit=[0.2],
+...                          delta_c=[9700.],
+...                          rbins=rbins,
+...                          offsets=[0.3])
 >>> deltasigma = smd.deltasigma_nfw()
 >>> deltasigma[0]
 <Quantity [ 0.71370144, 9.35821817, 8.90118561,
@@ -378,7 +378,7 @@ Here $M_0$ is the normalization, which defaults to $2.7 \times 10^{13}$, but can
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> from clusterlensing.clusters import \
->>> mass_to_richness, richness_to_mass
+... mass_to_richness, richness_to_mass
 >>> richness_to_mass(50)
 97382243648736.9
 >>> mass_to_richness(97382243648736.9)
@@ -430,7 +430,7 @@ The above examples also demonstrate that cluster masses are converted to concent
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 >>> from astropy.cosmology import WMAP5 as cosmo
 >>> c = ClusterEnsemble(z, cm="Duffy",
->>>                     cosmology=cosmo)
+...                     cosmology=cosmo)
 >>> c.n200 = [20, 30, 40]
 >>> c.dataframe
      z  n200          m200      r200      c200
@@ -497,8 +497,8 @@ Then all the ingredients are in place to calculate halo profiles by invoking the
 >>> # create some logarithmic bins:
 >>> rmin, rmax = 0.1, 5.  # Mpc
 >>> rbins = np.logspace(np.log10(rmin),
->>>                     np.log10(rmax),
->>>                     num = 8)
+...                     np.log10(rmax),
+...                     num = 8)
 >>> # calculate the profiles:
 >>> c.calc_nfw(rbins=rbins)
 >>> # profiles now exist as attributes:
@@ -620,7 +620,7 @@ We select a subset of the lower redshift clusters that were detected at high sig
      5336.272412  0.361518
 >>>
 >>> rbins = np.logspace(np.log10(0.1),
->>>                     np.log10(10.0), num=20)
+...                     np.log10(10.0), num=20)
 >>> c.calc_nfw(rbins)
 \end{minted}
 \label{3dmf2df}
@@ -648,7 +648,7 @@ Next we import the \code{matplotlib} and \code{seaborn} libraries and configure 
 >>> order = c.n200.argsort()[::-1]
 >>> 
 >>> for s, n in zip(c.sigma_nfw[order], c.n200[order]):
->>>     plt.plot(rbins, s, label=str(int(n)))
+...     plt.plot(rbins, s, label=str(int(n)))
 >>> plt.xscale("log")
 >>> plt.legend(fontsize=10)
 >>> plt.ylabel(sgma+sgmaunits)
@@ -708,7 +708,7 @@ Finally, we may want to investigate whether cluster miscentering has a significa
 >>> 
 >>> plt.plot(rbins, sigma_offset, label=sgmaoff)
 >>> plt.plot(rbins, dsigma_offset, "--",
->>>          label=delta+sgmaoff)
+...          label=delta+sgmaoff)
 >>> plt.legend()
 >>> plt.ylim([0., 1400.])
 >>> plt.xscale("log")
@@ -733,7 +733,40 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 
 \subsection{Fitting a Model}
 \label{emcee_ex}
-{\bf This example demonstrates the use of the \code{emcee} package \citep{emcee}, to run MCMC chains and fit a model to a measurement of galaxy cluster shear.}
+{\bf This example demonstrates the use of the \code{emcee} package \citep{emcee}, to draw Markov chain Monte Carlo samples for fitting a model to a measurement of galaxy cluster shear. }
+
+\begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
+
+>>> # probability of the data given the model
+>>> def lnlike(theta, z, rbins, data, stddev):
+...     logm, offsets = theta
+...     
+...     # calculate the model
+...     c = ClusterEnsemble(z)
+...     c.m200 = [10 ** logm]
+...     c.calc_nfw(rbins=rbins, offsets=[offsets])
+...     model = c.deltasigma_nfw.mean(axis=0).value
+...     
+...     diff = data - model
+...     lnlikelihood = -0.5 * np.sum(diff**2 / stddev**2)
+...     return lnlikelihood
+... 
+>>> # uninformative prior
+>>> def lnprior(theta):
+...     logm, offset = theta
+...     if 10 < logm < 16 and 0.0 <= offset < 5.0:
+...         return 0.0
+...     return -np.inf
+... 
+>>> # posterior probability
+>>> def lnprob(theta, z, rbins, data, stddev):
+...     lp = lnprior(theta)
+...     if not np.isfinite(lp):
+...         return -np.inf
+...     return lp + lnlike(theta, z, rbins, data, stddev)
+...
+
+\end{minted}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

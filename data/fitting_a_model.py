@@ -70,7 +70,7 @@ import corner
 import matplotlib
 matplotlib.rcParams["axes.labelsize"] = 20
 
-burn_in_step = 80
+burn_in_step = 50
 samples = sampler.chain[:, burn_in_step:, :].reshape((-1, ndim))
 fig = corner.corner(samples,
                     labels=["$\mathrm{log}M_{200}$", "$\sigma_\mathrm{off}$"],

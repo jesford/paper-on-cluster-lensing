@@ -75,4 +75,4 @@ samples = sampler.chain[:, burn_in_step:, :].reshape((-1, ndim))
 fig = corner.corner(samples,
                     labels=["$\mathrm{log}M_{200}$", "$\sigma_\mathrm{off}$"],
                     truths=[logm_true, off_true])
-fig.savefig('f4.eps')  # output is Figure 4
+fig.savefig("f4.eps")  # output is Figure 4

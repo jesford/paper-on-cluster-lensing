@@ -543,10 +543,23 @@ Although \code{SurfaceMassDensity()} from the \code{nfw} module, and \code{Clust
 
 \subsection{Runtime and Scaling?}
 \label{time}
-\textbf{The calculation of the standard centered NFW profiles is fast, and the runtime is essentially constant, independent of the number of clusters and radial bins involved. The miscentered profile calculation on the other hand, has been optimized as much as possible for a non-parallel pure-\code{Python} calculation, but still requires several integrations. The runtime for the miscentered calculation scales linearly with both numbers of clusters and with the number of radial bins. A simple shortcut to decrease total run time is to consider binning clusters, to ensure you are not calculating a nearly identical profile multiple times. Of course, care must be taken to avoid stacking clusters of very different masses, as discussed in the introduction.}
+\textbf{The calculation of the standard centered NFW profiles is fast, and the runtime is essentially constant, independent of the number of clusters and radial bins involved. The miscentered profile calculation on the other hand, has been optimized as much as possible for a non-parallel pure-\code{Python} calculation, but still requires several integrations. The runtime for the miscentered calculation scales linearly with both numbers of clusters and with the number of radial bins. The time to run these calculations for different numbers of clusters and bins is given in Table \ref{runtimetable}. A simple shortcut to decrease total run time is to consider binning clusters, to ensure you are not calculating a nearly identical profile multiple times. Of course, care must be taken to avoid stacking clusters of very different masses, as discussed in the introduction.}
 
-\textbf{A new paragraph.}
-
+\begin{table}
+\centering
+\begin{tabular}{ccc}
+	$N_{\rm clusters}$ & Centered? & Time [seconds] \\ \hline
+	10   & yes & $1.26\times10^{-3}$ \\
+	10   & no  & tbd \\ 
+	50   & yes & $1.30\times10^{-3}$ \\
+	50   & no  & tbd \\
+	100 & yes & $1.42\times10^{-3}$ \\
+	100 & no  & tbd \\
+	
+\end{tabular}
+\caption{Total runtime for calculating both the $\Sigma(R)$ and $\Delta\Sigma(R)$ NFW profiles for different numbers of clusters. The calculation time is constant for centered calculations. For miscentered calculations, the runtime scales linearly with the number of clusters and with the number of radial bins (these examples all assume 10 bins).}
+\label{runtimetable}
+\end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -608,7 +621,7 @@ We select a subset of the lower redshift clusters that were detected at high sig
 
 
 Next we import the \code{matplotlib} and \code{seaborn} libraries and configure some settings to make our plots more readable. The first plot we create with the commands below presents the $\Sigma(R)$ profiles for every one of these 15 clusters, and is given in \cref{f1}.
-\pagebreak
+%\pagebreak
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 

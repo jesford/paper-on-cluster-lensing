@@ -627,7 +627,7 @@ We select a subset of the lower redshift clusters that were detected at high sig
 %----------------------------
 
 Next we import the \code{matplotlib} and \code{seaborn} libraries and configure some settings to make our plots more readable. The first plot we create with the commands below presents the $\Sigma(R)$ profiles for every one of these 15 clusters, and is given in \cref{f1}.
-%\pagebreak
+
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
 
@@ -697,8 +697,6 @@ If we had made a stacked measurement of the shear or magnification profile of th
 \end{figure}
 
 Finally, we may want to investigate whether cluster miscentering has a significant effect on our sample. We would calculate the miscentered profiles, given in \cref{f3}, which could be compared to the centered profiles in \cref{f2} to see which is a better fit to our measurement. Below we will assume that the miscentering offset distribution peaks at 0.1 Mpc.
-
-\pagebreak
 
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}
@@ -789,14 +787,16 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 ...     logm, offset = theta
 ...     if 10 < logm < 16 and 0.0 <= offset < 5.0:
 ...         return 0.0
-...     return -np.inf
+...     else:
+...         return -np.inf
 >>>
 >>> # posterior probability
 >>> def lnprob(theta, z, rbins, data, stddev):
 ...     lp = lnprior(theta)
 ...     if not np.isfinite(lp):
 ...         return -np.inf
-...     return lp + lnlike(theta, z, rbins, data, stddev)
+...     else:
+...         return lp + lnlike(theta, z, rbins, data, stddev)
 \end{minted}
 %----------------------------
 
@@ -821,7 +821,9 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 \end{minted}
 %----------------------------
 
-{\bf Finally, we use the \code{corner} module \citep{corner} to neatly display the results. Figure \ref{f4} shows that the posterior distribution for the best fit mass and centroid offset overlaps with the input values (blue lines).}
+{\bf Finally, we use the \code{corner} module \citep{corner} to neatly display the results. We discard a burn-in period encompassing the first 50 steps, chosen by eye after plotting the walker positions. Figure \ref{f4} shows that the posterior distribution for the best fit mass and centroid offset overlaps with the input values (blue lines).}
+
+\pagebreak
 
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}

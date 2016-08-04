@@ -557,7 +557,7 @@ Although \code{SurfaceMassDensity()} from the \code{nfw} module, and \code{Clust
 	100 & no  & 75.0 \\
 	
 \end{tabular}
-\caption{Total runtime for calculating both the $\Sigma(R)$ and $\Delta\Sigma(R)$ NFW profiles for different numbers of clusters. The calculation time is close to constant for centered calculations. For miscentered calculations, the runtime scales linearly with the number of clusters and with the number of radial bins (these examples all assume 10 bins).}
+\caption{Total runtime for calculating both the $\Sigma(R)$ and $\Delta\Sigma(R)$ NFW profiles for different numbers of clusters. The calculation time is close to constant for centered calculations. For miscentered calculations, the runtime scales linearly with the number of clusters and with the number of radial bins (these examples all assume 10 bins). These calculations were run on a 2015 MacBook Pro.}
 \label{runtimetable}
 \end{table}
 
@@ -800,7 +800,7 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 \end{minted}
 %----------------------------
 
-{\bf With the help of \code{emcee} \citep{emcee}, we use 20 walkers to draw 500 samples each from the posterior. The sampling process below took 49 minutes to run, which is significant because of the miscentering integrations (as shown in Table \ref{runtimetable}, the calculations are many times faster for the centered cluster case).}
+{\bf With the help of \code{emcee} \citep{emcee}, we use 20 walkers to draw 500 samples each from the posterior. The sampling process below took 49 minutes to run (on a recent MacBook Pro), which is significant because of the miscentering integrations involved. As shown in Table \ref{runtimetable}, the calculations can be many times faster for the centered cluster case.}
 
 %---------- code ----------
 \begin{minted}[fontsize=\footnotesize, frame=lines, framesep=2mm, baselinestretch=1.1]{python}

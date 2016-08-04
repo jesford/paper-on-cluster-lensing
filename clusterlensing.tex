@@ -771,13 +771,13 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 >>> # probability of the data given the model
 >>> def lnlike(theta, z, rbins, data, stddev):
 ...     logm, offsets = theta
-...     
+...
 ...     # calculate the model
 ...     c = ClusterEnsemble(z)
 ...     c.m200 = [10 ** logm]
 ...     c.calc_nfw(rbins=rbins, offsets=[offsets])
 ...     model = c.deltasigma_nfw.mean(axis=0).value
-...     
+...
 ...     diff = data - model
 ...     lnlikelihood = -0.5 * np.sum(diff**2 / stddev**2)
 ...     return lnlikelihood
@@ -811,12 +811,12 @@ The above example shows a simple application of \code{cluster-lensing} to a real
 >>> p0 = np.random.rand(ndim * nwalkers).reshape((nwalkers, 
 ...                                               ndim))
 >>> p0[:, 0] = p0[:, 0] + 13.5
->>> 
+>>>
 >>> sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob,
 ...                                 args=(redshift, rbins, 
 ...                                       y, yerr), 
 ...                                 threads=8)
->>> 
+>>>
 >>> pos, prob, state = sampler.run_mcmc(p0, 500)
 \end{minted}
 %----------------------------
